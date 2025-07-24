@@ -39,7 +39,7 @@ const About = () => {
     <section ref={sectionRef} id="about" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold text-coffee-brown mb-6">
+          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6" style={{ color: '#6F4E37' }}>
             About SOK Law Associates
           </h2>
           <div className="animate-on-scroll opacity-0 w-24 h-1 bg-blue-600 mx-auto"></div>
@@ -64,16 +64,16 @@ const About = () => {
           {/* Content */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
-              <h3 className="text-2xl font-bold text-coffee-brown mb-4">
+              <h3 className="text-2xl font-bold mb-4" style={{ color: '#6F4E37' }}>
                 Excellence in Legal Practice Since 2009
               </h3>
-              <p className="text-coffee-brown-light text-lg leading-relaxed mb-6">
+              <p className="text-lg leading-relaxed mb-6" style={{ color: '#000000' }}>
                 SOK Law Associates has been at the forefront of legal practice in Kenya, 
                 providing comprehensive legal solutions to individuals, corporations, and 
                 institutions. Our commitment to excellence, integrity, and client satisfaction 
                 has made us one of the most trusted law firms in the region.
               </p>
-              <p className="text-coffee-brown-light text-lg leading-relaxed">
+              <p className="text-lg leading-relaxed" style={{ color: '#000000' }}>
                 We combine deep legal expertise with innovative approaches to deliver 
                 outstanding results for our clients. Our team of experienced lawyers 
                 specializes in various areas of law, ensuring that we can handle complex 
@@ -88,8 +88,8 @@ const About = () => {
                 return (
                   <div key={index} className="animate-on-scroll opacity-0 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     <IconComponent className={`h-8 w-8 ${stat.color} mb-3`} />
-                    <div className="text-2xl font-bold text-coffee-brown mb-1">{stat.value}</div>
-                    <div className="text-sm text-coffee-brown-light">{stat.label}</div>
+                    <div className="text-2xl font-bold mb-1" style={{ color: '#6F4E37' }}>{stat.value}</div>
+                    <div className="text-sm" style={{ color: '#000000' }}>{stat.label}</div>
                   </div>
                 );
               })}

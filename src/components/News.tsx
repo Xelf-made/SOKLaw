@@ -62,10 +62,10 @@ const News = () => {
     <section ref={sectionRef} id="news" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#6F4E37' }}>
             Latest News & Case Wins
           </h2>
-          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#000000' }}>
             Stay updated with our recent legal victories, industry insights, and important legal developments
           </p>
           <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
@@ -93,10 +93,10 @@ const News = () => {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-coffee-brown mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300" style={{ color: '#6F4E37' }}>
                   {item.title}
                 </h3>
-                <p className="text-coffee-brown-light mb-4 line-clamp-3">
+                <p className="mb-4 line-clamp-3" style={{ color: '#000000' }}>
                   {item.excerpt}
                 </p>
 

@@ -75,10 +75,10 @@ const Contact = () => {
     <section ref={sectionRef} id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold text-coffee-brown mb-6">
+          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6" style={{ color: '#6F4E37' }}>
             Get In Touch
           </h2>
-          <p className="animate-on-scroll opacity-0 text-xl text-coffee-brown-light max-w-3xl mx-auto">
+          <p className="animate-on-scroll opacity-0 text-xl max-w-3xl mx-auto" style={{ color: '#000000' }}>
             Ready to discuss your legal needs? Contact us today for a consultation 
             with our experienced legal team.
           </p>
@@ -89,31 +89,31 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
-              <h3 className="text-2xl font-bold text-coffee-brown mb-6">
+              <h3 className="text-2xl font-bold mb-6" style={{ color: '#6F4E37' }}>
                 Our Office Locations
               </h3>
               
               {officeInfo.map((office, index) => (
                 <div key={index} className="mb-8 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow duration-300">
-                  <h4 className="text-xl font-semibold text-coffee-brown mb-4">
+                  <h4 className="text-xl font-semibold mb-4" style={{ color: '#6F4E37' }}>
                     {office.city}
                   </h4>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
                       <MapPin className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                      <p className="text-coffee-brown-light whitespace-pre-line">
+                      <p className="whitespace-pre-line" style={{ color: '#000000' }}>
                         {office.address}
                       </p>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Phone className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                      <a href={`tel:${office.phone}`} className="text-coffee-brown-light hover:text-blue-600 transition-colors">
+                      <a href={`tel:${office.phone}`} className="hover:text-blue-600 transition-colors" style={{ color: '#000000' }}>
                         {office.phone}
                       </a>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Mail className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                      <a href={`mailto:${office.email}`} className="text-coffee-brown-light hover:text-blue-600 transition-colors">
+                      <a href={`mailto:${office.email}`} className="hover:text-blue-600 transition-colors" style={{ color: '#000000' }}>
                         {office.email}
                       </a>
                     </div>
@@ -123,11 +123,11 @@ const Contact = () => {
             </div>
 
             <div className="animate-on-scroll opacity-0 p-6 bg-blue-50 rounded-xl">
-              <h4 className="text-xl font-semibold text-coffee-brown mb-4 flex items-center">
+              <h4 className="text-xl font-semibold mb-4 flex items-center" style={{ color: '#6F4E37' }}>
                 <Clock className="h-5 w-5 text-blue-600 mr-2" />
                 Business Hours
               </h4>
-              <div className="space-y-2 text-coffee-brown-light">
+              <div className="space-y-2" style={{ color: '#000000' }}>
                 <div className="flex justify-between">
                   <span>Monday - Friday</span>
                   <span>8:00 AM - 6:00 PM</span>
@@ -146,13 +146,13 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="animate-on-scroll opacity-0 bg-gray-50 p-8 rounded-2xl">
-            <h3 className="text-2xl font-bold text-coffee-brown mb-6">
+            <h3 className="text-2xl font-bold mb-6" style={{ color: '#6F4E37' }}>
               Request a Consultation
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-coffee-brown mb-2">
+                  <label htmlFor="firstName" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                     First Name *
                   </label>
                   <input
@@ -167,7 +167,7 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-coffee-brown mb-2">
+                  <label htmlFor="lastName" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                     Last Name *
                   </label>
                   <input
@@ -185,7 +185,7 @@ const Contact = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-coffee-brown mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                     Email Address *
                   </label>
                   <input
@@ -200,7 +200,7 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-coffee-brown mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                     Phone Number
                   </label>
                   <input
@@ -216,7 +216,7 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="service" className="block text-sm font-medium text-coffee-brown mb-2">
+                <label htmlFor="service" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                   Legal Service Required *
                 </label>
                 <select
@@ -237,7 +237,7 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-coffee-brown mb-2">
+                <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: '#6F4E37' }}>
                   Message *
                 </label>
                 <textarea

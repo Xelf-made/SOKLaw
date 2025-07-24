@@ -50,15 +50,18 @@ const Services = () => {
             return (
               <div
                 key={index}
-                className={`service-card p-8 rounded-2xl border-2 ${service.color} hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group opacity-0`}
+                className={`service-card service-card-bg p-8 rounded-2xl border-2 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 group opacity-0`}
+                style={{
+                  backgroundImage: `url(${service.headerImage})`
+                }}
               >
                 <div className="mb-6">
                   <IconComponent className={`h-12 w-12 ${service.iconColor} group-hover:scale-110 transition-transform duration-300`} />
                 </div>
-                <h3 className="text-xl font-bold text-coffee-brown mb-4">
+                <h3 className="text-xl font-bold mb-4" style={{ color: '#6F4E37' }}>
                   {service.title}
                 </h3>
-                <p className="text-coffee-brown-light leading-relaxed mb-4">
+                <p className="leading-relaxed mb-4" style={{ color: '#000000' }}>
                   {service.description}
                 </p>
                 <Link

@@ -22,6 +22,40 @@
   color: var(--coffee-brown-dark);
 }
 
+/* Global heading styles - Coffee Brown */
+h1, h2, h3, h4, h5, h6,
+.text-4xl, .text-5xl, .text-3xl, .text-2xl, .text-xl, .text-lg {
+  color: var(--coffee-brown) !important;
+}
+
+/* Global body text - Black */
+p, span, div:not(.bg-gradient-to-br):not(.bg-blue-600):not(.bg-white):not(.bg-gray-50):not(.bg-gray-100) {
+  color: #000000;
+}
+
+/* Service card background image styling */
+.service-card-bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.service-card-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+}
+
+.service-card-bg > * {
+  position: relative;
+  z-index: 1;
+}
 /* Responsive Image Utilities */
 .responsive-img {
   width: 100%;

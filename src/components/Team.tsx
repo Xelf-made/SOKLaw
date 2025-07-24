@@ -59,10 +59,10 @@ const Team = () => {
     <section ref={sectionRef} id="team" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#6F4E37' }}>
             Our Legal Team
           </h2>
-          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#000000' }}>
             Meet our experienced team of legal professionals dedicated to providing 
             exceptional legal services and achieving the best outcomes for our clients.
           </p>
@@ -87,13 +87,13 @@ const Team = () => {
 
               {/* Content */}
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-coffee-brown mb-2">
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#6F4E37' }}>
                   {member.name}
                 </h3>
                 <p className="text-blue-600 font-semibold text-lg mb-3">
                   {member.role}
                 </p>
-                <p className="text-coffee-brown-light mb-6">
+                <p className="mb-6" style={{ color: '#000000' }}>
                   {member.specialization}
                 </p>
 
