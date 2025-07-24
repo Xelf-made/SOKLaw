@@ -105,18 +105,7 @@ const TrackRecord = () => {
             );
           })}
         </div>
-
-        {/* Additional Content */}
-        <div className="mt-20 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-12 text-center text-white animate-fade-in-up">
-          <h3 className="text-3xl font-bold mb-4">
-            Ready to Add Your Success Story?
-          </h3>
-          <p className="text-xl mb-8 opacity-90">
-            Join hundreds of satisfied clients who have achieved their legal objectives with us
-          </p>
-          <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
-            Start Your Case Today
-          </button>
+        
         </div>
       </div>
     </section>
