@@ -49,7 +49,7 @@ const About = () => {
           {/* Image */}
           <div className="animate-on-scroll opacity-0 relative">
             <img
-              src="https://i.postimg.cc/Cxy9hTzr/7X2A2913.jpg"
+              src="https://i.postimg.cc/Hs0FkvXp/7-X2-A2923-1.jpg"
               className="rounded-2xl shadow-2xl w-full h-96 object-cover transform hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-xl shadow-lg animate-pulse">
