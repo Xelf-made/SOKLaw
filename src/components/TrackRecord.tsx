@@ -107,7 +107,6 @@ const TrackRecord = () => {
         </div>
         
         </div>
-      </div>
     </section>
   );
 };
