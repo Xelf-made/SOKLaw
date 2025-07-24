@@ -6,7 +6,7 @@ const Hero = () => {
 
   const slides = [
     {
-      image: 'https://images.pexels.com/photos/5668772/pexels-photo-5668772.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'https://drive.google.com/file/d/12x9UhAvM4v1QsvmJAGNXPvt8l3U2SIjn/view?usp=sharing',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
       description: 'Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya\'s dynamic market.'
