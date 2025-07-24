@@ -38,7 +38,7 @@ const Navbar = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* https://i.postimg.cc/2jdMGX6P/Screenshot-2025-07-24-at-6-33-55-PM.png*/}
           <div className="flex items-center space-x-2">
             <Scale className={`h-8 w-8 ${isScrolled ? 'text-blue-600' : 'text-white'}`} />
             <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
