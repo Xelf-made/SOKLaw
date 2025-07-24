@@ -6,7 +6,7 @@ const Hero = () => {
 
   const slides = [
     {
-      image: 'https://drive.google.com/file/d/12x9UhAvM4v1QsvmJAGNXPvt8l3U2SIjn/view?usp=sharing',
+      image: 'https://soklaw.co.ke/images/soklaw-team.png',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
       description: 'Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya\'s dynamic market.'
