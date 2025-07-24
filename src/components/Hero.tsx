@@ -18,7 +18,7 @@ const Hero = () => {
       description: 'Leading constitutional law practice with landmark victories protecting citizens\' rights and challenging unconstitutional legislation.'
     },
     {
-      image: 'https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'https://i.postimg.cc/63NdqcdX/7X2A2982.jpg',
       title: 'Real Estate Law Specialists',
       subtitle: 'Securing your property investments',
       description: 'Comprehensive real estate legal services from residential transactions to large-scale development projects across Kenya.'
