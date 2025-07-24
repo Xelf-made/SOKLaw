@@ -12,7 +12,7 @@ const Hero = () => {
       description: 'Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya\'s dynamic market.'
     },
     {
-      image: 'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+      image: 'https://i.postimg.cc/Hs0FkvXp/7-X2-A2923-1.jpg',
       title: 'Constitutional Law Experts',
       subtitle: 'Protecting your fundamental rights',
       description: 'Leading constitutional law practice with landmark victories protecting citizens\' rights and challenging unconstitutional legislation.'
