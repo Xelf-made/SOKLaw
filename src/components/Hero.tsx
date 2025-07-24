@@ -74,7 +74,7 @@ const Hero = () => {
           <img
             src={slide.image}
             alt={slide.title}
-            className="w-full h-full object-cover"
+            className="hero-img"
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>

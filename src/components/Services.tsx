@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { servicesData } from '../data/servicesData';
+import { ArrowRight } from 'lucide-react';
 
 const Services = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -33,10 +34,10 @@ const Services = () => {
     <section ref={sectionRef} id="services" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
             Our Legal Services
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
             We provide comprehensive legal solutions across various practice areas, 
             ensuring expert representation for all your legal needs.
           </p>
@@ -54,12 +55,19 @@ const Services = () => {
                 <div className="mb-6">
                   <IconComponent className={`h-12 w-12 ${service.iconColor} group-hover:scale-110 transition-transform duration-300`} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-bold text-coffee-brown mb-4">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-coffee-brown-light leading-relaxed mb-4">
                   {service.description}
                 </p>
+                <Link
+                  to={`/services/${service.id}`}
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors group/link"
+                >
+                  <span>Learn More</span>
+                  <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                </Link>
               </div>
             );
           })}

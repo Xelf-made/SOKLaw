@@ -62,10 +62,10 @@ const News = () => {
     <section ref={sectionRef} id="news" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
             Latest News & Case Wins
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
             Stay updated with our recent legal victories, industry insights, and important legal developments
           </p>
           <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
@@ -82,7 +82,7 @@ const News = () => {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="news-img group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4">
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${item.categoryColor}`}>
@@ -93,10 +93,10 @@ const News = () => {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                <h3 className="text-xl font-bold text-coffee-brown mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                   {item.title}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
+                <p className="text-coffee-brown-light mb-4 line-clamp-3">
                   {item.excerpt}
                 </p>
 

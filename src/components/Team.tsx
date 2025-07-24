@@ -59,10 +59,10 @@ const Team = () => {
     <section ref={sectionRef} id="team" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
             Our Legal Team
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
             Meet our experienced team of legal professionals dedicated to providing 
             exceptional legal services and achieving the best outcomes for our clients.
           </p>
@@ -80,20 +80,20 @@ const Team = () => {
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="team-img group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
               {/* Content */}
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-coffee-brown mb-2">
                   {member.name}
                 </h3>
                 <p className="text-blue-600 font-semibold text-lg mb-3">
                   {member.role}
                 </p>
-                <p className="text-gray-600 mb-6">
+                <p className="text-coffee-brown-light mb-6">
                   {member.specialization}
                 </p>
 

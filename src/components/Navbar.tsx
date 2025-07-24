@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Scale } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,10 +40,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo*/}
           <div className="flex items-center space-x-2">
-            <Scale className={`h-8 w-8 ${isScrolled ? 'text-blue-600' : 'text-white'}`} />
-            <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
-               SOKLAW ADVOCATES
-            </span>
+            <img 
+              src="https://i.postimg.cc/2jdMGX6P/Screenshot-2025-07-24-at-6-33-55-PM.png" 
+              alt="SOK Law Associates Logo" 
+              className="h-10 w-auto md:h-12 object-contain"
+            />
           </div>
 
           {/* Desktop Navigation */}

@@ -19,6 +19,7 @@ export const servicesData = [
     color: 'bg-blue-50 border-blue-200',
     iconColor: 'text-blue-600',
     overview: 'Our corporate law practice provides comprehensive legal services to businesses across Kenya and East Africa. We assist companies in navigating complex regulatory environments, structuring transactions, and ensuring compliance with local and international laws. Our team has extensive experience in corporate governance, securities law, and commercial transactions.',
+    headerImage: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Company Formation and Registration',
       'Corporate Governance and Compliance',
@@ -79,6 +80,7 @@ export const servicesData = [
     color: 'bg-green-50 border-green-200',
     iconColor: 'text-green-600',
     overview: 'Our commercial litigation team represents businesses in complex disputes across various industries. We combine aggressive advocacy with strategic thinking to achieve favorable outcomes for our clients. Whether through negotiation, mediation, arbitration, or trial, we are committed to protecting your business interests.',
+    headerImage: 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Contract Disputes',
       'Business Partnership Disputes',
@@ -139,6 +141,7 @@ export const servicesData = [
     color: 'bg-purple-50 border-purple-200',
     iconColor: 'text-purple-600',
     overview: 'Our real estate practice covers all aspects of property law in Kenya. We assist clients with residential and commercial property transactions, land disputes, development projects, and regulatory compliance. Our team has extensive experience in Kenyan land law and the complexities of property ownership and transfer.',
+    headerImage: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Property Purchase and Sale',
       'Land Title Verification',
@@ -199,6 +202,7 @@ export const servicesData = [
     color: 'bg-orange-50 border-orange-200',
     iconColor: 'text-orange-600',
     overview: 'Our employment law practice serves both employers and employees in navigating the complex landscape of Kenyan labor law. We provide strategic advice on employment matters, help resolve workplace disputes, and ensure compliance with evolving employment regulations.',
+    headerImage: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Employment Contract Drafting',
       'Workplace Policy Development',
@@ -259,6 +263,7 @@ export const servicesData = [
     color: 'bg-pink-50 border-pink-200',
     iconColor: 'text-pink-600',
     overview: 'Our family law practice provides compassionate and professional legal services for families going through difficult times. We handle all aspects of family law with sensitivity and discretion, always prioritizing the best interests of children and families.',
+    headerImage: 'https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Divorce and Separation',
       'Child Custody and Support',
@@ -319,6 +324,7 @@ export const servicesData = [
     color: 'bg-red-50 border-red-200',
     iconColor: 'text-red-600',
     overview: 'Our criminal defense team provides aggressive representation for individuals facing criminal charges. We protect your constitutional rights and work tirelessly to achieve the best possible outcome in your case. Our experienced trial lawyers handle cases ranging from minor offenses to serious felonies.',
+    headerImage: 'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Felony Defense',
       'Misdemeanor Defense',
@@ -379,6 +385,7 @@ export const servicesData = [
     color: 'bg-indigo-50 border-indigo-200',
     iconColor: 'text-indigo-600',
     overview: 'Our contract law practice helps businesses and individuals create, review, and enforce agreements that protect their interests. We draft clear, enforceable contracts and provide strategic advice on contract negotiations and disputes.',
+    headerImage: 'https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Contract Drafting',
       'Contract Review and Analysis',
@@ -439,6 +446,7 @@ export const servicesData = [
     color: 'bg-teal-50 border-teal-200',
     iconColor: 'text-teal-600',
     overview: 'Our constitutional law practice focuses on protecting fundamental rights and challenging unconstitutional government actions. We handle complex constitutional matters, human rights cases, and public interest litigation that shapes legal precedent in Kenya.',
+    headerImage: 'https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
     keyServices: [
       'Constitutional Challenges',
       'Human Rights Litigation',
