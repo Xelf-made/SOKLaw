@@ -41,7 +41,7 @@ const Navbar = () => {
           {/* Logo*/}
           <div className="flex items-center space-x-2">
             <img 
-              src="https://i.postimg.cc/2jdMGX6P/Screenshot-2025-07-24-at-6-33-55-PM.png" 
+              src="https://soklaw.co.ke/images/logo.png" 
               alt="SOK Law Associates Logo" 
               className="h-10 w-auto md:h-12 object-contain"
             />
