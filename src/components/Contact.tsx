@@ -58,12 +58,6 @@ const Contact = () => {
       phone: '+254 700 123 456',
       email: 'nairobi@soklaw.co.ke'
     },
-    {
-      city: 'Kisumu Office',
-      address: 'Oginga Odinga Street\nKisumu Central Business District',
-      phone: '+254 700 123 457',
-      email: 'kisumu@soklaw.co.ke'
-    }
   ];
 
   const legalServices = [
