@@ -121,23 +121,7 @@ const Footer = () => {
                   </div>
                 </div>
               </div>
-              
-              <div>
-                <h4 className="font-medium text-blue-400 mb-2">Kisumu Office</h4>
-                <div className="space-y-2 text-sm text-gray-300">
-                  <div className="flex items-start space-x-2">
-                    <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
-                    <span>Oginga Odinga Street<br />Kisumu CBD</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 flex-shrink-0" />
-                    <a href="tel:+254700123457" className="hover:text-blue-400 transition-colors">
-                      +254 700 123 457
-                    </a>
-                  </div>
-                </div>
-              </div>
-
+                   
               <div className="flex items-center space-x-2 text-sm text-gray-300">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <a href="mailto:info@soklaw.co.ke" className="hover:text-blue-400 transition-colors">
