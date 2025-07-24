@@ -33,7 +33,7 @@ const Team = () => {
       name: 'Sospeter Opondo',
       role: 'Senior Partner',
       specialization: 'Corporate Law & Commercial Litigation',
-      image: 'https://i.postimg.cc/sDZDHrkT/Whats-App-Image-2025-07-20-at-03-11-55.jpg',
+      image: 'https://i.postimg.cc/v8KZvBN1/Whats-App-Image-2025-07-20-at-03-11-55.jpg',
       email: 'sopondo@soklaw.co.ke',
       phone: '+254 700 123 456'
     },
