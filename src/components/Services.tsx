@@ -1,47 +1,93 @@
-import { ArrowRight } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { servicesData } from '../data/servicesData';
+import { ArrowRight } from 'lucide-react';
 
-interface ServiceCardProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-  icon: React.ElementType;
-  id: string;
-}
+const Services = () => {
+  const sectionRef = useRef<HTMLElement>(null);
 
-const ServiceCard = ({ title, description, imageUrl, icon: IconComponent, id }: ServiceCardProps) => {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cards = entry.target.querySelectorAll('.service-card');
+            cards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('animate-fade-in-up');
+              }, index * 100);
+            });
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative rounded-3xl overflow-hidden shadow-xl border border-white/10">
-      {/* Blurred Background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center backdrop-blur-sm"
-        style={{
-          backgroundImage: `url(${imageUrl})`,
-          filter: 'blur(4px)',
-        }}
-      ></div>
-
-      {/* Optional subtle dark overlay */}
-      <div className="absolute inset-0 bg-black/20" />
-
-      {/* Content */}
-      <div className="relative z-10 p-8 sm:p-10 lg:p-12 text-left text-white">
-        <div className="mb-6">
-          <IconComponent className="h-12 w-12 text-blue-400" />
+    <section ref={sectionRef} id="services" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
+            Our Legal Services
+          </h2>
+          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
+            We provide comprehensive legal solutions across various practice areas, 
+            ensuring expert representation for all your legal needs.
+          </p>
+          <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
         </div>
-        <h3 className="text-xl font-bold mb-4 text-white">{title}</h3>
-        <p className="leading-relaxed mb-4 text-white">{description}</p>
-        <Link
-          to={`/services/${id}`}
-          className="inline-flex items-center group/link font-semibold text-white hover:text-blue-300"
-          aria-label={`Learn more about ${title}`}
-        >
-          <span>Learn More</span>
-          <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-        </Link>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {servicesData.map((service, index) => {
+            const IconComponent = service.icon;
+            return (
+              <div
+                key={index}
+                className="service-card service-card-enhanced service-card-bg p-8 rounded-2xl border-2 group opacity-0"
+                style={{
+                  backgroundImage: `url(${service.headerImage})`
+                }}
+              >
+                <div className="mb-6">
+                  <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
+                </div>
+                <h3 className="service-title text-xl mb-4">
+                  {service.title}
+                </h3>
+                <p className="service-description leading-relaxed mb-4">
+                  {service.description}
+                </p>
+                <Link
+                  to={`/services/${service.id}`}
+                  className="service-link inline-flex items-center group/link"
+                  aria-label={`Learn more about ${service.title}`}
+                >
+                  <span>Learn More</span>
+                  <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="text-center mt-16">
+          <Link
+            to="/services"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
+          >
+            View All Services
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default ServiceCard;
+export default Services;
