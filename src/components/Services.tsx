@@ -52,14 +52,16 @@ const Services = () => {
                 key={index}
                 className="relative service-card overflow-hidden p-8 rounded-2xl border group opacity-0 shadow-lg"
               >
-                {/* Background image */}
+                {/* Background Image */}
                 <div
                   className="absolute inset-0 bg-cover bg-center scale-110"
                   style={{ backgroundImage: `url(${service.headerImage})` }}
                 />
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
-                {/* Card content */}
+
+                {/* Blur + Tint Overlay */}
+                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+
+                {/* Card Content */}
                 <div className="relative z-10 text-white">
                   <div className="mb-6">
                     <IconComponent className={`h-12 w-12 ${service.iconColor}`} />
