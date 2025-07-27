@@ -50,27 +50,30 @@ const Services = () => {
             return (
               <div
                 key={index}
-                className="service-card service-card-enhanced p-8 rounded-2xl border-2 group opacity-0 text-white relative"
-                style={{
-                  backgroundImage: `url(${service.headerImage})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center'
-                }}
+                className="service-card relative overflow-hidden rounded-2xl border-2 group opacity-0 text-white p-8"
               >
-                <div className="backdrop-blur-md bg-white/30 p-4 rounded-xl text-black">
+                {/* Blurred Background Layer */}
+                <div
+                  className="absolute inset-0 z-0"
+                  style={{
+                    backgroundImage: `url(${service.headerImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(4px)',
+                    transform: 'scale(1.05)',
+                  }}
+                ></div>
+
+                {/* Foreground Content */}
+                <div className="relative z-10">
                   <div className="mb-6">
                     <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
                   </div>
-                  <h3 className="service-title text-xl font-bold mb-4">
-                    {service.title}
-                  </h3>
-                  <p className="service-description leading-relaxed mb-4">
-                    {service.description}
-                  </p>
+                  <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+                  <p className="leading-relaxed mb-4">{service.description}</p>
                   <Link
                     to={`/services/${service.id}`}
-                    className="service-link inline-flex items-center group/link font-semibold"
+                    className="inline-flex items-center group/link font-semibold text-white"
                     aria-label={`Learn more about ${service.title}`}
                   >
                     <span>Learn More</span>
