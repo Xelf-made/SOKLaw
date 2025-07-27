@@ -33,30 +33,31 @@ const ServiceDetailPage = () => {
       <Navbar />
       <div className="pt-20 min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
-          {/* Header Image */}
-          <div className="relative h-64 mb-8 overflow-hidden rounded-lg mx-4 sm:mx-6 lg:mx-8">
-            <img
-              src={service.headerImage}
-              alt={service.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/30"></div>
-          </div>
+        <div 
+          className="relative py-20 text-white min-h-[500px] flex items-center"
+          style={{
+            backgroundImage: `url(${service.headerImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Clear overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
           
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link 
               to="/services" 
-              className="inline-flex items-center text-blue-200 hover:text-white mb-8 transition-colors"
+              className="inline-flex items-center text-white hover:text-blue-200 mb-8 transition-colors font-medium"
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
               Back to Services
             </Link>
             <div className="flex items-center mb-6">
-              <IconComponent className="h-16 w-16 text-blue-200 mr-6" />
-              <h1 className="text-4xl md:text-5xl font-bold">{service.title}</h1>
+              <IconComponent className="h-16 w-16 text-white mr-6" />
+              <h1 className="text-4xl md:text-5xl font-bold text-white">{service.title}</h1>
             </div>
-            <p className="text-xl text-blue-100 max-w-3xl">
+            <p className="text-xl text-white max-w-3xl font-medium">
               {service.detailedDescription}
             </p>
           </div>
@@ -69,20 +70,20 @@ const ServiceDetailPage = () => {
             <div className="lg:col-span-2 space-y-12">
               {/* Overview */}
               <div>
-                <h2 className="text-3xl font-bold text-coffee-brown mb-6">Overview</h2>
-                <p className="text-lg text-coffee-brown-light leading-relaxed mb-6">
+                <h2 className="text-3xl font-bold mb-6" style={{ color: '#6F4E37' }}>Overview</h2>
+                <p className="text-lg leading-relaxed mb-6" style={{ color: '#000000' }}>
                   {service.overview}
                 </p>
               </div>
 
               {/* Key Services */}
               <div>
-                <h2 className="text-3xl font-bold text-coffee-brown mb-6">Key Services</h2>
+                <h2 className="text-3xl font-bold mb-6" style={{ color: '#6F4E37' }}>Key Services</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {service.keyServices.map((keyService, index) => (
                     <div key={index} className="flex items-start space-x-3">
                       <CheckCircle className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
-                      <span className="text-coffee-brown-light">{keyService}</span>
+                      <span style={{ color: '#000000' }}>{keyService}</span>
                     </div>
                   ))}
                 </div>
@@ -90,12 +91,12 @@ const ServiceDetailPage = () => {
 
               {/* Why Choose Us */}
               <div>
-                <h2 className="text-3xl font-bold text-coffee-brown mb-6">Why Choose SOK Law Associates</h2>
+                <h2 className="text-3xl font-bold mb-6" style={{ color: '#6F4E37' }}>Why Choose SOK Law Associates</h2>
                 <div className="space-y-4">
                   {service.whyChooseUs.map((reason, index) => (
                     <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-xl font-semibold text-coffee-brown mb-2">{reason.title}</h3>
-                      <p className="text-coffee-brown-light">{reason.description}</p>
+                      <h3 className="text-xl font-semibold mb-2" style={{ color: '#6F4E37' }}>{reason.title}</h3>
+                      <p style={{ color: '#000000' }}>{reason.description}</p>
                     </div>
                   ))}
                 </div>
@@ -103,7 +104,7 @@ const ServiceDetailPage = () => {
 
               {/* Process */}
               <div>
-                <h2 className="text-3xl font-bold text-coffee-brown mb-6">Our Process</h2>
+                <h2 className="text-3xl font-bold mb-6" style={{ color: '#6F4E37' }}>Our Process</h2>
                 <div className="space-y-6">
                   {service.process.map((step, index) => (
                     <div key={index} className="flex items-start space-x-4">
@@ -111,8 +112,8 @@ const ServiceDetailPage = () => {
                         {index + 1}
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-coffee-brown mb-2">{step.title}</h3>
-                        <p className="text-coffee-brown-light">{step.description}</p>
+                        <h3 className="text-lg font-semibold mb-2" style={{ color: '#6F4E37' }}>{step.title}</h3>
+                        <p style={{ color: '#000000' }}>{step.description}</p>
                       </div>
                     </div>
                   ))}
@@ -124,8 +125,8 @@ const ServiceDetailPage = () => {
             <div className="space-y-8">
               {/* Contact Card */}
               <div className="bg-white p-8 rounded-2xl shadow-lg">
-                <h3 className="text-2xl font-bold text-coffee-brown mb-6">Need Legal Assistance?</h3>
-                <p className="text-coffee-brown-light mb-6">
+                <h3 className="text-2xl font-bold mb-6" style={{ color: '#6F4E37' }}>Need Legal Assistance?</h3>
+                <p className="mb-6" style={{ color: '#000000' }}>
                   Contact our {service.title.toLowerCase()} specialists for a consultation.
                 </p>
                 <div className="space-y-4">
@@ -134,14 +135,14 @@ const ServiceDetailPage = () => {
                     className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
                   >
                     <Phone className="h-5 w-5 text-blue-600" />
-                    <span className="text-coffee-brown">+254 700 123 456</span>
+                    <span style={{ color: '#000000' }}>+254 700 123 456</span>
                   </a>
                   <a
                     href="mailto:info@soklaw.co.ke"
                     className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
                   >
                     <Mail className="h-5 w-5 text-blue-600" />
-                    <span className="text-coffee-brown">info@soklaw.co.ke</span>
+                    <span style={{ color: '#000000' }}>info@soklaw.co.ke</span>
                   </a>
                 </div>
                 <button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -151,7 +152,7 @@ const ServiceDetailPage = () => {
 
               {/* Related Services */}
               <div className="bg-white p-8 rounded-2xl shadow-lg">
-                <h3 className="text-xl font-bold text-coffee-brown mb-6">Related Services</h3>
+                <h3 className="text-xl font-bold mb-6" style={{ color: '#6F4E37' }}>Related Services</h3>
                 <div className="space-y-3">
                   {servicesData
                     .filter(s => s.id !== service.id)
