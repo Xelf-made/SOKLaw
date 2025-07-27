@@ -50,28 +50,33 @@ const Services = () => {
             return (
               <div
                 key={index}
-                className="service-card service-card-enhanced service-card-bg p-8 rounded-2xl border-2 group opacity-0"
+                className="service-card service-card-enhanced p-8 rounded-2xl border-2 group opacity-0 text-white relative"
                 style={{
-                  backgroundImage: `url(${service.headerImage})`
+                  backgroundImage: `url(${service.headerImage})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center'
                 }}
               >
-                <div className="mb-6">
-                  <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
+                <div className="bg-white bg-opacity-80 p-4 rounded-lg text-black">
+                  <div className="mb-6">
+                    <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
+                  </div>
+                  <h3 className="service-title text-xl mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="service-description leading-relaxed mb-4">
+                    {service.description}
+                  </p>
+                  <Link
+                    to={`/services/${service.id}`}
+                    className="service-link inline-flex items-center group/link"
+                    aria-label={`Learn more about ${service.title}`}
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
                 </div>
-                <h3 className="service-title text-xl mb-4">
-                  {service.title}
-                </h3>
-                <p className="service-description leading-relaxed mb-4">
-                  {service.description}
-                </p>
-                <Link
-                  to={`/services/${service.id}`}
-                  className="service-link inline-flex items-center group/link"
-                  aria-label={`Learn more about ${service.title}`}
-                >
-                  <span>Learn More</span>
-                  <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                </Link>
               </div>
             );
           })}
