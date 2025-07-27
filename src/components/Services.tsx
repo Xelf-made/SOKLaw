@@ -54,15 +54,13 @@ const Services = () => {
               >
                 {/* Background image */}
                 <div
-                  className="absolute inset-0 bg-cover bg-center"
+                  className="absolute inset-0 bg-cover bg-center scale-110"
                   style={{ backgroundImage: `url(${service.headerImage})` }}
                 />
-
-                {/* Gradient & blur overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/70 to-transparent backdrop-blur-sm" />
-
-                {/* Content */}
-                <div className="relative z-10 text-gray-900">
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+                {/* Card content */}
+                <div className="relative z-10 text-white">
                   <div className="mb-6">
                     <IconComponent className={`h-12 w-12 ${service.iconColor}`} />
                   </div>
@@ -70,7 +68,7 @@ const Services = () => {
                   <p className="leading-relaxed mb-4">{service.description}</p>
                   <Link
                     to={`/services/${service.id}`}
-                    className="inline-flex items-center group/link font-semibold text-black hover:text-blue-600"
+                    className="inline-flex items-center group/link font-semibold hover:text-blue-200"
                     aria-label={`Learn more about ${service.title}`}
                   >
                     <span>Learn More</span>
