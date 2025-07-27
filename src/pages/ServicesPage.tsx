@@ -30,18 +30,19 @@ const ServicesPage = () => {
                   key={service.id}
                   to={`/services/${service.id}`}
                   className="group"
+                  aria-label={`Learn more about ${service.title}`}
                 >
-                  <div className={`p-8 rounded-2xl border-2 ${service.color} hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full`}>
+                  <div className={`service-card-enhanced p-8 rounded-2xl border-2 ${service.color} h-full`}>
                     <div className="mb-6">
-                      <IconComponent className={`h-12 w-12 ${service.iconColor} group-hover:scale-110 transition-transform duration-300`} />
+                      <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
                     </div>
-                    <h3 className="text-xl font-bold text-coffee-brown mb-4">
+                    <h3 className="service-title text-xl mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-coffee-brown-light leading-relaxed mb-4">
+                    <p className="service-description leading-relaxed mb-4">
                       {service.description}
                     </p>
-                    <div className="flex items-center text-blue-600 font-medium group-hover:text-blue-700">
+                    <div className="service-link flex items-center">
                       <span>Learn More</span>
                       <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>

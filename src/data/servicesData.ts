@@ -19,7 +19,7 @@ export const servicesData = [
     color: 'bg-blue-50 border-blue-200',
     iconColor: 'text-blue-600',
     overview: 'Our corporate law practice provides comprehensive legal services to businesses across Kenya and East Africa. We assist companies in navigating complex regulatory environments, structuring transactions, and ensuring compliance with local and international laws. Our team has extensive experience in corporate governance, securities law, and commercial transactions.',
-    headerImage: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop',
+    headerImage: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop&crop=center',
     keyServices: [
       'Company Formation and Registration',
       'Corporate Governance and Compliance',
