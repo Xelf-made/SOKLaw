@@ -58,23 +58,25 @@ const Services = () => {
                   backgroundPosition: 'center'
                 }}
               >
-                <div className="mb-6">
-                  <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
+                <div className="backdrop-blur-md bg-white/30 p-4 rounded-xl text-black">
+                  <div className="mb-6">
+                    <IconComponent className={`service-icon h-12 w-12 ${service.iconColor}`} />
+                  </div>
+                  <h3 className="service-title text-xl font-bold mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="service-description leading-relaxed mb-4">
+                    {service.description}
+                  </p>
+                  <Link
+                    to={`/services/${service.id}`}
+                    className="service-link inline-flex items-center group/link font-semibold"
+                    aria-label={`Learn more about ${service.title}`}
+                  >
+                    <span>Learn More</span>
+                    <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
                 </div>
-                <h3 className="service-title text-xl font-bold mb-4">
-                  {service.title}
-                </h3>
-                <p className="service-description leading-relaxed mb-4">
-                  {service.description}
-                </p>
-                <Link
-                  to={`/services/${service.id}`}
-                  className="service-link inline-flex items-center group/link text-white font-semibold"
-                  aria-label={`Learn more about ${service.title}`}
-                >
-                  <span>Learn More</span>
-                  <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                </Link>
               </div>
             );
           })}
