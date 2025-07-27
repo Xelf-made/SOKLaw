@@ -54,8 +54,8 @@ const Navbar = () => {
               <img
                 src={
                   isScrolled
-                    ? '/logo-dark.png' // replace with dark logo URL
-                    : '/logo-light.png' // replace with light logo URL
+                    ? 'https://soklaw.co.ke/images/logo.png' // replace with dark logo URL
+                    : 'https://soklaw.co.ke/images/logo.png' // replace with light logo URL
                 }
                 alt="SOK Law Associates Logo"
                 className="h-12 w-auto object-contain transition-all duration-300"
