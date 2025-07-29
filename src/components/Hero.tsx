@@ -35,26 +35,42 @@ const Hero = () => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 4000);
-
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const scrollTo = (selector: string) => {
-    const element = document.querySelector(selector);
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const scrollToServices = () => {
+    const element = document.querySelector('#services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   const handleCarouselClick = (side: 'left' | 'right') => {
-    side === 'left' ? prevSlide() : nextSlide();
+    if (side === 'left') {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
   };
 
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden carousel-container">
+      {/* Background Images */}
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -62,18 +78,25 @@ const Hero = () => {
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <img src={slide.image} alt={slide.title} className="hero-img" />
-          <div className="absolute inset-0 bg-black/70" />
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className="hero-img"
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
       ))}
 
+      {/* Invisible Click Areas */}
       <div
         className="carousel-click-area carousel-click-left"
         onClick={() => handleCarouselClick('left')}
         aria-label="Previous slide"
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleCarouselClick('left')}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('left');
+        }}
       />
       <div
         className="carousel-click-area carousel-click-right"
@@ -81,40 +104,51 @@ const Hero = () => {
         aria-label="Next slide"
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleCarouselClick('right')}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('right');
+        }}
       />
 
-      <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">Welcome</h1>
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-blue-200 mb-4">We are Soklaw</h2>
-        <div className="min-h-[120px]">
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-2">
-            {slides[currentSlide].title}
-          </h3>
-          <p className="text-lg md:text-xl text-gray-200 mb-6 max-w-3xl mx-auto leading-relaxed">
-            {slides[currentSlide].description}
-          </p>
+      {/* Content */}
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="animate-fade-in-up">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            Welcome
+          </h1>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
+            We are Soklaw
+          </h2>
+          <div className="min-h-[120px] flex flex-col justify-center">
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-4 transition-all duration-500">
+              {slides[currentSlide].title}
+            </h3>
+            <p className="text-lg md:text-xl text-white mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500">
+              {slides[currentSlide].description}
+            </p>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
-            onClick={() => scrollTo('#contact')}
-            className="group btn-secondary flex items-center space-x-2 hover:scale-105 transition transform shadow-md"
+            onClick={scrollToContact}
+            className="group btn-secondary flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
-            <Phone className="h-5 w-5 text-white" />
-            <span className="text-white">Get Legal Consultation</span>
-            <ArrowRight className="h-5 w-5 text-white group-hover:translate-x-1 transition-transform" />
+            <Phone className="h-5 w-5" />
+            <span>Get Legal Consultation</span>
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
           <button
-            onClick={() => scrollTo('#services')}
-            className="group btn-outline flex items-center space-x-2 hover:scale-105 transition transform shadow-md"
+            onClick={scrollToServices}
+            className="group btn-outline flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
-            <span className="text-white">Our Services</span>
-            <ArrowRight className="h-5 w-5 text-white group-hover:translate-x-1 transition-transform" />
+            <span>Our Services</span>
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
 
+      {/* Slide Indicators */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
         {slides.map((_, index) => (
           <button
@@ -128,6 +162,7 @@ const Hero = () => {
         ))}
       </div>
 
+      {/* Scroll Indicator */}
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
