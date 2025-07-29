@@ -35,52 +35,67 @@ const Hero = () => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 4000);
+
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const scrollTo = (id: string) => {
-    const el = document.querySelector(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (selector: string) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  const handleCarouselClick = (side: 'left' | 'right') => {
+    side === 'left' ? prevSlide() : nextSlide();
   };
 
   return (
-    <section id="home" className="relative h-screen overflow-hidden flex items-center justify-center">
-      {/* Background Slides */}
+    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden carousel-container">
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
         >
-          <img
-            src={slide.image}
-            alt={slide.title}
-            loading="lazy"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <img src={slide.image} alt={slide.title} className="hero-img" />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
       ))}
 
-      {/* Navigation Zones */}
       <div
-        className="absolute left-0 top-0 h-full w-1/3 z-20 cursor-pointer"
-        onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+        className="carousel-click-area carousel-click-left"
+        onClick={() => handleCarouselClick('left')}
+        aria-label="Previous slide"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleCarouselClick('left')}
       />
       <div
-        className="absolute right-0 top-0 h-full w-1/3 z-20 cursor-pointer"
-        onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+        className="carousel-click-area carousel-click-right"
+        onClick={() => handleCarouselClick('right')}
+        aria-label="Next slide"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleCarouselClick('right')}
       />
 
-      {/* Content */}
       <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">Welcome</h1>
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-blue-300 mb-4">We are Soklaw</h2>
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-blue-200 mb-4">We are Soklaw</h2>
         <div className="min-h-[120px]">
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-2">{slides[currentSlide].title}</h3>
-          <p className="text-lg md:text-xl text-gray-200 mb-6 max-w-3xl mx-auto leading-relaxed">{slides[currentSlide].description}</p>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-2">
+            {slides[currentSlide].title}
+          </h3>
+          <p className="text-lg md:text-xl text-gray-200 mb-6 max-w-3xl mx-auto leading-relaxed">
+            {slides[currentSlide].description}
+          </p>
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => scrollTo('#contact')}
@@ -100,21 +115,21 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-2">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full ${index === currentSlide ? 'bg-white' : 'bg-white/50'} transition-all`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide ? 'bg-white' : 'bg-white/50'
+            }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center items-start">
+      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
