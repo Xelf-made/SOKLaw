@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Phone } from 'lucide-react';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -73,24 +73,19 @@ const Hero = () => {
         </div>
       ))}
 
-      {/* Slide Navigation Buttons */}
+      {/* Invisible Slide Controls */}
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full"
+        className="absolute left-0 top-0 w-1/2 h-full z-20 opacity-0"
         aria-label="Previous Slide"
-      >
-        <ChevronLeft className="h-6 w-6" />
-      </button>
-
+      />
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full"
+        className="absolute right-0 top-0 w-1/2 h-full z-20 opacity-0"
         aria-label="Next Slide"
-      >
-        <ChevronRight className="h-6 w-6" />
-      </button>
+      />
 
-      {/* Content */}
+      {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">Welcome</h1>
