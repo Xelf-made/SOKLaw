@@ -34,26 +34,20 @@ const Hero = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Faster auto-scroll for better user experience
-
+    }, 4000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
   const scrollToContact = () => {
     const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToServices = () => {
     const element = document.querySelector('#services');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Manual navigation functions for click areas
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
@@ -62,17 +56,13 @@ const Hero = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  // Handle click on carousel areas
   const handleCarouselClick = (side: 'left' | 'right') => {
-    if (side === 'left') {
-      prevSlide();
-    } else {
-      nextSlide();
-    }
+    if (side === 'left') prevSlide();
+    else nextSlide();
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden carousel-container">
+    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div
@@ -84,13 +74,14 @@ const Hero = () => {
           <img
             src={slide.image}
             alt={slide.title}
-            className="hero-img"
+            className="hero-img w-full h-full object-cover"
+            loading="lazy"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
       ))}
 
-      {/* Invisible Click Areas for Manual Navigation */}
+      {/* Navigation Areas */}
       <div
         className="carousel-click-area carousel-click-left"
         onClick={() => handleCarouselClick('left')}
@@ -98,9 +89,7 @@ const Hero = () => {
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            handleCarouselClick('left');
-          }
+          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('left');
         }}
       />
       <div
@@ -110,26 +99,24 @@ const Hero = () => {
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            handleCarouselClick('right');
-          }
+          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('right');
         }}
       />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6" style={{ color: 'white !important' }}>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
             Welcome
           </h1>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-blue-400 mb-4" style={{ color: '#60a5fa !important' }}>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-blue-300 mb-4">
             We are Soklaw
           </h2>
           <div className="min-h-[120px] flex flex-col justify-center">
-            <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-4 transition-all duration-500" style={{ color: 'white !important' }}>
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-4 transition-all duration-500">
               {slides[currentSlide].title}
             </h3>
-            <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500" style={{ color: '#e5e7eb' }}>
+            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500">
               {slides[currentSlide].description}
             </p>
           </div>
