@@ -54,8 +54,7 @@ const About = () => {
               className="about-img shadow-2xl transform hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute -bottom-6 -right-6 bg-gray-800 text-white p-6 rounded-xl shadow-lg animate-pulse">
-              <div className="text-center">
-                
+              
               </div>
             </div>
           </div>
