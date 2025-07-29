@@ -12,14 +12,14 @@ const ServicesPage = () => {
       <div className="pt-20 min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
               Our Legal Services
             </h1>
-            <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto">
+            <p className="text-xl max-w-3xl mx-auto" style={{ color: '#333333' }}>
               Comprehensive legal solutions across various practice areas, 
               ensuring expert representation for all your legal needs.
             </p>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mt-6"></div>
+            <div className="w-24 h-1 bg-gray-800 mx-auto mt-6"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -42,7 +42,7 @@ const ServicesPage = () => {
                     <p className="service-description leading-relaxed mb-4">
                       {service.description}
                     </p>
-                    <div className="service-link flex items-center">
+                    <div className="flex items-center font-semibold transition-colors" style={{ color: '#1E3A8A' }}>
                       <span>Learn More</span>
                       <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>

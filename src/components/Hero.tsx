@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Phone } from 'lucide-react';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
-      image: 'https://i.postimg.cc/Cxy9hTzr/7X2A2913.jpg',
+      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
       description: 'Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya\'s dynamic market.'
     },
     {
-      image: 'https://i.postimg.cc/Hs0FkvXp/7-X2-A2923-1.jpg',
+      image: 'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Constitutional Law Experts',
       subtitle: 'Protecting your fundamental rights',
       description: 'Leading constitutional law practice with landmark victories protecting citizens\' rights and challenging unconstitutional legislation.'
     },
     {
-      image: 'https://i.postimg.cc/63NdqcdX/7X2A2982.jpg',
+      image: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Real Estate Law Specialists',
       subtitle: 'Securing your property investments',
       description: 'Comprehensive real estate legal services from residential transactions to large-scale development projects across Kenya.'
@@ -34,7 +34,7 @@ const Hero = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 4000); // Faster auto-scroll for better user experience
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -53,6 +53,7 @@ const Hero = () => {
     }
   };
 
+  // Manual navigation functions for click areas
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
@@ -61,8 +62,17 @@ const Hero = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  // Handle click on carousel areas
+  const handleCarouselClick = (side: 'left' | 'right') => {
+    if (side === 'left') {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
+  };
+
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden carousel-container">
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div
@@ -80,19 +90,31 @@ const Hero = () => {
         </div>
       ))}
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevSlide}
-        className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-all duration-300 backdrop-blur-sm"
-      >
-        <ChevronLeft className="h-6 w-6 text-white" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-all duration-300 backdrop-blur-sm"
-      >
-        <ChevronRight className="h-6 w-6 text-white" />
-      </button>
+      {/* Invisible Click Areas for Manual Navigation */}
+      <div
+        className="carousel-click-area carousel-click-left"
+        onClick={() => handleCarouselClick('left')}
+        aria-label="Previous slide"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleCarouselClick('left');
+          }
+        }}
+      />
+      <div
+        className="carousel-click-area carousel-click-right"
+        onClick={() => handleCarouselClick('right')}
+        aria-label="Next slide"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleCarouselClick('right');
+          }
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,7 +139,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
             onClick={scrollToContact}
-            className="group bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+            className="group btn-secondary flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
             <Phone className="h-5 w-5" />
             <span>Get Legal Consultation</span>
@@ -125,7 +147,7 @@ const Hero = () => {
           </button>
           <button
             onClick={scrollToServices}
-            className="group bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+            className="group btn-outline flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
             <span>Our Services</span>
             <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -142,6 +164,7 @@ const Hero = () => {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide ? 'bg-white' : 'bg-white/50'
             }`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>

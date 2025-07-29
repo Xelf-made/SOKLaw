@@ -34,14 +34,14 @@ const Services = () => {
     <section ref={sectionRef} id="services" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-coffee-brown mb-6 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
             Our Legal Services
           </h2>
-          <p className="text-xl text-coffee-brown-light max-w-3xl mx-auto animate-fade-in-delay">
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
             We provide comprehensive legal solutions across various practice areas, 
             ensuring expert representation for all your legal needs.
           </p>
-          <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -70,7 +70,7 @@ const Services = () => {
                   <p className="leading-relaxed mb-4">{service.description}</p>
                   <Link
                     to={`/services/${service.id}`}
-                    className="inline-flex items-center group/link font-semibold hover:text-blue-200"
+                    className="inline-flex items-center group/link font-semibold hover:text-gray-200 text-white"
                     aria-label={`Learn more about ${service.title}`}
                   >
                     <span>Learn More</span>
@@ -85,7 +85,7 @@ const Services = () => {
         <div className="text-center mt-16">
           <Link
             to="/services"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
+            className="btn-primary inline-block transform hover:scale-105 shadow-lg"
           >
             View All Services
           </Link>

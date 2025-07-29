@@ -63,13 +63,13 @@ const TrackRecord = () => {
     <section ref={sectionRef} className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#6F4E37' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
             Our Track Record
           </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#000000' }}>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
             Numbers that speak to our commitment to excellence and our clients' success
           </p>
-          <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -87,17 +87,17 @@ const TrackRecord = () => {
                   </div>
                   
                   {/* Value */}
-                  <div className="text-4xl font-bold mb-2" style={{ color: '#6F4E37' }}>
+                  <div className="text-4xl font-bold mb-2" style={{ color: '#000000' }}>
                     {achievement.value}
                   </div>
                   
                   {/* Label */}
-                  <h3 className="text-xl font-semibold mb-3" style={{ color: '#6F4E37' }}>
+                  <h3 className="text-xl font-semibold mb-3" style={{ color: '#000000' }}>
                     {achievement.label}
                   </h3>
                   
                   {/* Description */}
-                  <p style={{ color: '#000000' }}>
+                  <p style={{ color: '#333333' }}>
                     {achievement.description}
                   </p>
                 </div>

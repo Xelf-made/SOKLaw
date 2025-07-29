@@ -59,14 +59,14 @@ const Team = () => {
     <section ref={sectionRef} id="team" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#6F4E37' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
             Our Legal Team
           </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#000000' }}>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
             Meet our experienced team of legal professionals dedicated to providing 
             exceptional legal services and achieving the best outcomes for our clients.
           </p>
-          <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -87,13 +87,13 @@ const Team = () => {
 
               {/* Content */}
               <div className="p-8">
-                <h3 className="text-2xl font-bold mb-2" style={{ color: '#6F4E37' }}>
+                <h3 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>
                   {member.name}
                 </h3>
-                <p className="text-blue-600 font-semibold text-lg mb-3">
+                <p className="font-semibold text-lg mb-3" style={{ color: '#1E3A8A' }}>
                   {member.role}
                 </p>
-                <p className="mb-6" style={{ color: '#000000' }}>
+                <p className="mb-6" style={{ color: '#333333' }}>
                   {member.specialization}
                 </p>
 
@@ -101,13 +101,13 @@ const Team = () => {
                 <div className="flex space-x-4">
                   <a
                     href={`mailto:${member.email}`}
-                    className="p-3 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110"
+                    className="p-3 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-800 hover:text-white transition-all duration-300 transform hover:scale-110"
                   >
                     <Mail className="h-5 w-5" />
                   </a>
                   <a
                     href={`tel:${member.phone}`}
-                    className="p-3 bg-green-100 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 transform hover:scale-110"
+                    className="p-3 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-800 hover:text-white transition-all duration-300 transform hover:scale-110"
                   >
                     <Phone className="h-5 w-5" />
                   </a>
@@ -124,10 +124,10 @@ const Team = () => {
         </div>
 
         <div className="text-center mt-16">
-          <p className="text-lg text-gray-600 mb-8 animate-fade-in">
+          <p className="text-lg mb-8 animate-fade-in" style={{ color: '#666666' }}>
             Ready to work with our experienced legal team?
           </p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in-delay">
+          <button className="btn-primary transform hover:scale-105 shadow-lg animate-fade-in-delay">
             Schedule a Consultation
           </button>
         </div>
