@@ -39,11 +39,17 @@ const Hero = () => {
   }, [slides.length]);
 
   const scrollToContact = () => {
-    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.querySelector('#contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const scrollToServices = () => {
-    document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.querySelector('#services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const nextSlide = () => {
@@ -55,7 +61,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden carousel-container">
+    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div
@@ -69,27 +75,31 @@ const Hero = () => {
             alt={slide.title}
             className="hero-img"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
       ))}
 
-      {/* Invisible Slide Controls */}
+      {/* Invisible Navigation Buttons (Only top 60%) */}
       <button
         onClick={prevSlide}
-        className="absolute left-0 top-0 w-1/2 h-full z-20 opacity-0"
+        className="absolute left-0 top-0 w-1/2 h-[60%] z-20 opacity-0"
         aria-label="Previous Slide"
       />
       <button
         onClick={nextSlide}
-        className="absolute right-0 top-0 w-1/2 h-full z-20 opacity-0"
+        className="absolute right-0 top-0 w-1/2 h-[60%] z-20 opacity-0"
         aria-label="Next Slide"
       />
 
       {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">Welcome</h1>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">We are Soklaw</h2>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            Welcome
+          </h1>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
+            We are Soklaw
+          </h2>
           <div className="min-h-[120px] flex flex-col justify-center">
             <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-4 transition-all duration-500">
               {slides[currentSlide].title}
