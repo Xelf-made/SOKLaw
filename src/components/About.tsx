@@ -55,8 +55,7 @@ const About = () => {
             />
             <div className="absolute -bottom-6 -right-6 bg-gray-800 text-white p-6 rounded-xl shadow-lg animate-pulse">
               <div className="text-center">
-                <div className="text-3xl font-bold">15+</div>
-                <div className="text-sm">Years Serving Kenya</div>
+                
               </div>
             </div>
           </div>
