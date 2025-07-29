@@ -4,6 +4,19 @@ import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Count-up animation helper
+  const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
+    const startTime = performance.now();
+
+    const step = (currentTime: number) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      el.textContent = Math.floor(progress * target).toString();
+      if (progress < 1) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  };
+
   useEffect(() => {
     const hasAnimated = new Set<Element>();
 
@@ -17,8 +30,16 @@ const About = () => {
                 element.classList.add('animate-fade-in-up');
               }, index * 200);
             });
+
+            // Animate counters
+            const counters = entry.target.querySelectorAll('[data-count-to]');
+            counters.forEach((el) => {
+              const target = parseInt(el.getAttribute('data-count-to') || '0', 10);
+              animateCount(el as HTMLElement, target);
+            });
+
             hasAnimated.add(entry.target);
-            observer.unobserve(entry.target); // Clean up
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -33,10 +54,10 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Clock, label: 'Years of Experience', value: '15+', color: 'text-blue-600' },
-    { icon: Award, label: 'Cases Won', value: '500+', color: 'text-green-600' },
-    { icon: Users, label: 'Satisfied Clients', value: '1000+', color: 'text-purple-600' },
-    { icon: TrendingUp, label: 'Success Rate', value: '98%', color: 'text-orange-600' },
+    { icon: Clock, label: 'Years of Experience', value: 15, color: 'text-blue-600' },
+    { icon: Award, label: 'Cases Won', value: 500, color: 'text-green-600' },
+    { icon: Users, label: 'Satisfied Clients', value: 1000, color: 'text-purple-600' },
+    { icon: TrendingUp, label: 'Success Rate (%)', value: 98, color: 'text-orange-600' },
   ];
 
   return (
@@ -85,10 +106,21 @@ const About = () => {
               {stats.map((stat, index) => {
                 const IconComponent = stat.icon;
                 return (
-                  <div key={index} className="animate-on-scroll opacity-0 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div
+                    key={index}
+                    className="animate-on-scroll opacity-0 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  >
                     <IconComponent className={`h-8 w-8 ${stat.color} mb-3`} />
-                    <div className="text-2xl font-bold mb-1" style={{ color: '#000000' }}>{stat.value}</div>
-                    <div className="text-sm" style={{ color: '#333333' }}>{stat.label}</div>
+                    <div
+                      className="text-2xl font-bold mb-1"
+                      style={{ color: '#000000' }}
+                      data-count-to={stat.value}
+                    >
+                      0
+                    </div>
+                    <div className="text-sm" style={{ color: '#333333' }}>
+                      {stat.label}
+                    </div>
                   </div>
                 );
               })}
