@@ -5,16 +5,20 @@ const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const hasAnimated = new Set<Element>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !hasAnimated.has(entry.target)) {
             const elements = entry.target.querySelectorAll('.animate-on-scroll');
             elements.forEach((element, index) => {
               setTimeout(() => {
                 element.classList.add('animate-fade-in-up');
               }, index * 200);
             });
+            hasAnimated.add(entry.target);
+            observer.unobserve(entry.target); // Clean up
           }
         });
       },
@@ -49,16 +53,11 @@ const About = () => {
           {/* Image */}
           <div className="animate-on-scroll opacity-0 relative">
             <img
+              loading="lazy"
               src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
               alt="SOK Law Associates Team"
               className="about-img shadow-2xl transform hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute -bottom-6 -right-6 bg-gray-800 text-white p-6 rounded-xl shadow-lg animate-pulse">
-              <div className="text-center">
-                <div className="text-3xl font-bold">15+</div>
-                <div className="text-sm">Years Serving Kenya</div>
-              </div>
-            </div>
           </div>
 
           {/* Content */}
