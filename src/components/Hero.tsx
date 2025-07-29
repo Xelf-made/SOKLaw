@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Phone } from 'lucide-react';
+import { ArrowRight, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -39,17 +39,11 @@ const Hero = () => {
   }, [slides.length]);
 
   const scrollToContact = () => {
-    const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToServices = () => {
-    const element = document.querySelector('#services');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const nextSlide = () => {
@@ -58,14 +52,6 @@ const Hero = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const handleCarouselClick = (side: 'left' | 'right') => {
-    if (side === 'left') {
-      prevSlide();
-    } else {
-      nextSlide();
-    }
   };
 
   return (
@@ -83,41 +69,32 @@ const Hero = () => {
             alt={slide.title}
             className="hero-img"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/50" />
         </div>
       ))}
 
-      {/* Invisible Click Areas */}
-      <div
-        className="carousel-click-area carousel-click-left"
-        onClick={() => handleCarouselClick('left')}
-        aria-label="Previous slide"
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('left');
-        }}
-      />
-      <div
-        className="carousel-click-area carousel-click-right"
-        onClick={() => handleCarouselClick('right')}
-        aria-label="Next slide"
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleCarouselClick('right');
-        }}
-      />
+      {/* Slide Navigation Buttons */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full"
+        aria-label="Previous Slide"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full"
+        aria-label="Next Slide"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-            Welcome
-          </h1>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
-            We are Soklaw
-          </h2>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">Welcome</h1>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">We are Soklaw</h2>
           <div className="min-h-[120px] flex flex-col justify-center">
             <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-white mb-4 transition-all duration-500">
               {slides[currentSlide].title}
@@ -128,7 +105,7 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Buttons */}
+        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
             onClick={scrollToContact}
