@@ -4,14 +4,17 @@ import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Count animation helper
+  // Fixed count animation
   const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
+    const start = 0;
     const startTime = performance.now();
 
     const step = (currentTime: number) => {
-      const progress = Math.min((currentTime - startTime) / duration, 1);
-      const value = Math.floor(progress * target);
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const value = Math.floor(progress * (target - start) + start);
       el.innerText = value.toString();
+
       if (progress < 1) {
         requestAnimationFrame(step);
       }
@@ -32,17 +35,17 @@ const About = () => {
               }, index * 200);
             });
 
-            // Animate counters only once
+            // Animate counters
             const counters = entry.target.querySelectorAll('.count-up');
             counters.forEach((counter) => {
               const target = Number(counter.getAttribute('data-count-to'));
               if (target && !counter.classList.contains('counted')) {
                 animateCount(counter as HTMLElement, target);
-                counter.classList.add('counted'); // prevent re-trigger
+                counter.classList.add('counted');
               }
             });
 
-            observer.unobserve(entry.target); // unobserve to prevent repeats
+            observer.unobserve(entry.target);
           }
         });
       },
