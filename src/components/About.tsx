@@ -4,26 +4,27 @@ import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Count-up animation helper
+  // Count animation helper
   const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
     const startTime = performance.now();
 
     const step = (currentTime: number) => {
       const progress = Math.min((currentTime - startTime) / duration, 1);
-      el.textContent = Math.floor(progress * target).toString();
-      if (progress < 1) requestAnimationFrame(step);
+      const value = Math.floor(progress * target);
+      el.innerText = value.toString();
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
     };
 
     requestAnimationFrame(step);
   };
 
   useEffect(() => {
-    const hasAnimated = new Set<Element>();
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated.has(entry.target)) {
+          if (entry.isIntersecting) {
             const elements = entry.target.querySelectorAll('.animate-on-scroll');
             elements.forEach((element, index) => {
               setTimeout(() => {
@@ -31,15 +32,17 @@ const About = () => {
               }, index * 200);
             });
 
-            // Animate counters
-            const counters = entry.target.querySelectorAll('[data-count-to]');
-            counters.forEach((el) => {
-              const target = parseInt(el.getAttribute('data-count-to') || '0', 10);
-              animateCount(el as HTMLElement, target);
+            // Animate counters only once
+            const counters = entry.target.querySelectorAll('.count-up');
+            counters.forEach((counter) => {
+              const target = Number(counter.getAttribute('data-count-to'));
+              if (target && !counter.classList.contains('counted')) {
+                animateCount(counter as HTMLElement, target);
+                counter.classList.add('counted'); // prevent re-trigger
+              }
             });
 
-            hasAnimated.add(entry.target);
-            observer.unobserve(entry.target);
+            observer.unobserve(entry.target); // unobserve to prevent repeats
           }
         });
       },
@@ -64,7 +67,7 @@ const About = () => {
     <section ref={sectionRef} id="about" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
+          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6 text-black">
             About SOK Law Associates
           </h2>
           <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gray-800 mx-auto"></div>
@@ -84,19 +87,19 @@ const About = () => {
           {/* Content */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
-              <h3 className="text-2xl font-bold mb-4" style={{ color: '#000000' }}>
+              <h3 className="text-2xl font-bold mb-4 text-black">
                 Excellence in Legal Practice Since 2009
               </h3>
-              <p className="text-lg leading-relaxed mb-6" style={{ color: '#333333' }}>
-                SOK Law Associates has been at the forefront of legal practice in Kenya, 
-                providing comprehensive legal solutions to individuals, corporations, and 
-                institutions. Our commitment to excellence, integrity, and client satisfaction 
+              <p className="text-lg leading-relaxed mb-6 text-gray-800">
+                SOK Law Associates has been at the forefront of legal practice in Kenya,
+                providing comprehensive legal solutions to individuals, corporations, and
+                institutions. Our commitment to excellence, integrity, and client satisfaction
                 has made us one of the most trusted law firms in the region.
               </p>
-              <p className="text-lg leading-relaxed" style={{ color: '#333333' }}>
-                We combine deep legal expertise with innovative approaches to deliver 
-                outstanding results for our clients. Our team of experienced lawyers 
-                specializes in various areas of law, ensuring that we can handle complex 
+              <p className="text-lg leading-relaxed text-gray-800">
+                We combine deep legal expertise with innovative approaches to deliver
+                outstanding results for our clients. Our team of experienced lawyers
+                specializes in various areas of law, ensuring that we can handle complex
                 legal matters with precision and professionalism.
               </p>
             </div>
@@ -112,15 +115,12 @@ const About = () => {
                   >
                     <IconComponent className={`h-8 w-8 ${stat.color} mb-3`} />
                     <div
-                      className="text-2xl font-bold mb-1"
-                      style={{ color: '#000000' }}
+                      className="text-2xl font-bold mb-1 text-black count-up"
                       data-count-to={stat.value}
                     >
                       0
                     </div>
-                    <div className="text-sm" style={{ color: '#333333' }}>
-                      {stat.label}
-                    </div>
+                    <div className="text-sm text-gray-800">{stat.label}</div>
                   </div>
                 );
               })}
