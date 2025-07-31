@@ -360,3 +360,85 @@ html {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* BlogHandy Blog Posts Styling */
+.blog-posts-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Style BlogHandy posts to match website design */
+#bh-posts {
+  font-family: inherit;
+}
+
+#bh-posts .bh-post {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+#bh-posts .bh-post:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+#bh-posts .bh-post-title {
+  color: #000000 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  margin-bottom: 0.75rem !important;
+}
+
+#bh-posts .bh-post-content {
+  color: #333333 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  padding: 1.5rem !important;
+}
+
+#bh-posts .bh-post-meta {
+  color: #666666 !important;
+  font-size: 0.875rem !important;
+  padding: 0 1.5rem 1.5rem !important;
+}
+
+#bh-posts .bh-post-image {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+#bh-posts a {
+  color: #1E3A8A !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+#bh-posts a:hover {
+  color: #1d4ed8 !important;
+}
+
+/* Responsive design for blog posts */
+@media (min-width: 768px) {
+  #bh-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  
+  #bh-posts .bh-post {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  #bh-posts {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+}
