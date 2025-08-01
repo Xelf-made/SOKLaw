@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const fullText = 'SIMIYU,OPONDO,KIRANGA & COMPANY ADVOCATES';
+const fullText = 'SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [typedText, setTypedText] = useState('');
 
-  // Typing animation effect
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
@@ -20,9 +19,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -42,9 +39,7 @@ const Navbar = () => {
 
   const scrollToSection = useCallback((href: string) => {
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
     setIsOpen(false);
   }, []);
 
@@ -56,8 +51,8 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo and Typing Title */}
-          <div className="flex flex-col items-start">
+          {/* Logo + Typing Title */}
+          <div className="flex flex-col items-start max-w-[260px]">
             <a
               href="#home"
               onClick={(e) => {
@@ -67,19 +62,17 @@ const Navbar = () => {
             >
               <img
                 src="https://soklaw.co.ke/images/logo.png"
-                alt="SOK Law Associates Logo"
-                className="h-12 w-auto object-contain transition-all duration-300"
+                alt="SOK Law Logo"
+                className="h-12 object-contain"
               />
             </a>
-            <div className="w-[200px] sm:w-[240px] mt-1">
-              <span className="block text-[10px] sm:text-xs text-[#bfa06f] tracking-wide font-medium leading-tight break-words">
-                {typedText}
-                <span className="animate-pulse">|</span>
-              </span>
-            </div>
+            <span className="text-[9px] sm:text-[10px] mt-1 tracking-tight text-[#bfa06f] font-medium whitespace-nowrap overflow-hidden text-ellipsis w-full">
+              {typedText}
+              <span className="animate-pulse">|</span>
+            </span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navLinks.map((link) => (
@@ -100,7 +93,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Hamburger */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -112,7 +105,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Nav */}
       {isOpen && (
         <div className="md:hidden bg-black/80 backdrop-blur-lg border-t">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
