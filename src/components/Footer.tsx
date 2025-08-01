@@ -49,15 +49,28 @@ const Footer = () => {
     <footer className="bg-[#f9f7f1] text-[#1e1e1e] font-sans">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         
-        {/* Branding */}
+        {/* Branding Section */}
         <div>
-          <div className="flex items-center space-x-3 mb-5">
-            <Scale className="h-7 w-7 text-[#bfa06f]" />
+          {/* Logo + Title */}
+          <div className="flex items-center space-x-3 mb-4">
+            <img
+              src="your-logo-url.png" // ← Replace with your logo image
+              alt="SOKLAW Logo"
+              className="h-8 w-8 object-contain"
+            />
             <span className="text-2xl font-bold tracking-tight text-[#bfa06f]">SOKLAW ADVOCATES</span>
           </div>
+
+          {/* Full firm name subtitle */}
+          <p className="text-sm font-medium text-[#4b4b4b] mb-5 tracking-wide uppercase">
+            SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES
+          </p>
+
           <p className="text-sm text-[#444] leading-relaxed mb-6">
             A full-service law firm in Nairobi offering strategic, dependable legal solutions with integrity and diligence.
           </p>
+
+          {/* Social Icons */}
           <div className="flex space-x-3 mt-2">
             {socialLinks.map((item, i) => {
               const Icon = item.icon;
