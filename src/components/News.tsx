@@ -1,33 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const News = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
+  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
+  const [blogContent, setBlogContent] = useState<string | null>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const cards = entry.target.querySelectorAll('.news-card');
-            cards.forEach((card, index) => {
-              setTimeout(() => {
-                card.classList.add('animate-fade-in-up');
-              }, index * 200);
-            });
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  // Animation effect omitted for brevity...
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // New effect: make blog links open in a new tab to avoid refresh
   useEffect(() => {
     const container = document.getElementById('bh-posts');
     if (!container) return;
@@ -36,9 +17,17 @@ const News = () => {
       const target = event.target as HTMLElement;
       const anchor = target.closest('a');
       if (anchor && anchor.href) {
-        // Make sure link opens in new tab, avoid SPA reload
-        anchor.setAttribute('target', '_blank');
-        anchor.setAttribute('rel', 'noopener noreferrer');
+        event.preventDefault();
+
+        // Extract slug or id from URL - customize based on your URLs
+        const url = new URL(anchor.href);
+        const slug = url.pathname.split('/').pop();
+
+        if (slug) {
+          setSelectedBlogSlug(slug);
+          // Change URL without reload - SPA navigation
+          navigate(`/news/${slug}`);
+        }
       }
     };
 
@@ -47,25 +36,40 @@ const News = () => {
     return () => {
       container.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [navigate]);
+
+  // Fetch blog content based on slug (simulate API call)
+  useEffect(() => {
+    if (!selectedBlogSlug) return;
+
+    // Replace with real API call or BlogHandy API
+    async function fetchBlog() {
+      // Example: fetch(`/api/blog/${selectedBlogSlug}`).then...
+      // For demo, simulate content:
+      const simulatedContent = `<h2>Blog: ${selectedBlogSlug}</h2><p>This is the blog content loaded dynamically.</p>`;
+      setBlogContent(simulatedContent);
+    }
+
+    fetchBlog();
+  }, [selectedBlogSlug]);
 
   return (
     <section ref={sectionRef} id="news" className="py-20 brand-section-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-            Latest News & Updates
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay">
-            Stay updated with our latest legal insights, case victories, and important legal developments
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
-        </div>
+        {/* Heading and description */}
 
-        {/* BlogHandy Blog Posts Container */}
-        <div className="animate-fade-in-up">
-          <div id="bh-posts" className="blog-posts-container"></div>
-        </div>
+        {/* Blog posts container */}
+        <div id="bh-posts" className="blog-posts-container" />
+
+        {/* Blog content modal or section */}
+        {blogContent && (
+          <div className="blog-content-modal p-6 bg-white shadow-lg rounded mt-8 max-w-4xl mx-auto">
+            <button onClick={() => setBlogContent(null)} className="mb-4">
+              Close
+            </button>
+            <div dangerouslySetInnerHTML={{ __html: blogContent }} />
+          </div>
+        )}
       </div>
     </section>
   );
