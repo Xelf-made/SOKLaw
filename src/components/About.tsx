@@ -93,7 +93,7 @@ const About = () => {
           <div className="animate-on-scroll opacity-0 relative">
             <img
               loading="lazy"
-              src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+              src="https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg"
               alt="SOK Law Associates Team"
               className="about-img shadow-2xl transform hover:scale-105 transition-transform duration-500 rounded-2xl"
             />
