@@ -66,14 +66,14 @@ const Hero = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
+          className={absolute inset-0 transition-opacity duration-1000 ${
             index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
+          }}
         >
           <img
             src={slide.image}
             alt={slide.title}
-            // Removed "hero-img" class to disable hover zoom effect
+            className="hero-img"
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
@@ -136,10 +136,10 @@ const Hero = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide ? 'bg-white' : 'bg-white/50'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
+            }}
+            aria-label={Go to slide ${index + 1}}
           />
         ))}
       </div>
