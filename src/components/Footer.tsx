@@ -46,19 +46,19 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#0e1013] text-[#f9f9f9]">
-      {/* Top Footer */}
+    <footer className="bg-[#0e1013] text-[#f9f9f9] font-sans">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-        {/* Logo & Description */}
+        
+        {/* Firm Branding */}
         <div>
           <div className="flex items-center space-x-3 mb-5">
             <Scale className="h-7 w-7 text-[#bfa06f]" />
-            <span className="text-2xl font-semibold tracking-tight text-[#bfa06f]">SOKLAW ASSOCIATES</span>
+            <span className="text-2xl font-bold tracking-tight text-[#bfa06f]">SOKLAW ADVOCATES</span>
           </div>
           <p className="text-gray-300 text-sm leading-relaxed mb-6">
-            Your trusted legal partner in Kenya, providing comprehensive legal solutions with excellence, integrity, and unwavering commitment to client success since 2009.
+            A full-service law firm based in Nairobi offering strategic legal solutions with diligence, innovation, and integrity.
           </p>
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 mt-2">
             {socialLinks.map((item, i) => {
               const Icon = item.icon;
               return (
@@ -66,7 +66,8 @@ const Footer = () => {
                   key={i}
                   href={item.href}
                   aria-label={item.label}
-                  className="p-2 bg-[#1c1e22] hover:bg-[#bfa06f] rounded-full transition duration-300"
+                  title={item.label}
+                  className="p-2 bg-[#1c1e22] hover:bg-[#bfa06f] text-white rounded-full transition duration-300"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -75,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Quick Links */}
+        {/* Navigation Links */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-[#bfa06f]">Quick Links</h3>
           <ul className="space-y-3 text-sm text-gray-300">
@@ -109,13 +110,16 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Contact Info */}
+        {/* Nairobi Contact */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-[#bfa06f]">Nairobi Office</h3>
-          <ul className="text-sm text-gray-300 space-y-3">
+          <ul className="text-sm text-gray-300 space-y-4">
             <li className="flex items-start gap-2">
               <MapPin className="h-4 w-4 mt-1" />
-              <span>Upperhill Gardens, Block D1, 5th Floor<br />Ragati Road, Nairobi</span>
+              <span>
+                Upperhill Gardens, Block D1, 5th Floor<br />
+                Ragati Road, Nairobi
+              </span>
             </li>
             <li className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
@@ -129,23 +133,24 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="border-t border-[#1f2226]">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      {/* Bottom Bar */}
+      <div className="border-t border-[#1f2226] bg-[#0c0e11]">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500 text-center md:text-left">
-            © 2024 SOKLAW Advocates. All Rights Reserved.
+            © {new Date().getFullYear()} SOKLAW Advocates. All Rights Reserved.
           </p>
-          <div className="flex items-center space-x-6">
-            {/* Placeholders for logos */}
+          <div className="flex items-center gap-4">
             <img
-              src="https://soklaw.co.ke/images/KLR-logo.jpg" // Replace with actual logo URL
-              alt="Kenya Law Reports"
-              className="h-8 w-auto"
+              src="https://soklaw.co.ke/images/KLR-logo.jpg"
+              alt="Kenya Law Reports Logo"
+              className="h-8 w-auto rounded"
+              title="Kenya Law Reports"
             />
             <img
-              src="https://soklaw.co.ke/images/law-society-of-kenya.jpg" // Replace with actual logo URL
-              alt="Law Society of Kenya"
-              className="h-8 w-auto"
+              src="https://soklaw.co.ke/images/law-society-of-kenya.jpg"
+              alt="Law Society of Kenya Logo"
+              className="h-8 w-auto rounded"
+              title="Law Society of Kenya"
             />
           </div>
         </div>
