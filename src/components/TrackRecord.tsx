@@ -66,24 +66,27 @@ const TrackRecord = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Count up animation
-  const useCountUp = (end: number, duration = 2000) => {
+  // Slower Count up animation
+  const useCountUp = (end: number, duration = 3000) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
       if (!startCount) return;
 
-      let start = 0;
-      const step = Math.ceil(end / (duration / 16));
+      let current = 0;
+      const frameDuration = 30; // ~33fps
+      const totalFrames = Math.round(duration / frameDuration);
+      const increment = end / totalFrames;
+
       const interval = setInterval(() => {
-        start += step;
-        if (start >= end) {
+        current += increment;
+        if (current >= end) {
           setCount(end);
           clearInterval(interval);
         } else {
-          setCount(start);
+          setCount(Math.round(current));
         }
-      }, 16);
+      }, frameDuration);
 
       return () => clearInterval(interval);
     }, [end, startCount]);
