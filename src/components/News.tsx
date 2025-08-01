@@ -1,70 +1,77 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const News = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const navigate = useNavigate();
-  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
   const [blogContent, setBlogContent] = useState<string | null>(null);
-
-  // Animation effect omitted for brevity...
+  const [selectedBlogUrl, setSelectedBlogUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const container = document.getElementById('bh-posts');
-    if (!container) return;
+    // Wait a little to ensure BlogHandy script has injected posts
+    const timer = setTimeout(() => {
+      const container = document.getElementById('bh-posts');
+      if (!container) return;
 
-    const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const anchor = target.closest('a');
-      if (anchor && anchor.href) {
-        event.preventDefault();
+      // Add click listener to intercept blog links
+      const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const anchor = target.closest('a');
+        if (anchor && anchor.href && anchor.closest('#bh-posts')) {
+          event.preventDefault();
 
-        // Extract slug or id from URL - customize based on your URLs
-        const url = new URL(anchor.href);
-        const slug = url.pathname.split('/').pop();
-
-        if (slug) {
-          setSelectedBlogSlug(slug);
-          // Change URL without reload - SPA navigation
-          navigate(`/news/${slug}`);
+          // Save blog URL and load blog content
+          setSelectedBlogUrl(anchor.href);
         }
-      }
-    };
+      };
 
-    container.addEventListener('click', handleClick);
+      container.addEventListener('click', handleClick);
 
-    return () => {
-      container.removeEventListener('click', handleClick);
-    };
-  }, [navigate]);
+      // Cleanup on unmount
+      return () => {
+        container.removeEventListener('click', handleClick);
+      };
+    }, 1500); // 1.5 seconds delay to allow blog posts to load
 
-  // Fetch blog content based on slug (simulate API call)
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
-    if (!selectedBlogSlug) return;
+    if (!selectedBlogUrl) return;
 
-    // Replace with real API call or BlogHandy API
-    async function fetchBlog() {
-      // Example: fetch(`/api/blog/${selectedBlogSlug}`).then...
-      // For demo, simulate content:
-      const simulatedContent = `<h2>Blog: ${selectedBlogSlug}</h2><p>This is the blog content loaded dynamically.</p>`;
-      setBlogContent(simulatedContent);
-    }
+    // Fetch the blog post content dynamically by URL
+    // NOTE: BlogHandy may not expose API for fetching post HTML directly
+    // As a workaround, you could fetch the HTML and extract the post content,
+    // or open in iframe, or have BlogHandy provide embed options.
 
-    fetchBlog();
-  }, [selectedBlogSlug]);
+    // Example: simple iframe embed for demo purposes
+    setBlogContent(`<iframe src="${selectedBlogUrl}" width="100%" height="600px" frameBorder="0"></iframe>`);
+  }, [selectedBlogUrl]);
 
   return (
     <section ref={sectionRef} id="news" className="py-20 brand-section-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading and description */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
+            Latest News & Updates
+          </h2>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay">
+            Stay updated with our latest legal insights, case victories, and important legal developments
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
+        </div>
 
         {/* Blog posts container */}
-        <div id="bh-posts" className="blog-posts-container" />
+        <div id="bh-posts" className="blog-posts-container"></div>
 
-        {/* Blog content modal or section */}
+        {/* Blog content modal or inline view */}
         {blogContent && (
-          <div className="blog-content-modal p-6 bg-white shadow-lg rounded mt-8 max-w-4xl mx-auto">
-            <button onClick={() => setBlogContent(null)} className="mb-4">
+          <div className="blog-content-modal p-6 bg-white shadow-lg rounded mt-8 max-w-4xl mx-auto relative">
+            <button
+              onClick={() => {
+                setBlogContent(null);
+                setSelectedBlogUrl(null);
+              }}
+              className="absolute top-4 right-4 px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+            >
               Close
             </button>
             <div dangerouslySetInnerHTML={{ __html: blogContent }} />
