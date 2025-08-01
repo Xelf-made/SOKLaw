@@ -1,23 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const fullText = 'SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES';
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [typedText, setTypedText] = useState('');
-
-  // Typing animation effect
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      setTypedText((prev) => prev + fullText[index]);
-      index++;
-      if (index === fullText.length) clearInterval(interval);
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,13 +37,13 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/50 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-black/50 backdrop-blur-lg shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo and Typing Title */}
-          <div className="flex flex-col items-start">
+          {/* Logo and Full Name inline */}
+          <div className="flex items-center space-x-3">
             <a
               href="#home"
               onClick={(e) => {
@@ -67,19 +53,16 @@ const Navbar = () => {
             >
               <img
                 src="https://soklaw.co.ke/images/logo.png"
-                alt="SOK Law Associates Logo"
-                className="h-12 w-auto object-contain transition-all duration-300"
+                alt="SOK Law Logo"
+                className="h-12 w-auto object-contain"
               />
             </a>
-            <div className="w-[200px] sm:w-[240px] mt-1">
-              <span className="block text-[10px] sm:text-xs text-[#bfa06f] tracking-wide font-medium leading-tight break-words">
-                {typedText}
-                <span className="animate-pulse">|</span>
-              </span>
-            </div>
+            <span className="text-[#bfa06f] text-xs sm:text-sm md:text-base font-semibold tracking-tight whitespace-nowrap">
+              SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES
+            </span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navLinks.map((link) => (
@@ -100,7 +83,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -112,9 +95,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile nav menu */}
       {isOpen && (
-        <div className="md:hidden bg-black/80 backdrop-blur-lg border-t">
+        <div className="md:hidden bg-black/80 backdrop-blur-md border-t">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <a
@@ -124,7 +107,7 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="block px-3 py-2 text-base font-medium text-gray-100 hover:text-[#bfa06f] hover:bg-gray-800 w-full"
+                className="block px-3 py-2 text-base font-medium text-gray-100 hover:text-[#bfa06f] hover:bg-gray-800"
               >
                 {link.label}
               </a>
