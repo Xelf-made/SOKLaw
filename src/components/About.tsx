@@ -4,13 +4,16 @@ import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
-  const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
+  // Easing function for smoother animation
+  const easeOutQuad = (t: number) => t * (2 - t);
+
+  const animateCount = (el: HTMLElement, target: number, duration = 2500) => {
     const start = 0;
     const startTime = performance.now();
 
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = easeOutQuad(Math.min(elapsed / duration, 1));
       const value = Math.floor(progress * (target - start) + start);
       el.innerText = value.toString();
 
@@ -23,6 +26,8 @@ const About = () => {
   };
 
   useEffect(() => {
+    let hasAnimated = false;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,7 +35,9 @@ const About = () => {
           const elements = targetEl.querySelectorAll('.animate-on-scroll');
           const counters = targetEl.querySelectorAll('.count-up');
 
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !hasAnimated) {
+            hasAnimated = true;
+
             // Animate text and image elements
             elements.forEach((element, index) => {
               setTimeout(() => {
@@ -38,13 +45,15 @@ const About = () => {
               }, index * 200);
             });
 
-            // Animate counters on scroll in
+            // Animate counters on scroll into view
             counters.forEach((counter) => {
               const countTo = Number(counter.getAttribute('data-count-to'));
               animateCount(counter as HTMLElement, countTo);
             });
-          } else {
-            // Reset counters when out of view
+          }
+
+          if (!entry.isIntersecting) {
+            hasAnimated = false; // Reset for re-animation on re-entry
             counters.forEach((counter) => {
               (counter as HTMLElement).innerText = '0';
             });
