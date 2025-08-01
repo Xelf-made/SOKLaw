@@ -27,30 +27,18 @@ const News = () => {
     return () => observer.disconnect();
   }, []);
 
+  // New effect: make blog links open in a new tab to avoid refresh
   useEffect(() => {
-    // Intercept clicks inside #bh-posts to prevent full page reload
     const container = document.getElementById('bh-posts');
     if (!container) return;
 
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      // Find closest anchor tag if clicked inside a link
       const anchor = target.closest('a');
-      if (anchor && anchor.href && anchor.href.startsWith(window.location.origin)) {
-        event.preventDefault();
-        const url = new URL(anchor.href);
-        // Use client-side navigation instead of full reload
-        // If using React Router:
-        // history.push(url.pathname + url.search);
-        // Or with Next.js use router.push(url.pathname)
-        // Here, let's just simulate navigation without reload:
-        window.history.pushState({}, '', url.pathname + url.search);
-        // Optionally scroll to news section or show content dynamically here
-        // Or trigger any state update to load blog content dynamically
-        // For now, just prevent reload and update URL
-
-        // If you want to scroll to the top or somewhere:
-        window.scrollTo(0, 0);
+      if (anchor && anchor.href) {
+        // Make sure link opens in new tab, avoid SPA reload
+        anchor.setAttribute('target', '_blank');
+        anchor.setAttribute('rel', 'noopener noreferrer');
       }
     };
 
