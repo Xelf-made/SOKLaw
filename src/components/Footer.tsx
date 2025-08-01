@@ -56,7 +56,7 @@ const Footer = () => {
             <span className="text-2xl font-semibold tracking-tight text-[#bfa06f]">SOKLAW ASSOCIATES</span>
           </div>
           <p className="text-gray-300 text-sm leading-relaxed mb-6">
-            A fully fledged Nairobi-based law firm offering strategic, innovative, and client-centered legal solutions across multiple practice areas.
+            Your trusted legal partner in Kenya, providing comprehensive legal solutions with excellence, integrity, and unwavering commitment to client success since 2009.
           </p>
           <div className="flex space-x-3">
             {socialLinks.map((item, i) => {
