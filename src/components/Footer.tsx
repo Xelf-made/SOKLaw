@@ -138,7 +138,7 @@ const Footer = () => {
           <div className="flex items-center space-x-6">
             {/* Placeholders for logos */}
             <img
-              src="/path/to/kenya-law-logo.png" // Replace with actual logo URL
+              src="https://soklaw.co.ke/images/KLR-logo.jpg" // Replace with actual logo URL
               alt="Kenya Law Reports"
               className="h-8 w-auto"
             />
