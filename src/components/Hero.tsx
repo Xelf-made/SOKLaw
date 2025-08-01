@@ -10,8 +10,6 @@ const Hero = () => {
         'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
-      description:
-        "Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya's dynamic market.",
     },
     {
       image:
