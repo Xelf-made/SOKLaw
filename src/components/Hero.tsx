@@ -61,7 +61,10 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="home"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8"
+    >
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div
@@ -69,13 +72,14 @@ const Hero = () => {
           className={`absolute inset-0 transition-opacity duration-1000 ${
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
+          aria-hidden={index !== currentSlide}
         >
           <img
             src={slide.image}
             alt={slide.title}
-            className="hero-img"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
       ))}
 
@@ -92,29 +96,29 @@ const Hero = () => {
       />
 
       {/* Hero Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-4xl w-full text-center">
         <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-2 sm:mb-4 leading-tight">
             SOK LAW
           </h1>
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-light text-yellow-300 mb-6 tracking-wider">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-yellow-300 mb-6 tracking-wider">
             ADVOCATES
           </h2>
-          <div className="min-h-[120px] flex flex-col justify-center">
-            <h3 className="text-lg md:text-xl lg:text-2xl font-medium text-white mb-4 transition-all duration-500">
+          <div className="min-h-[110px] flex flex-col justify-center px-2 sm:px-0">
+            <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-white mb-3 leading-snug">
               {slides[currentSlide].title}
             </h3>
-            <p className="text-base md:text-lg text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
               {slides[currentSlide].description}
             </p>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center mt-8 animate-fade-in-up-delay">
           <button
             onClick={scrollToContact}
-            className="group btn-primary flex items-center space-x-2 transform hover:scale-105 shadow-lg"
+            className="group btn-primary flex items-center space-x-2 w-full sm:w-auto justify-center transform hover:scale-105 shadow-lg px-6 py-3 rounded"
           >
             <Phone className="h-5 w-5" />
             <span>Get Legal Consultation</span>
@@ -122,7 +126,7 @@ const Hero = () => {
           </button>
           <button
             onClick={scrollToServices}
-            className="group btn-outline flex items-center space-x-2 transform hover:scale-105 shadow-lg"
+            className="group btn-outline flex items-center space-x-2 w-full sm:w-auto justify-center transform hover:scale-105 shadow-lg px-6 py-3 rounded"
           >
             <span>Our Services</span>
             <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
