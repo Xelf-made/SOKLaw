@@ -9,26 +9,26 @@ const Hero = () => {
       image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
-      description: "Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya's dynamic market.",
+      description: "Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya's dynamic market."
     },
     {
       image: 'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Constitutional Law Experts',
       subtitle: 'Protecting your fundamental rights',
-      description: "Leading constitutional law practice with landmark victories protecting citizens' rights and challenging unconstitutional legislation.",
+      description: "Leading constitutional law practice with landmark victories protecting citizens' rights and challenging unconstitutional legislation."
     },
     {
       image: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Real Estate Law Specialists',
       subtitle: 'Securing your property investments',
-      description: 'Comprehensive real estate legal services from residential transactions to large-scale development projects across Kenya.',
+      description: 'Comprehensive real estate legal services from residential transactions to large-scale development projects across Kenya.'
     },
     {
       image: 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Commercial Litigation',
       subtitle: 'Aggressive advocacy for your business',
-      description: 'Strategic litigation representation with a proven track record of successful outcomes in complex commercial disputes.',
-    },
+      description: 'Strategic litigation representation with a proven track record of successful outcomes in complex commercial disputes.'
+    }
   ];
 
   useEffect(() => {
@@ -70,7 +70,11 @@ const Hero = () => {
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <img src={slide.image} alt={slide.title} className="hero-img" />
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className="w-full h-[60vh] sm:h-screen object-cover object-center"
+          />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
       ))}
@@ -90,7 +94,9 @@ const Hero = () => {
       {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">SOK LAW</h1>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+            SOK LAW
+          </h1>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-light text-yellow-300 mb-6 tracking-wider">
             ADVOCATES
           </h2>
