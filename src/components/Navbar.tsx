@@ -62,26 +62,27 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo and Typing Title */}
           <div className="flex flex-col items-start justify-center min-w-[150px]">
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#home');
-              }}
-            >
-              <img
-                src="https://soklaw.co.ke/images/logo.png"
-                alt="SOK Law Associates Logo"
-                className="h-12 w-auto object-contain transition-all duration-300"
-              />
-            </a>
-            <div className="w-[180px] sm:w-[220px] mt-1 overflow-hidden whitespace-nowrap">
-              <span className="block text-[10px] sm:text-xs text-[#bfa06f] tracking-tight font-medium leading-tight">
-                {typedText}
-                {!doneTyping && <span className="animate-pulse ml-[1px]">|</span>}
-              </span>
-            </div>
-          </div>
+  <a
+    href="#home"
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToSection('#home');
+    }}
+  >
+    <img
+      src="https://soklaw.co.ke/images/logo.png"
+      alt="SOK Law Associates Logo"
+      className="h-12 w-auto object-contain transition-all duration-300"
+    />
+  </a>
+  <div className="w-[250px] mt-1 overflow-hidden whitespace-nowrap leading-none">
+    <span className="block text-[10px] sm:text-xs text-[#bfa06f] font-semibold tracking-tight font-sans">
+      {typedText}
+      {!doneTyping && <span className="animate-pulse ml-[1px]">|</span>}
+    </span>
+  </div>
+</div>
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
