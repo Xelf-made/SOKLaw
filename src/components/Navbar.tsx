@@ -4,6 +4,9 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [typedText, setTypedText] = useState('');
+  const fullText = 'SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES';
+  const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +19,21 @@ const Navbar = () => {
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }, [isOpen]);
+
+  useEffect(() => {
+    let index = 0;
+    const typingInterval = setInterval(() => {
+      if (index < fullText.length) {
+        setTypedText((prev) => prev + fullText[index]);
+        index++;
+      } else {
+        clearInterval(typingInterval);
+        setTimeout(() => setShowCursor(false), 800); // hide cursor
+      }
+    }, 50);
+
+    return () => clearInterval(typingInterval);
+  }, []);
 
   const navLinks = [
     { href: '#home', label: 'Home' },
@@ -37,13 +55,15 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled
+          ? 'bg-[#f9f7f1]/50 backdrop-blur-md shadow-md'
+          : 'bg-[#f9f7f1]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2 py-2">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo + Typing */}
+          <div className="flex flex-col items-start space-y-1 py-2">
             <a
               href="#home"
               onClick={(e) => {
@@ -52,15 +72,15 @@ const Navbar = () => {
               }}
             >
               <img
-                src={
-                  isScrolled
-                    ? 'https://soklaw.co.ke/images/logo.png' // replace with dark logo URL
-                    : 'https://soklaw.co.ke/images/logo.png' // replace with light logo URL
-                }
-                alt="SOK Law Associates Logo"
+                src="https://soklaw.co.ke/images/logo.png"
+                alt="SOK Logo"
                 className="h-12 w-auto object-contain transition-all duration-300"
               />
             </a>
+            <p className="text-xs sm:text-sm text-gray-800 font-medium leading-tight whitespace-nowrap">
+              {typedText}
+              {showCursor && <span className="animate-pulse">|</span>}
+            </p>
           </div>
 
           {/* Desktop Navigation */}
@@ -74,8 +94,8 @@ const Navbar = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className={`px-3 py-2 text-sm font-medium transition-colors duration-200 hover:text-blue-400 ${
-                    isScrolled ? 'text-gray-700' : 'text-white'
+                  className={`px-3 py-2 text-sm font-medium transition-colors duration-200 hover:text-blue-500 ${
+                    isScrolled ? 'text-gray-700' : 'text-gray-800'
                   }`}
                 >
                   {link.label}
@@ -88,7 +108,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 ${isScrolled ? 'text-gray-700' : 'text-white'}`}
+              className={`p-2 ${isScrolled ? 'text-gray-800' : 'text-gray-700'}`}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -98,7 +118,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
+        <div className="md:hidden bg-[#f9f7f1]/95 backdrop-blur-md border-t">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <a
@@ -108,7 +128,7 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 w-full"
+                className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-100 w-full"
               >
                 {link.label}
               </a>
