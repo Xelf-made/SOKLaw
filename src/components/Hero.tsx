@@ -23,7 +23,7 @@ const Hero = () => {
     },
     {
       image:
-        'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+        'https://i.postimg.cc/Wzd9ZRf5/7X2A2982.jpg',
       title: 'Real Estate Law Specialists',
       subtitle: 'Securing your property investments',
       description:
