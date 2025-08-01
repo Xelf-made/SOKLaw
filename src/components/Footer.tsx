@@ -54,7 +54,7 @@ const Footer = () => {
           {/* Logo + Title */}
           <div className="flex items-center space-x-3 mb-4">
             <img
-              src="your-logo-url.png" // ← Replace with your logo image
+              src="https://soklaw.co.ke/images/logo.png" // ← Replace with your logo image
               alt="SOKLAW Logo"
               className="h-8 w-8 object-contain"
             />
