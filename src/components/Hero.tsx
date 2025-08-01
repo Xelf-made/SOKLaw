@@ -10,6 +10,8 @@ const Hero = () => {
         'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
       title: 'WELCOME',
       subtitle: 'WE ARE SOKLAW',
+      description:
+        "WE ARE SOKLAW",
     },
     {
       image:
