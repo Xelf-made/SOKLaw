@@ -9,13 +9,13 @@ const Hero = () => {
       image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
-      description: 'Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya\'s dynamic market.'
+      description: "Expert corporate legal services for businesses of all sizes, ensuring compliance and strategic growth in Kenya's dynamic market."
     },
     {
       image: 'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'Constitutional Law Experts',
       subtitle: 'Protecting your fundamental rights',
-      description: 'Leading constitutional law practice with landmark victories protecting citizens\' rights and challenging unconstitutional legislation.'
+      description: "Leading constitutional law practice with landmark victories protecting citizens' rights and challenging unconstitutional legislation."
     },
     {
       image: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
@@ -66,9 +66,9 @@ const Hero = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={absolute inset-0 transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-1000 ${
             index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }}
+          }`}
         >
           <img
             src={slide.image}
@@ -136,10 +136,10 @@ const Hero = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide ? 'bg-white' : 'bg-white/50'
-            }}
-            aria-label={Go to slide ${index + 1}}
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
