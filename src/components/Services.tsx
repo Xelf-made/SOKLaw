@@ -58,8 +58,8 @@ const Services = () => {
                   style={{ backgroundImage: `url(${service.headerImage})` }}
                 />
 
-                {/* Neutral Blur Overlay (no blue tint) */}
-                <div className="absolute inset-0 bg-white/10 backdrop-blur-md" />
+                {/* Reduced Blur Overlay */}
+                <div className="absolute inset-0 bg-white/5 backdrop-blur-sm" />
 
                 {/* Card Content */}
                 <div className="relative z-10 text-white group-hover:transform group-hover:scale-105 transition-transform duration-300">
