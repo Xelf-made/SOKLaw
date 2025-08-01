@@ -71,9 +71,9 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Clock, label: 'Years of Experience', value: 15, color: 'text-blue-600' },
-    { icon: Award, label: 'Cases Won', value: 500, color: 'text-green-600' },
-    { icon: Users, label: 'Satisfied Clients', value: 1000, color: 'text-purple-600' },
+    { icon: Clock, label: 'Years of Experience', value: 15+, color: 'text-blue-600' },
+    { icon: Award, label: 'Cases Won', value: 500+, color: 'text-green-600' },
+    { icon: Users, label: 'Satisfied Clients', value: 1000+, color: 'text-purple-600' },
     { icon: TrendingUp, label: 'Success Rate (%)', value: 98, color: 'text-orange-600' },
   ];
 
