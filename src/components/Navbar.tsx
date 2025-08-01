@@ -37,7 +37,9 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled
+          ? 'bg-[#0e1013] border-b border-[#bfa06f]/30 shadow-md'
+          : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,12 +54,8 @@ const Navbar = () => {
               }}
             >
               <img
-                src={
-                  isScrolled
-                    ? 'https://soklaw.co.ke/images/logo.png' // replace with dark logo URL
-                    : 'https://soklaw.co.ke/images/logo.png' // replace with light logo URL
-                }
-                alt="SOK Law Associates Logo"
+                src="https://soklaw.co.ke/images/logo.png"
+                alt="SOKLAW Logo"
                 className="h-12 w-auto object-contain transition-all duration-300"
               />
             </a>
@@ -65,7 +63,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="ml-10 flex items-center space-x-8">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -74,8 +72,8 @@ const Navbar = () => {
                     e.preventDefault();
                     scrollToSection(link.href);
                   }}
-                  className={`px-3 py-2 text-sm font-medium transition-colors duration-200 hover:text-blue-400 ${
-                    isScrolled ? 'text-gray-700' : 'text-white'
+                  className={`text-sm font-medium tracking-wide transition-colors duration-200 hover:text-[#bfa06f] ${
+                    isScrolled ? 'text-gray-100' : 'text-white'
                   }`}
                 >
                   {link.label}
@@ -88,7 +86,9 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 ${isScrolled ? 'text-gray-700' : 'text-white'}`}
+              className={`p-2 transition-colors ${
+                isScrolled ? 'text-gray-200' : 'text-white'
+              }`}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -96,10 +96,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden bg-[#0e1013] backdrop-blur-lg border-t border-[#bfa06f]/20 shadow-md">
+          <div className="px-4 pt-4 pb-6 space-y-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -108,7 +108,7 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(link.href);
                 }}
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 w-full"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 hover:text-[#bfa06f] transition-colors"
               >
                 {link.label}
               </a>
