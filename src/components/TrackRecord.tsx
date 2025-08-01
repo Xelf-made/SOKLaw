@@ -3,7 +3,8 @@ import { Trophy, DollarSign, Scale, TrendingUp } from 'lucide-react';
 
 const TrackRecord = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [startCount, setStartCount] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [countTrigger, setCountTrigger] = useState(0); // used to re-trigger the count
 
   const achievements = [
     {
@@ -45,8 +46,10 @@ const TrackRecord = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setStartCount(true);
+          const isVisible = entry.isIntersecting;
+          setVisible(isVisible);
+          if (isVisible) {
+            setCountTrigger((prev) => prev + 1); // trigger recount
             const cards = entry.target.querySelectorAll('.track-card');
             cards.forEach((card, index) => {
               setTimeout(() => {
@@ -56,7 +59,7 @@ const TrackRecord = () => {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
 
     if (sectionRef.current) {
@@ -67,14 +70,12 @@ const TrackRecord = () => {
   }, []);
 
   // Slower Count up animation
-  const useCountUp = (end: number, duration = 3000) => {
+  const useCountUp = (end: number, trigger: number, duration = 3000) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-      if (!startCount) return;
-
       let current = 0;
-      const frameDuration = 30; // ~33fps
+      const frameDuration = 30;
       const totalFrames = Math.round(duration / frameDuration);
       const increment = end / totalFrames;
 
@@ -89,7 +90,7 @@ const TrackRecord = () => {
       }, frameDuration);
 
       return () => clearInterval(interval);
-    }, [end, startCount]);
+    }, [end, trigger]); // trigger causes re-run
 
     return count;
   };
@@ -110,13 +111,10 @@ const TrackRecord = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {achievements.map((achievement, index) => {
             const IconComponent = achievement.icon;
-            const count = useCountUp(achievement.value);
+            const count = useCountUp(achievement.value, countTrigger);
 
             return (
-              <div
-                key={index}
-                className="track-card opacity-0 relative group"
-              >
+              <div key={index} className="track-card opacity-0 relative group">
                 <div className="modern-card p-8 text-center transform hover:-translate-y-2 transition-all duration-500 group-hover:shadow-2xl">
                   <div className={`w-20 h-20 ${achievement.color} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent className="h-10 w-10 text-white" />
