@@ -73,7 +73,7 @@ const Hero = () => {
           <img
             src={slide.image}
             alt={slide.title}
-            className="hero-img"
+            // Removed "hero-img" class to disable hover zoom effect
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
