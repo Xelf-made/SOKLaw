@@ -53,7 +53,10 @@ const Footer = () => {
         <div>
           <div className="flex items-center space-x-3 mb-5">
             <Scale className="h-7 w-7 text-[#bfa06f]" />
-            <span className="text-2xl font-semibold tracking-tight text-[#bfa06f]">SOKLAW Advocates</span>
+            <span className="text-2xl font-semibold tracking-tight text-[#bfa06f]"><img
+              src="/path/to/kenya-law-logo.png" // Replace with actual logo URL
+              alt="Kenya Law Reports"
+              className="h-8 w-auto"</span>
           </div>
           <p className="text-gray-300 text-sm leading-relaxed mb-6">
             A fully fledged Nairobi-based law firm offering strategic, innovative, and client-centered legal solutions across multiple practice areas.
