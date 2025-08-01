@@ -1,17 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false); // triggers re-count
 
   const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
-    const start = 0;
     const startTime = performance.now();
 
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const value = Math.floor(progress * (target - start) + start);
+      const value = Math.floor(progress * target);
       el.innerText = value.toString();
 
       if (progress < 1) {
@@ -24,32 +24,8 @@ const About = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const targetEl = entry.target;
-          const elements = targetEl.querySelectorAll('.animate-on-scroll');
-          const counters = targetEl.querySelectorAll('.count-up');
-
-          if (entry.isIntersecting) {
-            // Animate text and image elements
-            elements.forEach((element, index) => {
-              setTimeout(() => {
-                element.classList.add('animate-fade-in-up');
-              }, index * 200);
-            });
-
-            // Animate counters on scroll in
-            counters.forEach((counter) => {
-              const countTo = Number(counter.getAttribute('data-count-to'));
-              animateCount(counter as HTMLElement, countTo);
-            });
-          } else {
-            // Reset counters when out of view
-            counters.forEach((counter) => {
-              (counter as HTMLElement).innerText = '0';
-            });
-          }
-        });
+      ([entry]) => {
+        setVisible(entry.isIntersecting);
       },
       { threshold: 0.2 }
     );
@@ -60,6 +36,18 @@ const About = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!visible || !sectionRef.current) return;
+
+    const counters = sectionRef.current.querySelectorAll('.count-up');
+    counters.forEach((counter) => {
+      const target = Number(counter.getAttribute('data-count-to'));
+      if (!isNaN(target)) {
+        animateCount(counter as HTMLElement, target, 1500);
+      }
+    });
+  }, [visible]);
 
   const stats = [
     { icon: Clock, label: 'Years of Experience', value: 15, color: 'text-blue-600' },
