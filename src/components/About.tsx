@@ -7,7 +7,7 @@ const About = () => {
   // Easing function for smoother animation
   const easeOutQuad = (t: number) => t * (2 - t);
 
-  const animateCount = (el: HTMLElement, target: number, duration = 2500) => {
+  const animateCount = (el: HTMLElement, target: number, suffix = '', duration = 2500) => {
     const start = 0;
     const startTime = performance.now();
 
@@ -15,7 +15,7 @@ const About = () => {
       const elapsed = currentTime - startTime;
       const progress = easeOutQuad(Math.min(elapsed / duration, 1));
       const value = Math.floor(progress * (target - start) + start);
-      el.innerText = value.toString();
+      el.innerText = `${value}${suffix}`;
 
       if (progress < 1) {
         requestAnimationFrame(step);
@@ -48,12 +48,13 @@ const About = () => {
             // Animate counters on scroll into view
             counters.forEach((counter) => {
               const countTo = Number(counter.getAttribute('data-count-to'));
-              animateCount(counter as HTMLElement, countTo);
+              const suffix = counter.getAttribute('data-suffix') || '';
+              animateCount(counter as HTMLElement, countTo, suffix);
             });
           }
 
           if (!entry.isIntersecting) {
-            hasAnimated = false; // Reset for re-animation on re-entry
+            hasAnimated = false;
             counters.forEach((counter) => {
               (counter as HTMLElement).innerText = '0';
             });
@@ -71,10 +72,10 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Clock, label: 'Years of Experience', value: 15+, color: 'text-blue-600' },
-    { icon: Award, label: 'Cases Won', value: 500+, color: 'text-green-600' },
-    { icon: Users, label: 'Satisfied Clients', value: 1000+, color: 'text-purple-600' },
-    { icon: TrendingUp, label: 'Success Rate (%)', value: 98, color: 'text-orange-600' },
+    { icon: Clock, label: 'Years of Experience', value: 15, suffix: '+', color: 'text-blue-600' },
+    { icon: Award, label: 'Cases Won', value: 500, suffix: '+', color: 'text-green-600' },
+    { icon: Users, label: 'Satisfied Clients', value: 1000, suffix: '+', color: 'text-purple-600' },
+    { icon: TrendingUp, label: 'Success Rate (%)', value: 98, suffix: '%', color: 'text-orange-600' },
   ];
 
   return (
@@ -133,6 +134,7 @@ const About = () => {
                     <div
                       className="text-2xl font-bold mb-1 count-up"
                       data-count-to={stat.value}
+                      data-suffix={stat.suffix}
                     >
                       0
                     </div>
