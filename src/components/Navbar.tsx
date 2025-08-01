@@ -29,7 +29,7 @@ const Navbar = () => {
         index++;
       } else {
         clearInterval(typingInterval);
-        setTimeout(() => setShowCursor(false), 500); // hide cursor after done
+        setTimeout(() => setShowCursor(false), 500);
       }
     }, 60);
     return () => clearInterval(typingInterval);
@@ -62,8 +62,8 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo and Typing Title */}
-          <div className="flex flex-col items-start space-y-1 py-2">
+          {/* Logo and Typing Text */}
+          <div className="flex flex-col items-start space-y-0.5 py-2 max-w-[200px]">
             <a
               href="#home"
               onClick={(e) => {
@@ -74,10 +74,10 @@ const Navbar = () => {
               <img
                 src="https://soklaw.co.ke/images/logo.png"
                 alt="SOK Law Logo"
-                className="h-10 w-auto object-contain transition-all duration-300"
+                className="h-9 w-auto object-contain transition-all duration-300"
               />
             </a>
-            <p className="text-xs sm:text-sm text-[#1e1e1e] font-medium whitespace-nowrap max-w-[280px] sm:max-w-none overflow-hidden">
+            <p className="text-[10px] sm:text-xs text-[#4B3621] font-medium whitespace-nowrap overflow-hidden">
               {typedText}
               {showCursor && <span className="animate-pulse">|</span>}
             </p>
