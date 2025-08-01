@@ -1,5 +1,8 @@
 import React from 'react';
-import { Scale, MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import {
+  Scale, MapPin, Phone, Mail,
+  Facebook, Twitter, Linkedin, Instagram
+} from 'lucide-react';
 
 const Footer = () => {
   const quickLinks = [
@@ -30,55 +33,49 @@ const Footer = () => {
   const scrollToSection = (href: string) => {
     if (href.startsWith('#')) {
       const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      {/* Main Footer Content */}
+    <footer className="bg-[#0f172a] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Company Info */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center space-x-2 mb-6">
-              <Scale className="h-8 w-8 text-blue-400" />
-              <span className="text-xl font-bold">SOK Law Associates</span>
+
+          {/* Brand + Social */}
+          <div>
+            <div className="flex items-center space-x-3 mb-6">
+              <Scale className="h-7 w-7 text-yellow-400" />
+              <span className="text-xl font-bold tracking-wide">SOK Law Associates</span>
             </div>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Your trusted legal partner in Kenya, providing comprehensive legal solutions 
-              with excellence, integrity, and unwavering commitment to client success since 2009.
+            <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+              Trusted legal experts serving clients across Kenya since 2009 — committed to clarity, excellence, and strategic results.
             </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => {
-                const IconComponent = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="p-2 bg-gray-800 rounded-full hover:bg-blue-600 transition-colors duration-300"
-                  >
-                    <IconComponent className="h-5 w-5" />
-                  </a>
-                );
-              })}
+            <div className="flex space-x-3">
+              {socialLinks.map(({ icon: Icon, href, label }, idx) => (
+                <a
+                  key={idx}
+                  href={href}
+                  aria-label={label}
+                  className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition"
+                >
+                  <Icon className="h-4 w-4 text-white" />
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
-            <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
+            <h3 className="text-lg font-semibold mb-5">Quick Links</h3>
+            <ul className="space-y-3 text-sm text-gray-300">
+              {quickLinks.map(({ label, href }, i) => (
+                <li key={i}>
                   <button
-                    onClick={() => scrollToSection(link.href)}
-                    className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
+                    onClick={() => scrollToSection(href)}
+                    className="hover:text-yellow-400 transition"
                   >
-                    {link.label}
+                    {label}
                   </button>
                 </li>
               ))}
@@ -87,67 +84,57 @@ const Footer = () => {
 
           {/* Legal Services */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Legal Services</h3>
-            <ul className="space-y-3">
-              {legalServices.map((service, index) => (
-                <li key={index}>
+            <h3 className="text-lg font-semibold mb-5">Legal Services</h3>
+            <ul className="space-y-3 text-sm text-gray-300">
+              {legalServices.map(({ label, href }, i) => (
+                <li key={i}>
                   <button
-                    onClick={() => scrollToSection(service.href)}
-                    className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
+                    onClick={() => scrollToSection(href)}
+                    className="hover:text-yellow-400 transition"
                   >
-                    {service.label}
+                    {label}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Contact Information</h3>
-            <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-5">Contact Information</h3>
+            <div className="space-y-4 text-sm text-gray-300">
               <div>
-                <h4 className="font-medium text-blue-400 mb-2">Nairobi Office</h4>
-                <div className="space-y-2 text-sm text-gray-300">
-                  <div className="flex items-start space-x-2">
-                    <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
-                    <span>Upper Hill, ABC Place, 5th Floor<br />Waiyaki Way, Nairobi</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 flex-shrink-0" />
-                    <a href="tel:+254700123456" className="hover:text-blue-400 transition-colors">
-                      +254 700 123 456
-                    </a>
-                  </div>
+                <h4 className="text-yellow-400 font-medium mb-2">Nairobi Office</h4>
+                <div className="flex items-start space-x-2">
+                  <MapPin className="h-4 w-4 mt-1" />
+                  <span>Upper Hill, ABC Place, 5th Floor<br />Waiyaki Way, Nairobi</span>
+                </div>
+                <div className="flex items-center space-x-2 mt-2">
+                  <Phone className="h-4 w-4" />
+                  <a href="tel:+254700123456" className="hover:text-yellow-400 transition">
+                    +254 700 123 456
+                  </a>
                 </div>
               </div>
-                   
-              <div className="flex items-center space-x-2 text-sm text-gray-300">
-                <Mail className="h-4 w-4 flex-shrink-0" />
-                <a href="mailto:info@soklaw.co.ke" className="hover:text-blue-400 transition-colors">
+              <div className="flex items-center space-x-2">
+                <Mail className="h-4 w-4" />
+                <a href="mailto:info@soklaw.co.ke" className="hover:text-yellow-400 transition">
                   info@soklaw.co.ke
                 </a>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-gray-400 text-center md:text-left">
-              © 2024 SOK Law Associates. All rights reserved.
-            </div>
-            <div className="flex space-x-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                Terms of Service
-              </a>
-            </div>
+      {/* Footer Bottom */}
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+          <span>© {new Date().getFullYear()} SOK Law Associates. All rights reserved.</span>
+          <div className="flex space-x-6 mt-3 md:mt-0">
+            <a href="#" className="hover:text-yellow-400 transition">Privacy Policy</a>
+            <a href="#" className="hover:text-yellow-400 transition">Terms of Service</a>
           </div>
         </div>
       </div>
