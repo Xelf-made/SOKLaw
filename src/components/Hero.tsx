@@ -8,8 +8,8 @@ const Hero = () => {
     {
       image:
         'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
-      title: 'Corporate Legal Excellence',
-      subtitle: 'Comprehensive business law solutions',
+      title: 'WELCOME',
+      subtitle: 'WE ARE SOKLAW',
     },
     {
       image:
