@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const fullText = 'SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES';
+const fullText = 'SIMIYU,OPONDO,KIRANGA & COMPANY ADVOCATES';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
