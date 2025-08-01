@@ -4,7 +4,6 @@ import { Users, Award, Clock, TrendingUp } from 'lucide-react';
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Fixed count animation
   const animateCount = (el: HTMLElement, target: number, duration = 1200) => {
     const start = 0;
     const startTime = performance.now();
@@ -27,29 +26,32 @@ const About = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const targetEl = entry.target;
+          const elements = targetEl.querySelectorAll('.animate-on-scroll');
+          const counters = targetEl.querySelectorAll('.count-up');
+
           if (entry.isIntersecting) {
-            const elements = entry.target.querySelectorAll('.animate-on-scroll');
+            // Animate text and image elements
             elements.forEach((element, index) => {
               setTimeout(() => {
                 element.classList.add('animate-fade-in-up');
               }, index * 200);
             });
 
-            // Animate counters
-            const counters = entry.target.querySelectorAll('.count-up');
+            // Animate counters on scroll in
             counters.forEach((counter) => {
-              const target = Number(counter.getAttribute('data-count-to'));
-              if (target && !counter.classList.contains('counted')) {
-                animateCount(counter as HTMLElement, target);
-                counter.classList.add('counted');
-              }
+              const countTo = Number(counter.getAttribute('data-count-to'));
+              animateCount(counter as HTMLElement, countTo);
             });
-
-            observer.unobserve(entry.target);
+          } else {
+            // Reset counters when out of view
+            counters.forEach((counter) => {
+              (counter as HTMLElement).innerText = '0';
+            });
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.2 }
     );
 
     if (sectionRef.current) {
