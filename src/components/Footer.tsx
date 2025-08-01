@@ -53,7 +53,7 @@ const Footer = () => {
         <div>
           <div className="mb-4">
             <img
-              src="your-logo-url.png" // Replace with your logo
+              src="https://soklaw.co.ke/images/logo.png" // Replace with your logo
               alt="SOKLAW Logo"
               className="h-10 w-auto"
             />
