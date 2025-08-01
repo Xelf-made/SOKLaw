@@ -67,13 +67,13 @@ const About = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="about" className="py-20 bg-gray-50">
+    <section ref={sectionRef} id="about" className="py-20 brand-section-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6 text-black">
+          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6">
             About SOK Law Associates
           </h2>
-          <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gray-800 mx-auto"></div>
+          <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto"></div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -83,23 +83,25 @@ const About = () => {
               loading="lazy"
               src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
               alt="SOK Law Associates Team"
-              className="about-img shadow-2xl transform hover:scale-105 transition-transform duration-500"
+              className="about-img shadow-2xl transform hover:scale-105 transition-transform duration-500 rounded-2xl"
             />
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full opacity-20"></div>
+            <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-900 rounded-full opacity-20"></div>
           </div>
 
           {/* Content */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
-              <h3 className="text-2xl font-bold mb-4 text-black">
+              <h3 className="text-2xl font-bold mb-4">
                 Excellence in Legal Practice Since 2009
               </h3>
-              <p className="text-lg leading-relaxed mb-6 text-gray-800">
+              <p className="text-lg leading-relaxed mb-6">
                 SOK Law Associates has been at the forefront of legal practice in Kenya,
                 providing comprehensive legal solutions to individuals, corporations, and
                 institutions. Our commitment to excellence, integrity, and client satisfaction
                 has made us one of the most trusted law firms in the region.
               </p>
-              <p className="text-lg leading-relaxed text-gray-800">
+              <p className="text-lg leading-relaxed">
                 We combine deep legal expertise with innovative approaches to deliver
                 outstanding results for our clients. Our team of experienced lawyers
                 specializes in various areas of law, ensuring that we can handle complex
@@ -114,16 +116,16 @@ const About = () => {
                 return (
                   <div
                     key={index}
-                    className="animate-on-scroll opacity-0 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    className="animate-on-scroll opacity-0 modern-card p-6 transform hover:-translate-y-1"
                   >
                     <IconComponent className={`h-8 w-8 ${stat.color} mb-3`} />
                     <div
-                      className="text-2xl font-bold mb-1 text-black count-up"
+                      className="text-2xl font-bold mb-1 count-up"
                       data-count-to={stat.value}
                     >
                       0
                     </div>
-                    <div className="text-sm text-gray-800">{stat.label}</div>
+                    <div className="text-sm">{stat.label}</div>
                   </div>
                 );
               })}

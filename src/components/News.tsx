@@ -28,16 +28,16 @@ const News = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="news" className="py-20 bg-gray-50">
+    <section ref={sectionRef} id="news" className="py-20 brand-section-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Latest News & Updates
           </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay">
             Stay updated with our latest legal insights, case victories, and important legal developments
           </p>
-          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         {/* BlogHandy Blog Posts Container */}

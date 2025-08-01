@@ -34,14 +34,14 @@ const Services = () => {
     <section ref={sectionRef} id="services" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Our Legal Services
           </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay">
             We provide comprehensive legal solutions across various practice areas, 
             ensuring expert representation for all your legal needs.
           </p>
-          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -50,7 +50,7 @@ const Services = () => {
             return (
               <div
                 key={index}
-                className="relative service-card overflow-hidden p-8 rounded-2xl border group opacity-0 shadow-lg"
+                className="relative service-card overflow-hidden p-8 rounded-2xl group opacity-0 modern-card"
               >
                 {/* Background Image */}
                 <div
@@ -59,18 +59,18 @@ const Services = () => {
                 />
 
                 {/* Blur + Tint Overlay */}
-                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-blue-800/70 backdrop-blur-sm" />
 
                 {/* Card Content */}
-                <div className="relative z-10 text-white">
+                <div className="relative z-10 text-white group-hover:transform group-hover:scale-105 transition-transform duration-300">
                   <div className="mb-6">
-                    <IconComponent className={`h-12 w-12 ${service.iconColor}`} />
+                    <IconComponent className="h-12 w-12 text-yellow-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-4">{service.title}</h3>
-                  <p className="leading-relaxed mb-4">{service.description}</p>
+                  <h3 className="text-xl font-bold mb-4 text-white">{service.title}</h3>
+                  <p className="leading-relaxed mb-4 text-white/90">{service.description}</p>
                   <Link
                     to={`/services/${service.id}`}
-                    className="inline-flex items-center group/link font-semibold hover:text-gray-200 text-white"
+                    className="inline-flex items-center group/link font-semibold hover:text-yellow-300 text-yellow-400"
                     aria-label={`Learn more about ${service.title}`}
                   >
                     <span>Learn More</span>
@@ -85,9 +85,10 @@ const Services = () => {
         <div className="text-center mt-16">
           <Link
             to="/services"
-            className="btn-primary inline-block transform hover:scale-105 shadow-lg"
+            className="btn-primary inline-flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
-            View All Services
+            <span>View All Services</span>
+            <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </div>

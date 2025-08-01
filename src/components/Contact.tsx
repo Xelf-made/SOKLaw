@@ -75,45 +75,45 @@ const Contact = () => {
     <section ref={sectionRef} id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
+          <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6">
             Get In Touch
           </h2>
-          <p className="animate-on-scroll opacity-0 text-xl max-w-3xl mx-auto" style={{ color: '#333333' }}>
+          <p className="animate-on-scroll opacity-0 text-xl max-w-3xl mx-auto">
             Ready to discuss your legal needs? Contact us today for a consultation 
             with our experienced legal team.
           </p>
-          <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gray-800 mx-auto mt-6"></div>
+          <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6"></div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
-              <h3 className="text-2xl font-bold mb-6" style={{ color: '#000000' }}>
+              <h3 className="text-2xl font-bold mb-6">
                 Our Office Locations
               </h3>
               
               {officeInfo.map((office, index) => (
-                <div key={index} className="mb-8 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow duration-300">
-                  <h4 className="text-xl font-semibold mb-4" style={{ color: '#000000' }}>
+                <div key={index} className="mb-8 p-6 modern-card hover:shadow-lg transition-shadow duration-300">
+                  <h4 className="text-xl font-semibold mb-4">
                     {office.city}
                   </h4>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <MapPin className="h-5 w-5 mt-1 flex-shrink-0" style={{ color: '#1E3A8A' }} />
-                      <p className="whitespace-pre-line" style={{ color: '#333333' }}>
+                      <MapPin className="h-5 w-5 mt-1 flex-shrink-0 text-yellow-600" />
+                      <p className="whitespace-pre-line">
                         {office.address}
                       </p>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Phone className="h-5 w-5 flex-shrink-0" style={{ color: '#1E3A8A' }} />
-                      <a href={`tel:${office.phone}`} className="transition-colors" style={{ color: '#333333' }}>
+                      <Phone className="h-5 w-5 flex-shrink-0 text-yellow-600" />
+                      <a href={`tel:${office.phone}`} className="transition-colors hover:text-yellow-600">
                         {office.phone}
                       </a>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Mail className="h-5 w-5 flex-shrink-0" style={{ color: '#1E3A8A' }} />
-                      <a href={`mailto:${office.email}`} className="transition-colors" style={{ color: '#333333' }}>
+                      <Mail className="h-5 w-5 flex-shrink-0 text-yellow-600" />
+                      <a href={`mailto:${office.email}`} className="transition-colors hover:text-yellow-600">
                         {office.email}
                       </a>
                     </div>
@@ -122,12 +122,12 @@ const Contact = () => {
               ))}
             </div>
 
-            <div className="animate-on-scroll opacity-0 p-6 bg-gray-50 rounded-xl">
-              <h4 className="text-xl font-semibold mb-4 flex items-center" style={{ color: '#000000' }}>
-                <Clock className="h-5 w-5 mr-2" style={{ color: '#1E3A8A' }} />
+            <div className="animate-on-scroll opacity-0 p-6 modern-card">
+              <h4 className="text-xl font-semibold mb-4 flex items-center">
+                <Clock className="h-5 w-5 mr-2 text-yellow-600" />
                 Business Hours
               </h4>
-              <div className="space-y-2" style={{ color: '#333333' }}>
+              <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Monday - Friday</span>
                   <span>8:00 AM - 6:00 PM</span>
@@ -145,14 +145,14 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="animate-on-scroll opacity-0 bg-gray-50 p-8 rounded-2xl">
-            <h3 className="text-2xl font-bold mb-6" style={{ color: '#000000' }}>
+          <div className="animate-on-scroll opacity-0 modern-card p-8">
+            <h3 className="text-2xl font-bold mb-6">
               Request a Consultation
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                  <label htmlFor="firstName" className="block text-sm font-medium mb-2">
                     First Name *
                   </label>
                   <input
@@ -162,12 +162,12 @@ const Contact = () => {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                     placeholder="Your first name"
                   />
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                  <label htmlFor="lastName" className="block text-sm font-medium mb-2">
                     Last Name *
                   </label>
                   <input
@@ -177,7 +177,7 @@ const Contact = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                     placeholder="Your last name"
                   />
                 </div>
@@ -185,7 +185,7 @@ const Contact = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
                     Email Address *
                   </label>
                   <input
@@ -195,12 +195,12 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                     placeholder="your.email@example.com"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
                     Phone Number
                   </label>
                   <input
@@ -209,14 +209,14 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                     placeholder="+254 700 000 000"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="service" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                <label htmlFor="service" className="block text-sm font-medium mb-2">
                   Legal Service Required *
                 </label>
                 <select
@@ -225,7 +225,7 @@ const Contact = () => {
                   value={formData.service}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                 >
                   <option value="">Select a service</option>
                   {legalServices.map((service, index) => (
@@ -237,7 +237,7 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
                   Message *
                 </label>
                 <textarea
@@ -247,7 +247,7 @@ const Contact = () => {
                   onChange={handleInputChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300 resize-none"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 resize-none"
                   placeholder="Please describe your legal matter and how we can help you..."
                 />
               </div>

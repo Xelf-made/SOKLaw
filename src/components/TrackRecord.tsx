@@ -63,13 +63,13 @@ const TrackRecord = () => {
     <section ref={sectionRef} className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in" style={{ color: '#000000' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Our Track Record
           </h2>
-          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay" style={{ color: '#333333' }}>
+          <p className="text-xl max-w-3xl mx-auto animate-fade-in-delay">
             Numbers that speak to our commitment to excellence and our clients' success
           </p>
-          <div className="w-24 h-1 bg-gray-800 mx-auto mt-6 animate-scale-in"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -80,24 +80,24 @@ const TrackRecord = () => {
                 key={index}
                 className="track-card opacity-0 relative group"
               >
-                <div className="bg-white rounded-2xl shadow-xl p-8 text-center transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 group-hover:shadow-2xl">
+                <div className="modern-card p-8 text-center transform hover:-translate-y-2 transition-all duration-500 group-hover:shadow-2xl">
                   {/* Icon Background */}
                   <div className={`w-20 h-20 ${achievement.color} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent className="h-10 w-10 text-white" />
                   </div>
                   
                   {/* Value */}
-                  <div className="text-4xl font-bold mb-2" style={{ color: '#000000' }}>
+                  <div className="text-4xl font-bold mb-2">
                     {achievement.value}
                   </div>
                   
                   {/* Label */}
-                  <h3 className="text-xl font-semibold mb-3" style={{ color: '#000000' }}>
+                  <h3 className="text-xl font-semibold mb-3">
                     {achievement.label}
                   </h3>
                   
                   {/* Description */}
-                  <p style={{ color: '#333333' }}>
+                  <p>
                     {achievement.description}
                   </p>
                 </div>
