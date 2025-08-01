@@ -7,7 +7,7 @@ const Hero = () => {
   const slides = [
     {
       image:
-        'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+        'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
       title: 'Corporate Legal Excellence',
       subtitle: 'Comprehensive business law solutions',
       description:
@@ -15,7 +15,7 @@ const Hero = () => {
     },
     {
       image:
-        'https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+        'https://i.postimg.cc/d09SPjyj/7-X2-A2913-1.jpg',
       title: 'Constitutional Law Experts',
       subtitle: 'Protecting your fundamental rights',
       description:
