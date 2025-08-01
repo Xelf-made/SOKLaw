@@ -143,7 +143,7 @@ const Footer = () => {
               className="h-8 w-auto"
             />
             <img
-              src="https://soklaw.co.ke/images/law-society-of-kenya.jpg" // Replace with actual logo URL
+              src="http://www.lsk.or.ke/" // Replace with actual logo URL
               alt="Law Society of Kenya"
               className="h-8 w-auto"
             />
