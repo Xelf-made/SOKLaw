@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const TYPING_TEXT = 'OPONDO, SIMIYU, KIRANGA & COMPANY ADVOCATES';
+const TYPING_TEXT = 'SIMIYU, OPONDO, KIRANGA & COMPANY ADVOCATES';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
