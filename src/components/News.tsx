@@ -280,7 +280,7 @@ const News = () => {
   );
 
   return (
-    <section ref={sectionRef} id="news" className="py-20 bg-gray-50">
+    <section ref={sectionRef} id="news" className="py-20" style={{ backgroundColor: '#f5f5f0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {selectedPost ? renderBlogPost(selectedPost) : renderBlogList()}
       </div>
