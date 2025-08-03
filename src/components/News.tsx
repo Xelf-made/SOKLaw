@@ -17,7 +17,6 @@ const News = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [blogHandyLoaded, setBlogHandyLoaded] = useState(false);
 
   useEffect(() => {
@@ -87,7 +86,6 @@ const News = () => {
       
       script.onerror = () => {
         console.error('Failed to load BlogHandy script');
-        setIsLoading(false);
       };
 
       document.head.appendChild(script);
@@ -167,7 +165,6 @@ const News = () => {
       if (extractedPosts.length > 0) {
         console.log(`Successfully extracted ${extractedPosts.length} blog posts`);
         setBlogPosts(extractedPosts);
-        setIsLoading(false);
         return true;
       }
 
@@ -188,7 +185,6 @@ const News = () => {
         clearInterval(checkForPosts);
       } else if (attemptCount >= maxAttempts) {
         console.log('Timeout: BlogHandy posts not found after 15 seconds');
-        setIsLoading(false);
         clearInterval(checkForPosts);
       }
     }, 500);
@@ -251,14 +247,7 @@ const News = () => {
         <div className="w-24 h-1 bg-gradient-to-r from-yellow-500 to-yellow-400 mx-auto mt-6"></div>
       </div>
 
-      {/* Loading State */}
-      {isLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading latest news from BlogHandy...</p>
-          <p className="text-sm text-gray-500 mt-2">This may take a few moments</p>
-        </div>
-      ) : blogPosts.length > 0 ? (
+      {blogPosts.length > 0 ? (
         // Blog Posts Grid
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {blogPosts.map((post, index) => (
