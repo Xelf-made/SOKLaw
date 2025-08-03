@@ -204,7 +204,26 @@ const News = () => {
 
       {/* BlogHandy Container - Now visible for debugging */}
       <div className="mt-8">
-        <div id="bh-posts" className="blog-posts-container min-h-[50px]">
+        <div 
+          id="bh-posts" 
+          className="blog-posts-container min-h-[50px]"
+          onClick={(e) => {
+            const target = e.target as HTMLElement;
+            const link = target.closest('a');
+            if (link) {
+              e.preventDefault();
+              // Handle blog post click without page refresh
+              const href = link.getAttribute('href');
+              if (href && href.startsWith('#')) {
+                // Handle anchor links
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+              }
+            }
+          }}
+        >
           {/* BlogHandy will populate this container */}
         </div>
       </div>
