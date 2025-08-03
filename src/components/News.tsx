@@ -16,8 +16,7 @@ const News = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,7 +27,7 @@ const News = () => {
             cards.forEach((card, index) => {
               setTimeout(() => {
                 card.classList.add('animate-fade-in-up');
-              }, index * 200);
+              }, index * 100);
             });
           }
         });
@@ -46,9 +45,12 @@ const News = () => {
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (event.state?.postId) {
+      event.preventDefault();
+      if (event.state?.postId && blogPosts.length > 0) {
         const post = blogPosts.find(p => p.id === event.state.postId);
-        setSelectedPost(post || null);
+        if (post) {
+          setSelectedPost(post);
+        }
       } else {
         setSelectedPost(null);
       }
@@ -66,82 +68,106 @@ const News = () => {
         const posts: BlogPost[] = [];
         
         Array.from(blogContainer.children).forEach((postElement, index) => {
-          const titleElement = postElement.querySelector('.bh-post-title');
-          const contentElement = postElement.querySelector('.bh-post-content');
-          const imageElement = postElement.querySelector('.bh-post-image') as HTMLImageElement;
+          const titleElement = postElement.querySelector('.bh-post-title, h2, h3, .title');
+          const contentElement = postElement.querySelector('.bh-post-content, .content, p');
+          const imageElement = postElement.querySelector('.bh-post-image, img') as HTMLImageElement;
           const linkElement = postElement.querySelector('a[href]') as HTMLAnchorElement;
           
           if (titleElement && contentElement) {
+            const fullContent = contentElement.innerHTML || contentElement.textContent || '';
             const post: BlogPost = {
-              id: `post-${index}`,
-              title: titleElement.textContent || 'Untitled',
-              content: contentElement.innerHTML || '',
-              excerpt: contentElement.textContent?.substring(0, 150) + '...' || '',
+              id: `post-${index + 1}`,
+              title: titleElement.textContent?.trim() || `Blog Post ${index + 1}`,
+              content: fullContent,
+              excerpt: (contentElement.textContent || '').substring(0, 150) + '...',
               author: 'SOK Law Team',
-              date: new Date().toLocaleDateString(),
-              image: imageElement?.src,
+              date: new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              }),
+              image: imageElement?.src || 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&fit=crop',
               url: linkElement?.href
             };
             posts.push(post);
           }
         });
         
-        setBlogPosts(posts);
+        if (posts.length > 0) {
+          setBlogPosts(posts);
+        }
       }
     };
 
     // Check for BlogHandy posts periodically until they load
     const checkInterval = setInterval(() => {
+      extractBlogPosts();
       const blogContainer = document.getElementById('bh-posts');
       if (blogContainer && blogContainer.children.length > 0) {
-        extractBlogPosts();
         clearInterval(checkInterval);
       }
     }, 500);
 
-    // Clear interval after 10 seconds to prevent infinite checking
-    setTimeout(() => clearInterval(checkInterval), 10000);
+    // Clear interval after 15 seconds to prevent infinite checking
+    setTimeout(() => clearInterval(checkInterval), 15000);
 
     return () => clearInterval(checkInterval);
   }, []);
 
+  // Instant blog post click handler - NO page refresh
   const handlePostClick = (post: BlogPost, event: React.MouseEvent) => {
     event.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    // Simulate loading delay for smooth transition
-    setTimeout(() => {
-      setSelectedPost(post);
-      setLoading(false);
-      
-      // Update browser history
-      const newUrl = `${window.location.pathname}#post-${post.id}`;
-      window.history.pushState(
-        { postId: post.id }, 
-        post.title, 
-        newUrl
-      );
-      
-      // Scroll to top of news section
-      sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    event.stopPropagation();
+    
+    // Instant transition - no loading delay
+    setIsTransitioning(true);
+    
+    // Set the selected post immediately
+    setSelectedPost(post);
+    
+    // Update browser history without refresh
+    const newUrl = `${window.location.pathname}${window.location.search}#post-${post.id}`;
+    window.history.pushState(
+      { postId: post.id }, 
+      post.title, 
+      newUrl
+    );
+    
+    // Scroll to top of news section instantly
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Remove transition state after animation
+    setTimeout(() => setIsTransitioning(false), 300);
   };
 
-  const handleBackToList = () => {
-    setSelectedPost(null);
-    setLoading(false);
-    setError(null);
+  // Instant back to list handler - NO page refresh
+  const handleBackToList = (event?: React.MouseEvent) => {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     
-    // Update browser history
-    window.history.pushState(null, 'News', window.location.pathname);
+    // Instant transition back to list
+    setIsTransitioning(true);
+    setSelectedPost(null);
+    
+    // Update browser history without refresh
+    const baseUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.pushState(null, 'News', baseUrl);
     
     // Scroll to top of news section
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Remove transition state
+    setTimeout(() => setIsTransitioning(false), 300);
   };
 
   const renderBlogList = () => (
-    <>
+    <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in text-brand-navy">
           Latest News & Updates
@@ -152,25 +178,31 @@ const News = () => {
         <div className="w-24 h-1 bg-gradient-to-r from-brand-gold to-brand-gold-light mx-auto mt-6 animate-scale-in"></div>
       </div>
 
-      {/* Custom Blog Posts if available */}
-      {blogPosts.length > 0 && (
+      {/* Custom Blog Posts Grid */}
+      {blogPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {blogPosts.map((post, index) => (
             <article
               key={post.id}
               className="news-card opacity-0 modern-card overflow-hidden cursor-pointer transform hover:-translate-y-2 transition-all duration-300 group"
               onClick={(e) => handlePostClick(post, e)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handlePostClick(post, e as any);
+                }
+              }}
             >
-              {post.image && (
-                <div className="relative overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              )}
+              <div className="relative overflow-hidden">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
               
               <div className="p-6">
                 <div className="flex items-center text-sm text-brand-gray mb-3">
@@ -180,7 +212,7 @@ const News = () => {
                   <span>{post.author}</span>
                 </div>
                 
-                <h3 className="text-xl font-bold mb-3 text-brand-navy group-hover:text-brand-gold transition-colors">
+                <h3 className="text-xl font-bold mb-3 text-brand-navy group-hover:text-brand-gold transition-colors line-clamp-2">
                   {post.title}
                 </h3>
                 
@@ -196,21 +228,27 @@ const News = () => {
             </article>
           ))}
         </div>
+      ) : (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-gold mx-auto mb-4"></div>
+          <p className="text-brand-gray">Loading latest news...</p>
+        </div>
       )}
 
-      {/* BlogHandy Blog Posts Container */}
-      <div className="animate-fade-in-up">
+      {/* Hidden BlogHandy Container */}
+      <div className="hidden">
         <div id="bh-posts" className="blog-posts-container"></div>
       </div>
-    </>
+    </div>
   );
 
   const renderBlogPost = (post: BlogPost) => (
-    <div className="max-w-4xl mx-auto">
+    <div className={`max-w-4xl mx-auto transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
       {/* Back Button */}
       <button
         onClick={handleBackToList}
-        className="inline-flex items-center text-brand-gold hover:text-brand-gold-dark mb-8 transition-colors font-medium group"
+        className="inline-flex items-center text-brand-gold hover:text-brand-gold-dark mb-8 transition-colors font-medium group bg-transparent border-none cursor-pointer"
+        type="button"
       >
         <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
         Back to News
@@ -218,15 +256,14 @@ const News = () => {
 
       {/* Blog Post Content */}
       <article className="modern-card p-8 lg:p-12">
-        {post.image && (
-          <div className="mb-8 rounded-lg overflow-hidden">
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-64 lg:h-96 object-cover"
-            />
-          </div>
-        )}
+        <div className="mb-8 rounded-lg overflow-hidden">
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-64 lg:h-96 object-cover"
+            loading="lazy"
+          />
+        </div>
 
         <div className="flex items-center text-sm text-brand-gray mb-6">
           <Calendar className="h-4 w-4 mr-2" />
@@ -239,10 +276,13 @@ const News = () => {
           {post.title}
         </h1>
 
-        <div 
-          className="prose prose-lg max-w-none text-brand-gray"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <div className="prose prose-lg max-w-none text-brand-gray">
+          {post.content.includes('<') ? (
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <p className="text-lg leading-relaxed whitespace-pre-wrap">{post.content}</p>
+          )}
+        </div>
 
         {post.url && (
           <div className="mt-8 pt-8 border-t border-gray-200">
@@ -257,39 +297,26 @@ const News = () => {
             </a>
           </div>
         )}
+
+        {/* Bottom Back Button */}
+        <div className="mt-12 pt-8 border-t border-gray-200 text-center">
+          <button
+            onClick={handleBackToList}
+            className="btn-primary inline-flex items-center space-x-2"
+            type="button"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            <span>Back to All News</span>
+          </button>
+        </div>
       </article>
-    </div>
-  );
-
-  const renderLoadingState = () => (
-    <div className="flex items-center justify-center py-20">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-gold"></div>
-      <span className="ml-4 text-brand-gray">Loading article...</span>
-    </div>
-  );
-
-  const renderErrorState = () => (
-    <div className="text-center py-20">
-      <div className="text-red-600 mb-4">
-        <span className="text-lg">Failed to load article</span>
-      </div>
-      <button
-        onClick={handleBackToList}
-        className="btn-primary"
-      >
-        Back to News
-      </button>
     </div>
   );
 
   return (
     <section ref={sectionRef} id="news" className="py-20 brand-section-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {loading && renderLoadingState()}
-        {error && renderErrorState()}
-        {!loading && !error && (
-          selectedPost ? renderBlogPost(selectedPost) : renderBlogList()
-        )}
+        {selectedPost ? renderBlogPost(selectedPost) : renderBlogList()}
       </div>
     </section>
   );
