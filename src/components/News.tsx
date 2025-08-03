@@ -142,56 +142,9 @@ const News = () => {
                        postElement.textContent || 
                        'Content not available';
 
-        // Only add post if we have meaningful content
-        if (title && content && content.length > 10) {
-          const post: BlogPost = {
-            id: `bloghandy-${index + 1}`,
-            title: title,
-            content: content,
-            excerpt: content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
-            author: 'SOK Law Team',
-            date: new Date().toLocaleDateString('en-US', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            }),
-            image: imageElement?.src || `https://images.pexels.com/photos/${5668882 + index}/pexels-photo-${5668882 + index}.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&fit=crop`,
-            url: linkElement?.href
-          };
-          extractedPosts.push(post);
-        }
       });
 
-      if (extractedPosts.length > 0) {
-        console.log(`Successfully extracted ${extractedPosts.length} blog posts`);
-        setBlogPosts(extractedPosts);
-        return true;
-      }
-
       return false;
-    };
-
-    // Load BlogHandy script
-    loadBlogHandy();
-
-    // Wait for BlogHandy to load and populate content
-    let attemptCount = 0;
-    const maxAttempts = 30; // Try for 15 seconds (500ms * 30)
-    
-    const checkForPosts = setInterval(() => {
-      attemptCount++;
-      
-      if (extractBlogPosts()) {
-        clearInterval(checkForPosts);
-      } else if (attemptCount >= maxAttempts) {
-        console.log('Timeout: BlogHandy posts not found after 15 seconds');
-        clearInterval(checkForPosts);
-      }
-    }, 500);
-
-    // Cleanup
-    return () => {
-      clearInterval(checkForPosts);
     };
   }, []);
 
