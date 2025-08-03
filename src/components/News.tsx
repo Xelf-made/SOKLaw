@@ -200,71 +200,7 @@ const News = () => {
         <div className="w-24 h-1 bg-gradient-to-r from-yellow-500 to-yellow-400 mx-auto mt-6"></div>
       </div>
 
-      {blogPosts.length > 0 ? (
-        // Blog Posts Grid
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post, index) => (
-            <article
-              key={post.id}
-              className="news-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:-translate-y-2 transition-all duration-300 group"
-              onClick={(e) => handlePostClick(post, e)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handlePostClick(post, e as any);
-                }
-              }}
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              
-              <div className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>{post.date}</span>
-                  <User className="h-4 w-4 ml-4 mr-2" />
-                  <span>{post.author}</span>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-3 text-blue-900 group-hover:text-yellow-600 transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
-                
-                <div className="flex items-center text-yellow-600 font-semibold group-hover:text-yellow-700 transition-colors">
-                  <span>Read More</span>
-                  <ExternalLink className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
-        // No Posts Found
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <ExternalLink className="h-16 w-16 mx-auto mb-4" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">No Blog Posts Found</h3>
-          <p className="text-gray-500 mb-4">
-            BlogHandy couldn't load posts or no posts are available at this time.
-          </p>
-          <p className="text-sm text-gray-400">
-            Please check your BlogHandy configuration or try refreshing the page.
-          </p>
-        </div>
-      )}
+
 
       {/* BlogHandy Container - Now visible for debugging */}
       <div className="mt-8">
