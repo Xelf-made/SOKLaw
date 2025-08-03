@@ -418,6 +418,7 @@ html {
 /* Style BlogHandy posts to match website design */
 #bh-posts {
   font-family: inherit;
+  cursor: pointer;
 }
 
 #bh-posts .bh-post {
@@ -427,6 +428,8 @@ html {
   margin-bottom: 2rem;
   overflow: hidden;
   transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
 #bh-posts .bh-post:hover {
@@ -434,14 +437,29 @@ html {
   transform: translateY(-4px);
 }
 
+#bh-posts .bh-post::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 1;
+  cursor: pointer;
+}
 #bh-posts .bh-post-title {
   color: var(--brand-navy) !important;
   font-size: 1.25rem !important;
   font-weight: 700 !important;
   line-height: 1.3 !important;
   margin-bottom: 0.75rem !important;
+  transition: color 0.3s ease !important;
 }
 
+#bh-posts .bh-post:hover .bh-post-title {
+  color: var(--brand-gold) !important;
+}
 #bh-posts .bh-post-content {
   color: var(--brand-gray) !important;
   font-size: 1rem !important;
@@ -460,18 +478,94 @@ html {
   height: 200px !important;
   object-fit: cover !important;
   border-radius: 0 !important;
+  transition: transform 0.3s ease !important;
 }
 
+#bh-posts .bh-post:hover .bh-post-image {
+  transform: scale(1.05) !important;
+}
 #bh-posts a {
   color: var(--brand-gold) !important;
   text-decoration: none !important;
   transition: color 0.2s ease !important;
+  position: relative;
+  z-index: 2;
 }
 
 #bh-posts a:hover {
   color: var(--brand-gold-dark) !important;
 }
 
+/* Loading animation for news section */
+.news-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.news-loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--brand-cream);
+  border-top: 3px solid var(--brand-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Blog post content styling */
+.prose {
+  color: var(--brand-gray);
+  line-height: 1.7;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: var(--brand-navy) !important;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose a {
+  color: var(--brand-gold);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.prose a:hover {
+  color: var(--brand-gold-dark);
+}
+
+.prose img {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--brand-gold);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--brand-gray-light);
+}
+
+.prose ul, .prose ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
 /* Responsive design for blog posts */
 @media (min-width: 768px) {
   #bh-posts {
