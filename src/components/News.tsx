@@ -212,48 +212,6 @@ const News = () => {
             const link = target.closest('a');
             if (link) {
               e.preventDefault();
-              
-              // Extract blog content from the clicked post
-              const postElement = link.closest('.bh-post, .post, article, .blog-post') || link.parentElement;
-              if (postElement) {
-                const titleElement = postElement.querySelector('h1, h2, h3, h4, .title, .post-title, .bh-title, .blog-title');
-                const contentElement = postElement.querySelector('.content, .post-content, .bh-content, p, .excerpt, .description');
-                const imageElement = postElement.querySelector('img') as HTMLImageElement;
-                
-                const title = titleElement?.textContent?.trim() || 'Blog Post';
-                const content = contentElement?.innerHTML || contentElement?.textContent || 'Content not available';
-                
-                const post: BlogPost = {
-                  id: `bloghandy-${Date.now()}`,
-                  title: title,
-                  content: content,
-                  excerpt: content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
-                  author: 'SOK Law Team',
-                  date: new Date().toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  }),
-                  image: imageElement?.src || `https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&fit=crop`,
-                  url: link.getAttribute('href') || undefined
-                };
-                
-                // Set the selected post to open it
-                setSelectedPost(post);
-                
-                // Update URL
-                const newUrl = `${window.location.pathname}${window.location.search}#post-${post.id}`;
-                window.history.pushState(
-                  { postId: post.id }, 
-                  post.title, 
-                  newUrl
-                );
-                
-                // Scroll to top
-                if (sectionRef.current) {
-                  sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }
             }
           }}
         >
