@@ -212,6 +212,18 @@ const News = () => {
             const link = target.closest('a');
             if (link) {
               e.preventDefault();
+              e.stopPropagation();
+              
+              // Fetch and display content without page refresh
+              fetch(link.href)
+                .then(response => response.text())
+                .then(html => {
+                  const container = document.getElementById('bh-posts');
+                  if (container) {
+                    container.innerHTML = html;
+                  }
+                })
+                .catch(err => console.error('Error loading blog:', err));
             }
           }}
         >
