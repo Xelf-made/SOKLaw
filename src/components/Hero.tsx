@@ -17,21 +17,21 @@ const Hero = () => {
         'https://i.postimg.cc/d09SPjyj/7-X2-A2913-1.jpg',
       title: 'WE BELIEVE IN TEAM WORK',
       description:
-        "Leading constitutional law practice with landmark victories protecting citizens' rights and challenging unconstitutional legislation.",
+        "BLA BLA BLA",
     },
     {
       image:
         'https://i.postimg.cc/Wzd9ZRf5/7X2A2982.jpg',
       title: 'WE CARE',
       description:
-        'Comprehensive real estate legal services from residential transactions to large-scale development projects across Kenya.',
+        'BLA BLA BLA',
     },
     {
       image:
         'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'ACCESS TO JUSTICE',
       description:
-        'Strategic litigation representation with a proven track record of successful outcomes in complex commercial disputes.',
+        'BLA BLA BLA',
     },
   ];
 
