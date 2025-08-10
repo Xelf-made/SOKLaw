@@ -1,16 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { servicesData } from '../data/servicesData';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 const ServicesPage = () => {
+  const navigate = useNavigate();
+
+  const handleBackToHome = () => {
+    navigate('/#services');
+  };
+
   return (
     <>
       <Navbar />
       <div className="pt-20 min-h-screen brand-section-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <button
+            onClick={handleBackToHome}
+            className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-8 transition-colors font-medium"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to Home
+          </button>
+          
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Our Legal Services

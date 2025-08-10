@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Calendar, User, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, User, ExternalLink } from 'lucide-react';
 
 interface BlogPost {
   id: string;
@@ -14,9 +15,8 @@ interface BlogPost {
 
 const News = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [blogHandyLoaded, setBlogHandyLoaded] = useState(false);
 
   useEffect(() => {
@@ -42,24 +42,6 @@ const News = () => {
 
     return () => observer.disconnect();
   }, []);
-
-  // Handle browser back/forward buttons
-  useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      event.preventDefault();
-      if (event.state?.postId && blogPosts.length > 0) {
-        const post = blogPosts.find(p => p.id === event.state.postId);
-        if (post) {
-          setSelectedPost(post);
-        }
-      } else {
-        setSelectedPost(null);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [blogPosts]);
 
   // Initialize BlogHandy and extract posts
   useEffect(() => {
@@ -152,44 +134,12 @@ const News = () => {
     event.preventDefault();
     event.stopPropagation();
     
-    setIsTransitioning(true);
-    setSelectedPost(post);
-    
-    const newUrl = `${window.location.pathname}${window.location.search}#post-${post.id}`;
-    window.history.pushState(
-      { postId: post.id }, 
-      post.title, 
-      newUrl
-    );
-    
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const handleBackToList = (event?: React.MouseEvent) => {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    
-    setIsTransitioning(true);
-    setSelectedPost(null);
-    
-    const baseUrl = `${window.location.pathname}${window.location.search}`;
-    window.history.pushState(null, 'News', baseUrl);
-    
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    setTimeout(() => setIsTransitioning(false), 300);
+    // Navigate to dedicated blog post page
+    navigate(`/blog/${post.id}`);
   };
 
   const renderBlogList = () => (
-    <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
+    <div>
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-blue-900">
           Latest News & Updates
@@ -202,28 +152,24 @@ const News = () => {
 
 
 
-      {/* BlogHandy Container - Now visible for debugging */}
+      {/* BlogHandy Container */}
       <div className="mt-8">
         <div 
           id="bh-posts" 
-          className="blog-posts-container min-h-[50px]"
+          className="blog-posts-container"
           onClick={(e) => {
             const target = e.target as HTMLElement;
-            const link = target.closest('a');
-            if (link) {
+            const postElement = target.closest('.bh-post, .post, article, .blog-post');
+            if (postElement) {
               e.preventDefault();
               e.stopPropagation();
               
-              // Fetch and display content without page refresh
-              fetch(link.href)
-                .then(response => response.text())
-                .then(html => {
-                  const container = document.getElementById('bh-posts');
-                  if (container) {
-                    container.innerHTML = html;
-                  }
-                })
-                .catch(err => console.error('Error loading blog:', err));
+              // Get the index of the clicked post
+              const allPosts = document.querySelectorAll('#bh-posts .bh-post, #bh-posts .post, #bh-posts article, #bh-posts .blog-post');
+              const postIndex = Array.from(allPosts).indexOf(postElement as Element);
+              
+              // Navigate to blog post page
+              navigate(`/blog/${postIndex}`);
             }
           }}
         >
@@ -233,78 +179,10 @@ const News = () => {
     </div>
   );
 
-  const renderBlogPost = (post: BlogPost) => (
-    <div className={`max-w-4xl mx-auto transition-opacity duration-300 ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}>
-      <button
-        onClick={handleBackToList}
-        className="inline-flex items-center text-yellow-600 hover:text-yellow-700 mb-8 transition-colors font-medium group bg-transparent border-none cursor-pointer"
-        type="button"
-      >
-        <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-        Back to News
-      </button>
-
-      <article className="bg-white rounded-lg shadow-lg p-8 lg:p-12">
-        <div className="mb-8 rounded-lg overflow-hidden">
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-64 lg:h-96 object-cover"
-            loading="lazy"
-          />
-        </div>
-
-        <div className="flex items-center text-sm text-gray-500 mb-6">
-          <Calendar className="h-4 w-4 mr-2" />
-          <span>{post.date}</span>
-          <User className="h-4 w-4 ml-6 mr-2" />
-          <span>{post.author}</span>
-        </div>
-
-        <h1 className="text-3xl lg:text-4xl font-bold mb-8 text-blue-900">
-          {post.title}
-        </h1>
-
-        <div className="prose prose-lg max-w-none text-gray-600">
-          {post.content.includes('<') ? (
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          ) : (
-            <div className="text-lg leading-relaxed whitespace-pre-line">{post.content}</div>
-          )}
-        </div>
-
-        {post.url && (
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <a
-              href={post.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-yellow-600 hover:text-yellow-700 transition-colors font-medium"
-            >
-              <span>Read Original Article</span>
-              <ExternalLink className="h-4 w-4 ml-2" />
-            </a>
-          </div>
-        )}
-
-        <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-          <button
-            onClick={handleBackToList}
-            className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center space-x-2 transition-colors"
-            type="button"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span>Back to All News</span>
-          </button>
-        </div>
-      </article>
-    </div>
-  );
-
   return (
     <section ref={sectionRef} id="news" className="py-20" style={{ backgroundColor: '#f5f5f0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {selectedPost ? renderBlogPost(selectedPost) : renderBlogList()}
+        {renderBlogList()}
       </div>
     </section>
   );

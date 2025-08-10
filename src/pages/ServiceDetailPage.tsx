@@ -47,11 +47,15 @@ const ServiceDetailPage = () => {
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link 
-              to="/services" 
+              to="/#services" 
               className="inline-flex items-center text-white hover:text-blue-200 mb-8 transition-colors font-medium"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/#services';
+              }}
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Services
+              Back to Main Services
             </Link>
             <div className="flex items-center mb-6">
               <IconComponent className="h-16 w-16 text-yellow-400 mr-6" />

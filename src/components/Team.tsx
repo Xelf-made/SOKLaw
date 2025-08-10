@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { Linkedin, Mail, Phone } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Linkedin, Mail, Phone, Users } from 'lucide-react';
+import { partners } from '../data/teamData';
+import TeamDirectory from './TeamDirectory';
 
 const Team = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [selectedPartner, setSelectedPartner] = useState<any>(null);
+  const [showDirectory, setShowDirectory] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,32 +32,21 @@ const Team = () => {
     return () => observer.disconnect();
   }, []);
 
-  const teamMembers = [
-    {
-      name: 'Sospeter Opondo',
-      role: 'Senior Partner',
-      specialization: 'Corporate Law & Commercial Litigation',
-      image: 'https://i.postimg.cc/MGfCq6YL/7X2A2792.jpg',
-      email: 'sopondo@soklaw.co.ke',
-      phone: '+254 700 123 456'
-    },
-    {
-      name: 'Faith Simiyu',
-      role: 'Partner',
-      specialization: 'Family Law & Real Estate',
-      image: 'https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-      email: 'fsimiyu@soklaw.co.ke',
-      phone: '+254 700 123 457'
-    },
-    {
-      name: 'Paul Kiranga',
-      role: 'Associate Partner',
-      specialization: 'Criminal Defense & Constitutional Law',
-      image: 'https://i.postimg.cc/v8KZvBN1/Whats-App-Image-2025-07-20-at-03-11-55.jpg',
-      email: 'pkiranga@soklaw.co.ke',
-      phone: '+254 700 123 458'
-    }
-  ];
+  const handlePartnerClick = (partner: any) => {
+    setSelectedPartner(partner);
+  };
+
+  const handleCloseProfile = () => {
+    setSelectedPartner(null);
+  };
+
+  const handleShowDirectory = () => {
+    setShowDirectory(true);
+  };
+
+  const handleCloseDirectory = () => {
+    setShowDirectory(false);
+  };
 
   return (
     <section ref={sectionRef} id="team" className="py-20 brand-section-light">
@@ -69,11 +62,78 @@ const Team = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6 animate-scale-in"></div>
         </div>
 
+        {/* Partner Profiles Modal */}
+        {selectedPartner && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
+            <div className="min-h-screen px-4 py-8 flex items-center justify-center">
+              <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8 relative">
+                <button
+                  onClick={handleCloseProfile}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+                
+                <div className="text-center">
+                  <img
+                    src={selectedPartner.image}
+                    alt={selectedPartner.name}
+                    className="w-32 h-32 rounded-full mx-auto mb-6 object-cover shadow-lg"
+                  />
+                  <h3 className="text-2xl font-bold mb-2">{selectedPartner.name}</h3>
+                  <p className="font-semibold text-lg mb-3 text-yellow-600">{selectedPartner.role}</p>
+                  <p className="mb-6 text-gray-600">{selectedPartner.specialization}</p>
+                  <p className="text-gray-700 leading-relaxed mb-6">{selectedPartner.description}</p>
+                  
+                  {/* Experience and Expertise */}
+                  <div className="text-left space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Experience</h4>
+                      <p className="text-gray-600">{selectedPartner.experience}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Areas of Expertise</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedPartner.expertise?.map((area: string, index: number) => (
+                          <span
+                            key={index}
+                            className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm"
+                          >
+                            {area}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Contact */}
+                  <div className="flex justify-center space-x-4 mt-6">
+                    <a
+                      href={`mailto:${selectedPartner.email}`}
+                      className="p-3 bg-gray-100 text-gray-600 rounded-full hover:bg-yellow-600 hover:text-white transition-all duration-300"
+                    >
+                      <Mail className="h-5 w-5" />
+                    </a>
+                    <a
+                      href={`tel:${selectedPartner.phone}`}
+                      className="p-3 bg-gray-100 text-gray-600 rounded-full hover:bg-blue-800 hover:text-white transition-all duration-300"
+                    >
+                      <Phone className="h-5 w-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {teamMembers.map((member, index) => (
+          {partners.map((member, index) => (
             <div
               key={index}
-              className="team-card opacity-0 modern-card overflow-hidden transform hover:-translate-y-2 transition-all duration-500 group"
+              className="team-card opacity-0 modern-card overflow-hidden transform hover:-translate-y-2 transition-all duration-500 group cursor-pointer"
+              onClick={() => handlePartnerClick(member)}
             >
               {/* Image */}
               <div className="relative overflow-hidden">
@@ -125,12 +185,19 @@ const Team = () => {
 
         <div className="text-center mt-16">
           <p className="text-lg mb-8 animate-fade-in">
-            Ready to work with our experienced legal team?
+            Want to see our complete legal team?
           </p>
-          <button className="btn-primary transform hover:scale-105 shadow-lg animate-fade-in-delay" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}>
-            Schedule a Consultation
+          <button 
+            className="btn-primary transform hover:scale-105 shadow-lg animate-fade-in-delay flex items-center space-x-2 mx-auto" 
+            onClick={handleShowDirectory}
+          >
+            <Users className="h-5 w-5" />
+            <span>View Complete Team Directory</span>
           </button>
         </div>
+        
+        {/* Team Directory Modal */}
+        <TeamDirectory isOpen={showDirectory} onClose={handleCloseDirectory} />
       </div>
     </section>
   );
