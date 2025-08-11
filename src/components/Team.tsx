@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Linkedin, Mail, Phone, Users } from 'lucide-react';
 import { partners } from '../data/teamData';
-import TeamDirectory from './TeamDirectory';
 
 const Team = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
   const [selectedPartner, setSelectedPartner] = useState<any>(null);
-  const [showDirectory, setShowDirectory] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,12 +40,9 @@ const Team = () => {
     setSelectedPartner(null);
   };
 
-  const handleShowDirectory = () => {
-    setShowDirectory(true);
-  };
-
-  const handleCloseDirectory = () => {
-    setShowDirectory(false);
+  // Navigate to dedicated team page using client-side routing
+  const handleViewAllTeam = () => {
+    navigate('/team'); // No page refresh, uses React Router
   };
 
   return (
@@ -185,19 +182,16 @@ const Team = () => {
 
         <div className="text-center mt-16">
           <p className="text-lg mb-8 animate-fade-in">
-            Want to see our complete legal team?
+            Meet our complete legal team of experienced professionals
           </p>
           <button 
-            className="btn-primary transform hover:scale-105 shadow-lg animate-fade-in-delay flex items-center space-x-2 mx-auto" 
-            onClick={handleShowDirectory}
+            className="btn-primary transform hover:scale-105 shadow-lg animate-fade-in-delay flex items-center space-x-2 mx-auto"
+            onClick={handleViewAllTeam}
           >
             <Users className="h-5 w-5" />
-            <span>View Complete Team Directory</span>
+            <span>View All Team Members</span>
           </button>
         </div>
-        
-        {/* Team Directory Modal */}
-        <TeamDirectory isOpen={showDirectory} onClose={handleCloseDirectory} />
       </div>
     </section>
   );

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { servicesData } from '../data/servicesData';
 import { ArrowRight } from 'lucide-react';
 
 const Services = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,6 +30,16 @@ const Services = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  // Navigate to services page using client-side routing
+  const handleViewAllServices = () => {
+    navigate('/services'); // No page refresh, uses React Router
+  };
+
+  // Navigate to individual service detail
+  const handleServiceClick = (serviceId: string) => {
+    navigate(`/services/${serviceId}`); // Client-side navigation
+  };
 
   return (
     <section ref={sectionRef} id="services" className="py-20 bg-white">
@@ -68,14 +79,14 @@ const Services = () => {
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-white">{service.title}</h3>
                   <p className="leading-relaxed mb-4 text-white/90">{service.description}</p>
-                  <Link
-                    to={`/services/${service.id}`}
+                  <button
+                    onClick={() => handleServiceClick(service.id)}
                     className="inline-flex items-center group/link font-semibold hover:text-yellow-300 text-yellow-400"
                     aria-label={`Learn more about ${service.title}`}
                   >
                     <span>Learn More</span>
                     <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             );
@@ -83,13 +94,13 @@ const Services = () => {
         </div>
 
         <div className="text-center mt-16">
-          <Link
-            to="/services"
+          <button
+            onClick={handleViewAllServices}
             className="btn-primary inline-flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
             <span>View All Services</span>
             <ArrowRight className="h-5 w-5" />
-          </Link>
+          </button>
         </div>
       </div>
     </section>

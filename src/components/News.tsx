@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, User, ExternalLink } from 'lucide-react';
+import { Calendar, User } from 'lucide-react';
 
 interface BlogPost {
   id: string;
@@ -134,7 +134,7 @@ const News = () => {
     event.preventDefault();
     event.stopPropagation();
     
-    // Navigate to dedicated blog post page
+    // Navigate to dedicated blog post page using client-side routing
     navigate(`/blog/${post.id}`);
   };
 
@@ -168,7 +168,7 @@ const News = () => {
               const allPosts = document.querySelectorAll('#bh-posts .bh-post, #bh-posts .post, #bh-posts article, #bh-posts .blog-post');
               const postIndex = Array.from(allPosts).indexOf(postElement as Element);
               
-              // Navigate to blog post page
+              // Navigate to blog post page using client-side routing
               navigate(`/blog/${postIndex}`);
             }
           }}

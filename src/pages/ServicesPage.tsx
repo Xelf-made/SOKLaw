@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { servicesData } from '../data/servicesData';
@@ -8,8 +8,14 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 const ServicesPage = () => {
   const navigate = useNavigate();
 
+  // Handle back navigation using browser history
   const handleBackToHome = () => {
-    navigate('/#services');
+    navigate(-1); // Uses browser history without page refresh
+  };
+
+  // Navigate to individual service detail
+  const handleServiceClick = (serviceId: string) => {
+    navigate(`/services/${serviceId}`); // Client-side navigation
   };
 
   return (
@@ -19,9 +25,9 @@ const ServicesPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <button
             onClick={handleBackToHome}
-            className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-8 transition-colors font-medium"
+            className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-8 transition-colors font-medium group"
           >
-            <ArrowLeft className="h-5 w-5 mr-2" />
+            <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Home
           </button>
           
@@ -40,10 +46,10 @@ const ServicesPage = () => {
             {servicesData.map((service) => {
               const IconComponent = service.icon;
               return (
-                <Link
+                <div
                   key={service.id}
-                  to={`/services/${service.id}`}
-                  className="group"
+                  onClick={() => handleServiceClick(service.id)}
+                  className="group cursor-pointer"
                   aria-label={`Learn more about ${service.title}`}
                 >
                   <div className="modern-card p-8 h-full group-hover:shadow-xl transition-all duration-300">
@@ -61,7 +67,7 @@ const ServicesPage = () => {
                       <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>

@@ -22,6 +22,11 @@ const BlogPostPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle back navigation using browser history
+  const handleBackToNews = () => {
+    navigate(-1); // Uses browser history without page refresh
+  };
+
   useEffect(() => {
     const loadBlogPost = async () => {
       try {
@@ -44,7 +49,8 @@ const BlogPostPage = () => {
             const linkElement = postElement.querySelector('a[href]') as HTMLAnchorElement;
 
             const title = titleElement?.textContent?.trim() || `Blog Post ${postIndex + 1}`;
-            const content = contentElement?.innerHTML || contentElement?.textContent || 'Content not available';
+            // Get the complete original blog post content without extraction
+            const content = postElement.innerHTML || contentElement?.innerHTML || contentElement?.textContent || 'Content not available';
             const image = imageElement?.src || 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop';
             const url = linkElement?.href;
 
@@ -113,17 +119,6 @@ const BlogPostPage = () => {
 
     loadBlogPost();
   }, [postId]);
-
-  const handleBackToNews = () => {
-    navigate('/#news', { replace: true });
-    // Scroll to news section after navigation
-    setTimeout(() => {
-      const newsSection = document.getElementById('news');
-      if (newsSection) {
-        newsSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
-  };
 
   if (loading) {
     return (
@@ -203,7 +198,11 @@ const BlogPostPage = () => {
           <article className="bg-white rounded-lg shadow-lg p-8 lg:p-12">
             <div className="prose prose-lg max-w-none text-gray-600">
               {blogPost.content.includes('<') ? (
-                <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+                // Display the complete original blog post content as-is
+                <div 
+                  dangerouslySetInnerHTML={{ __html: blogPost.content }}
+                  className="original-blog-content"
+                />
               ) : (
                 <div className="text-lg leading-relaxed whitespace-pre-line">{blogPost.content}</div>
               )}

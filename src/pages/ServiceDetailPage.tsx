@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { servicesData } from '../data/servicesData';
@@ -7,7 +7,13 @@ import { ArrowLeft, CheckCircle, Phone, Mail } from 'lucide-react';
 
 const ServiceDetailPage = () => {
   const { serviceId } = useParams();
+  const navigate = useNavigate();
   const service = servicesData.find(s => s.id === serviceId);
+
+  // Handle back navigation using browser history
+  const handleBackToServices = () => {
+    navigate(-1); // Uses browser history without page refresh
+  };
 
   if (!service) {
     return (
@@ -16,9 +22,9 @@ const ServiceDetailPage = () => {
         <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Service Not Found</h1>
-            <Link to="/services" className="text-blue-600 hover:text-blue-700">
+            <button onClick={handleBackToServices} className="text-blue-600 hover:text-blue-700">
               Back to Services
-            </Link>
+            </button>
           </div>
         </div>
         <Footer />
@@ -46,17 +52,13 @@ const ServiceDetailPage = () => {
           <div className="absolute inset-0 bg-black/40"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Link 
-              to="/#services" 
-              className="inline-flex items-center text-white hover:text-blue-200 mb-8 transition-colors font-medium"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/#services';
-              }}
+            <button
+              onClick={handleBackToServices}
+              className="inline-flex items-center text-white hover:text-blue-200 mb-8 transition-colors font-medium group"
             >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Main Services
-            </Link>
+              <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Back to Services
+            </button>
             <div className="flex items-center mb-6">
               <IconComponent className="h-16 w-16 text-yellow-400 mr-6" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">{service.title}</h1>
@@ -162,13 +164,13 @@ const ServiceDetailPage = () => {
                     .filter(s => s.id !== service.id)
                     .slice(0, 4)
                     .map((relatedService) => (
-                      <Link
+                      <button
                         key={relatedService.id}
-                        to={`/services/${relatedService.id}`}
-                        className="block transition-colors hover:underline text-yellow-600 hover:text-yellow-700"
+                        onClick={() => navigate(`/services/${relatedService.id}`)}
+                        className="block text-left transition-colors hover:underline text-yellow-600 hover:text-yellow-700"
                       >
                         {relatedService.title}
-                      </Link>
+                      </button>
                     ))}
                 </div>
               </div>
