@@ -97,9 +97,6 @@ const Hero = () => {
         className="absolute right-0 top-0 w-1/2 h-[60%] z-20 opacity-0"
         aria-label="Next Slide"
       />
-
-    
-
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
