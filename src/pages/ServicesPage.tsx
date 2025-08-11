@@ -21,7 +21,7 @@ const ServicesPage = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-20 min-h-screen brand-section-light">
+      <div className="pt-20 min-h-screen bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <button
             onClick={handleBackToHome}
@@ -42,29 +42,39 @@ const ServicesPage = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {servicesData.map((service) => {
               const IconComponent = service.icon;
               return (
                 <div
                   key={service.id}
                   onClick={() => handleServiceClick(service.id)}
-                  className="group cursor-pointer"
+                  className="relative service-card overflow-hidden rounded-2xl group opacity-100 cursor-pointer h-80"
                   aria-label={`Learn more about ${service.title}`}
                 >
-                  <div className="modern-card p-8 h-full group-hover:shadow-xl transition-all duration-300">
-                    <div className="mb-6">
-                      <IconComponent className="service-icon h-12 w-12 text-yellow-600 group-hover:text-yellow-500 transition-colors" />
+                  {/* Background Image */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center scale-110"
+                    style={{ backgroundImage: `url(${service.headerImage})` }}
+                  />
+
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300" />
+
+                  {/* Card Content */}
+                  <div className="relative z-10 text-white p-8 h-full flex flex-col justify-between group-hover:transform group-hover:scale-105 transition-transform duration-300">
+                    <div>
+                      <div className="mb-6">
+                        <IconComponent className="h-12 w-12 text-yellow-400" />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-4 text-white">{service.title}</h3>
+                      <p className="leading-relaxed text-white/90">{service.description}</p>
                     </div>
-                    <h3 className="text-xl font-bold mb-4 group-hover:text-blue-800 transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="leading-relaxed mb-4">
-                      {service.description}
-                    </p>
-                    <div className="flex items-center font-semibold text-yellow-600 group-hover:text-yellow-700 transition-colors">
-                      <span>Learn More</span>
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    <div className="mt-6">
+                      <div className="inline-flex items-center group/link font-semibold hover:text-yellow-300 text-yellow-400">
+                        <span>Learn More</span>
+                        <ArrowRight className="h-4 w-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
                 </div>

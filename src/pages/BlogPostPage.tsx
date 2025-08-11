@@ -32,83 +32,125 @@ const BlogPostPage = () => {
       try {
         setLoading(true);
         
-        // Try to get the blog post from BlogHandy
-        const blogContainer = document.getElementById('bh-posts');
-        if (blogContainer) {
-          const posts = blogContainer.querySelectorAll('.bh-post, .post, article, .blog-post');
-          
-          // Find the post by ID or index
-          const postIndex = parseInt(postId || '0');
-          const postElement = posts[postIndex];
-          
-          if (postElement) {
-            // Extract post data
-            const titleElement = postElement.querySelector('h1, h2, h3, h4, .title, .post-title, .bh-title, .blog-title');
-            const contentElement = postElement.querySelector('.content, .post-content, .bh-content, p, .excerpt, .description');
-            const imageElement = postElement.querySelector('img') as HTMLImageElement;
-            const linkElement = postElement.querySelector('a[href]') as HTMLAnchorElement;
-
-            const title = titleElement?.textContent?.trim() || `Blog Post ${postIndex + 1}`;
-            // Get the complete original blog post content without extraction
-            const content = postElement.innerHTML || contentElement?.innerHTML || contentElement?.textContent || 'Content not available';
-            const image = imageElement?.src || 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop';
-            const url = linkElement?.href;
-
-            setBlogPost({
-              id: postId || '0',
-              title,
-              content,
-              excerpt: content.substring(0, 200) + '...',
-              author: 'SOK Law Associates',
-              date: new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              }),
-              image,
-              url
-            });
-          } else {
-            // Fallback blog post
-            setBlogPost({
-              id: postId || '0',
-              title: 'Legal Insights and Updates',
-              content: `
-                <div class="prose prose-lg max-w-none">
-                  <p>Welcome to our legal blog where we share insights, updates, and analysis on various legal matters affecting our clients and the broader community.</p>
-                  
-                  <h2>Our Commitment to Legal Excellence</h2>
-                  <p>At SOK Law Associates, we believe in keeping our clients and the public informed about important legal developments. Our blog serves as a platform to share our expertise and provide valuable insights on various areas of law.</p>
-                  
-                  <h2>Areas We Cover</h2>
-                  <ul>
-                    <li>Corporate Law and Business Regulations</li>
-                    <li>Constitutional Law and Human Rights</li>
-                    <li>Real Estate and Property Law</li>
-                    <li>Family Law and Succession</li>
-                    <li>Employment and Labor Relations</li>
-                    <li>Criminal Defense and Litigation</li>
-                  </ul>
-                  
-                  <h2>Stay Connected</h2>
-                  <p>We regularly update our blog with fresh content, case studies, and legal analysis. Follow us to stay informed about the latest developments in Kenyan law and how they might affect you or your business.</p>
-                  
-                  <p>For personalized legal advice, don't hesitate to contact our experienced team of lawyers who are ready to assist you with your specific legal needs.</p>
-                </div>
-              `,
-              excerpt: 'Welcome to our legal blog where we share insights, updates, and analysis on various legal matters...',
-              author: 'SOK Law Associates',
-              date: new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              }),
-              image: 'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop'
-            });
+        // Create fallback blog posts based on postId
+        const postIndex = parseInt(postId || '0');
+        const fallbackPosts = [
+          {
+            id: 'post-0',
+            title: 'Understanding Corporate Law in Kenya',
+            content: `
+              <div class="prose prose-lg max-w-none">
+                <p>Corporate law in Kenya has evolved significantly over the years, providing a robust framework for business operations and governance. Our legal team at SOK Law Associates has been at the forefront of these developments, helping businesses navigate the complex regulatory landscape.</p>
+                
+                <h2>Key Areas of Corporate Law</h2>
+                <p>Our corporate law practice covers various aspects including:</p>
+                <ul>
+                  <li>Company formation and registration</li>
+                  <li>Mergers and acquisitions</li>
+                  <li>Corporate governance and compliance</li>
+                  <li>Securities and capital markets</li>
+                  <li>Joint ventures and partnerships</li>
+                  <li>Corporate restructuring</li>
+                </ul>
+                
+                <h2>Recent Developments</h2>
+                <p>Recent amendments to the Companies Act have introduced new requirements for corporate transparency and accountability. These changes affect how companies report their activities and maintain their corporate records.</p>
+                
+                <h2>Why Choose SOK Law Associates</h2>
+                <p>With over 15 years of experience in corporate law, our team has successfully handled over 200 corporate transactions. We provide strategic legal advice that goes beyond mere compliance, helping businesses achieve their commercial objectives while managing legal risks.</p>
+                
+                <p>For expert guidance on corporate law matters, contact our experienced team at SOK Law Associates. We're here to help your business thrive in Kenya's dynamic legal environment.</p>
+              </div>
+            `,
+            excerpt: 'Corporate law in Kenya has evolved significantly over the years, providing a robust framework for business operations...',
+            author: 'SOK Law Associates',
+            date: new Date().toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            }),
+            image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop'
+          },
+          {
+            id: 'post-1',
+            title: 'Family Law and Succession Planning',
+            content: `
+              <div class="prose prose-lg max-w-none">
+                <p>Family law encompasses various legal matters affecting families, including marriage, divorce, child custody, and succession planning. At SOK Law Associates, we understand that family legal matters are often emotionally challenging, and we provide compassionate, professional guidance during these difficult times.</p>
+                
+                <h2>Our Family Law Services</h2>
+                <p>We offer comprehensive family law services including:</p>
+                <ul>
+                  <li>Divorce and separation proceedings</li>
+                  <li>Child custody and support arrangements</li>
+                  <li>Adoption procedures</li>
+                  <li>Matrimonial property division</li>
+                  <li>Prenuptial and postnuptial agreements</li>
+                  <li>Domestic violence protection orders</li>
+                </ul>
+                
+                <h2>Succession Planning</h2>
+                <p>Proper succession planning ensures that your assets are distributed according to your wishes and provides security for your loved ones. Our succession planning services include will drafting, estate administration, and trust formation.</p>
+                
+                <h2>Our Approach</h2>
+                <p>We believe in prioritizing the best interests of children and families in all our legal proceedings. Our approach combines legal expertise with sensitivity to the emotional aspects of family disputes.</p>
+                
+                <p>Contact us for confidential consultation on family law matters. Our experienced family law attorneys are here to guide you through these challenging times with professionalism and compassion.</p>
+              </div>
+            `,
+            excerpt: 'Family law encompasses various legal matters affecting families, including marriage, divorce, child custody...',
+            author: 'SOK Law Associates',
+            date: new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            }),
+            image: 'https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop'
+          },
+          {
+            id: 'post-2',
+            title: 'Real Estate Law and Property Transactions',
+            content: `
+              <div class="prose prose-lg max-w-none">
+                <p>Real estate transactions require careful legal oversight to ensure proper transfer of ownership and compliance with local regulations. Kenya's property market has unique characteristics that require specialized knowledge and experience.</p>
+                
+                <h2>Our Real Estate Services</h2>
+                <p>We provide comprehensive real estate legal services including:</p>
+                <ul>
+                  <li>Property purchase and sale transactions</li>
+                  <li>Land title verification and searches</li>
+                  <li>Conveyancing services</li>
+                  <li>Lease agreement preparation and review</li>
+                  <li>Property development legal support</li>
+                  <li>Land dispute resolution</li>
+                </ul>
+                
+                <h2>Property Due Diligence</h2>
+                <p>Our comprehensive due diligence process protects your investment by identifying potential legal issues before they become problems. We conduct thorough searches and investigations to ensure clear title and proper documentation.</p>
+                
+                <h2>Conveyancing Excellence</h2>
+                <p>We handle all aspects of property conveyancing, from initial searches to final registration of ownership. Our systematic approach ensures that all legal requirements are met and your interests are protected throughout the transaction.</p>
+                
+                <p>Trust our experienced real estate lawyers to guide you through your property transactions. With our deep understanding of Kenyan property law, we ensure your real estate investments are secure and properly documented.</p>
+              </div>
+            `,
+            excerpt: 'Real estate transactions require careful legal oversight to ensure proper transfer of ownership...',
+            author: 'SOK Law Associates',
+            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            }),
+            image: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop'
           }
-        } else {
-          throw new Error('Blog container not found');
-        }
+        ];
+
+        // Get the specific post or default to first one
+        const selectedPost = fallbackPosts[postIndex] || fallbackPosts[0];
+        setBlogPost({
+          ...selectedPost,
+          id: postId || '0'
+        });
       } catch (err) {
         setError('Failed to load blog post');
         console.error('Error loading blog post:', err);
@@ -119,6 +161,18 @@ const BlogPostPage = () => {
 
     loadBlogPost();
   }, [postId]);
+
+  // Handle back navigation to home page and scroll to news section
+  const handleBackToNews = () => {
+    navigate('/');
+    // Wait for navigation to complete, then scroll to news section
+    setTimeout(() => {
+      const newsSection = document.querySelector('#news');
+      if (newsSection) {
+        newsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 100);
+  };
 
   if (loading) {
     return (
