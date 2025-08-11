@@ -97,6 +97,25 @@ const Hero = () => {
         className="absolute right-0 top-0 w-1/2 h-[60%] z-20 opacity-0"
         aria-label="Next Slide"
       />
+
+        {/* Hero Content */}
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="animate-fade-in-up">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+            SOK LAW
+          </h1>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-light text-yellow-300 mb-6 tracking-wider">
+            ADVOCATES
+          </h2>
+          <div className="min-h-[120px] flex flex-col justify-center">
+            <h3 className="text-lg md:text-xl lg:text-2xl font-medium text-white mb-4 transition-all duration-500">
+              {slides[currentSlide].title}
+            </h3>
+            <p className="text-base md:text-lg text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500">
+              {slides[currentSlide].description}
+            </p>
+          </div>
+        </div>
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
