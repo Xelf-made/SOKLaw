@@ -22,6 +22,18 @@ const BlogPostPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle back navigation to home page and scroll to news section
+  const handleBackToNews = () => {
+    navigate('/');
+    // Wait for navigation to complete, then scroll to news section
+    setTimeout(() => {
+      const newsSection = document.getElementById('news');
+      if (newsSection) {
+        newsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
   useEffect(() => {
     const loadBlogPost = async () => {
       try {
