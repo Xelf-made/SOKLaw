@@ -22,11 +22,6 @@ const BlogPostPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Handle back navigation using browser history
-  const handleBackToNews = () => {
-    navigate(-1); // Uses browser history without page refresh
-  };
-
   useEffect(() => {
     const loadBlogPost = async () => {
       try {

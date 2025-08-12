@@ -240,62 +240,6 @@ const News = () => {
       setBlogPosts(fallbackPosts);
     };
 
-    // Function to extract blog posts from BlogHandy
-    const extractBlogPosts = () => {
-      const blogContainer = document.getElementById('bh-posts');
-      
-      if (!blogContainer) {
-        console.log('BlogHandy container not found');
-        return false;
-      }
-
-      // Check if BlogHandy has populated the container
-      const posts = blogContainer.querySelectorAll('.bh-post, .post, article, .blog-post');
-      
-      if (posts.length === 0) {
-        // Also check for any child elements that might contain posts
-        const allChildren = blogContainer.children;
-        if (allChildren.length === 0) {
-          console.log('BlogHandy container is empty, waiting...');
-          return false;
-        }
-      }
-
-      console.log(`Found ${posts.length || blogContainer.children.length} potential blog posts`);
-
-      const extractedPosts: BlogPost[] = [];
-      const elementsToProcess = posts.length > 0 ? posts : blogContainer.children;
-
-      Array.from(elementsToProcess).forEach((postElement, index) => {
-        // Try multiple selectors for title
-        const titleElement = postElement.querySelector('h1, h2, h3, h4, .title, .post-title, .bh-title, .blog-title') ||
-                           postElement.querySelector('[class*="title"], [class*="heading"]');
-        
-        // Try multiple selectors for content
-        const contentElement = postElement.querySelector('.content, .post-content, .bh-content, p, .excerpt, .description') ||
-                             postElement.querySelector('[class*="content"], [class*="excerpt"], [class*="description"]');
-        
-        // Try to find images
-        const imageElement = postElement.querySelector('img') as HTMLImageElement;
-        
-        // Try to find links
-        const linkElement = postElement.querySelector('a[href]') as HTMLAnchorElement;
-
-        // Extract text content
-        const title = titleElement?.textContent?.trim() || 
-                     titleElement?.innerHTML?.replace(/<[^>]*>/g, '').trim() ||
-                     `Blog Post ${index + 1}`;
-        
-        const content = contentElement?.innerHTML || 
-                       contentElement?.textContent || 
-                       postElement.textContent || 
-                       'Content not available';
-
-      });
-
-      return false;
-    };
-
     // Also try to extract posts after a delay in case BlogHandy loads slowly
     const timeoutId = setTimeout(() => {
       if (blogPosts.length === 0) {
