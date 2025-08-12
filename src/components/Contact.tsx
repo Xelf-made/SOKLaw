@@ -3,6 +3,8 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [showFallbackForm, setShowFallbackForm] = useState(true);
+  const [engageBayLoaded, setEngageBayLoaded] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,21 +62,31 @@ const Contact = () => {
               formId: 6351369855041536,
               target: "#eh_form_6351369855041536",
               onFormReady: function(el: any, setValue: any) { 
-                // Hide fallback form when EngageBay loads
-                const fallbackForm = document.getElementById('consultation-form');
-                if (fallbackForm) {
-                  fallbackForm.style.display = 'none';
-                }
+                // Hide fallback form when EngageBay loads successfully
+                setShowFallbackForm(false);
+                setEngageBayLoaded(true);
               }
             });
           }
         }, 1000);
+      };
+      script.onerror = () => {
+        // If EngageBay fails to load, keep showing fallback form
+        console.log('EngageBay failed to load, using fallback form');
+        setShowFallbackForm(true);
+        setEngageBayLoaded(false);
       };
       document.head.appendChild(script);
     };
 
     loadEngageBayTracking();
     loadEngageBayForms();
+
+    // Cleanup function to reset state if component unmounts
+    return () => {
+      setShowFallbackForm(true);
+      setEngageBayLoaded(false);
+    };
   }, []);
 
   const officeInfo = [
@@ -86,16 +98,12 @@ const Contact = () => {
     },
   ];
 
-  const legalServices = [
-    'Corporate Law',
-    'Commercial Litigation',
-    'Real Estate Law',
-    'Employment Law',
-    'Family Law',
-    'Criminal Defense',
-    'Contract Law',
-    'Constitutional Law'
-  ];
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle fallback form submission here
+    console.log('Fallback form submitted');
+    // You can add your form submission logic here
+  };
 
   return (
     <section ref={sectionRef} id="contact" className="py-20 bg-white">
@@ -177,13 +185,17 @@ const Contact = () => {
                 Request a Consultation
               </h3>
               
-              {/* EngageBay Form Container */}
-              <div className="engage-hub-form-embed" 
-                   id="eh_form_6351369855041536" 
-                   data-id="6351369855041536">
+              {/* EngageBay Form Container - Only show when EngageBay is loaded */}
+              {engageBayLoaded && (
+                <div className="engage-hub-form-embed" 
+                     id="eh_form_6351369855041536" 
+                     data-id="6351369855041536">
+                </div>
+              )}
                 
-                {/* Fallback form with matching design */}
-                <form id="consultation-form" className="space-y-6">
+              {/* Fallback form - Only show when EngageBay hasn't loaded */}
+              {showFallbackForm && (
+                <form onSubmit={handleFormSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium mb-2 text-gray-700">
@@ -226,7 +238,6 @@ const Contact = () => {
                         required
                         className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
                       />
-                      <div id="emailValidation" className="mt-2 text-sm" style={{display: 'none'}}></div>
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium mb-2 text-gray-700">
@@ -293,7 +304,15 @@ const Contact = () => {
                     <span>Send Message</span>
                   </button>
                 </form>
-              </div>
+              )}
+
+              {/* Loading state (optional) */}
+              {!showFallbackForm && !engageBayLoaded && (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
+                  <span className="ml-3 text-gray-600">Loading form...</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
