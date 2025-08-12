@@ -157,18 +157,6 @@ const BlogPostPage = () => {
     loadBlogPost();
   }, [postId]);
 
-  // Handle back navigation to home page and scroll to news section
-  const handleBackToNews = () => {
-    navigate('/');
-    // Wait for navigation to complete, then scroll to news section
-    setTimeout(() => {
-      const newsSection = document.querySelector('#news');
-      if (newsSection) {
-        newsSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, 100);
-  };
-
   if (loading) {
     return (
       <>
