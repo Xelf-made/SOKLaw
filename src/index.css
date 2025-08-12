@@ -624,3 +624,85 @@ html {
   max-width: 100%;
   height: auto;
 }
+
+/* EngageBay Form Styling */
+.engage-hub-form-embed {
+  width: 100%;
+}
+
+.engage-hub-form-embed form {
+  width: 100%;
+}
+
+.engage-hub-form-embed input,
+.engage-hub-form-embed select,
+.engage-hub-form-embed textarea {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  border: 2px solid #e1e5e9 !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+  background: white !important;
+}
+
+.engage-hub-form-embed input:focus,
+.engage-hub-form-embed select:focus,
+.engage-hub-form-embed textarea:focus {
+  outline: none !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1) !important;
+}
+
+.engage-hub-form-embed button[type="submit"] {
+  width: 100% !important;
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: white !important;
+  border: none !important;
+  padding: 16px 24px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-top: 20px !important;
+}
+
+.engage-hub-form-embed button[type="submit"]:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Email validation styles for EngageBay form */
+.input-valid {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+.input-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.validation-message {
+  font-size: 12px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.validation-success {
+  color: #10b981;
+}
+
+.validation-error {
+  color: #ef4444;
+}
+
+.validation-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}

@@ -3,14 +3,6 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: ''
-  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,20 +28,54 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // Load EngageBay scripts
+  useEffect(() => {
+    // EngageBay Account Tracking Code
+    const loadEngageBayTracking = () => {
+      if (window.EhAPI) return; // Already loaded
+      
+      window.EhAPI = window.EhAPI || {};
+      window.EhAPI.after_load = function() {
+        window.EhAPI.set_account('scq2bqf88ontbg2g3432fpspk', 'gmailrkfn');
+        window.EhAPI.execute('rules');
+      };
+      
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v' + new Date().getHours();
+      document.head.appendChild(script);
+    };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    // You would typically send this data to your backend
-  };
+    // Load EngageBay Forms
+    const loadEngageBayForms = () => {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://app.engagebay.com/load_forms.js';
+      script.onload = () => {
+        // Initialize form after script loads
+        setTimeout(() => {
+          if (window.EhForms) {
+            window.EhForms.create({
+              formId: 6351369855041536,
+              target: "#eh_form_6351369855041536",
+              onFormReady: function(el: any, setValue: any) { 
+                // Hide fallback form when EngageBay loads
+                const fallbackForm = document.getElementById('consultation-form');
+                if (fallbackForm) {
+                  fallbackForm.style.display = 'none';
+                }
+              }
+            });
+          }
+        }, 1000);
+      };
+      document.head.appendChild(script);
+    };
+
+    loadEngageBayTracking();
+    loadEngageBayForms();
+  }, []);
 
   const officeInfo = [
     {
@@ -145,126 +171,143 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="animate-on-scroll opacity-0 modern-card p-8">
-            <h3 className="text-2xl font-bold mb-6">
-              Request a Consultation
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
-                    placeholder="Your first name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
-                    placeholder="Your last name"
-                  />
-                </div>
-              </div>
+          <div className="animate-on-scroll opacity-0">
+            <div className="bg-white p-8 rounded-2xl shadow-xl">
+              <h3 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                Request a Consultation
+              </h3>
+              
+              {/* EngageBay Form Container */}
+              <div className="engage-hub-form-embed" 
+                   id="eh_form_6351369855041536" 
+                   data-id="6351369855041536">
+                
+                {/* Fallback form with matching design */}
+                <form id="consultation-form" className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-medium mb-2 text-gray-700">
+                        First Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Your first name"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-medium mb-2 text-gray-700">
+                        Last Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Your last name"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
-                    placeholder="+254 700 000 000"
-                  />
-                </div>
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700">
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                      />
+                      <div id="emailValidation" className="mt-2 text-sm" style={{display: 'none'}}></div>
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium mb-2 text-gray-700">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="+254 700 000 000"
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label htmlFor="service" className="block text-sm font-medium mb-2">
-                  Legal Service Required *
-                </label>
-                <select
-                  id="service"
-                  name="service"
-                  value={formData.service}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
-                >
-                  <option value="">Select a service</option>
-                  {legalServices.map((service, index) => (
-                    <option key={index} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <div>
+                    <label htmlFor="service" className="block text-sm font-medium mb-2 text-gray-700">
+                      Legal Service Required <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="service"
+                      name="service"
+                      required
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 appearance-none bg-white"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666'%3E%3Cpath d='M8 10.5L4 6.5h8z'/%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right 12px center',
+                        paddingRight: '40px'
+                      }}
+                    >
+                      <option value="" disabled>Select a service</option>
+                      <option value="corporate-law">Corporate Law</option>
+                      <option value="family-law">Family Law</option>
+                      <option value="criminal-defense">Criminal Defense</option>
+                      <option value="real-estate">Real Estate Law</option>
+                      <option value="employment-law">Employment Law</option>
+                      <option value="personal-injury">Personal Injury</option>
+                      <option value="immigration">Immigration Law</option>
+                      <option value="estate-planning">Estate Planning</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
 
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Message *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 resize-none"
-                  placeholder="Please describe your legal matter and how we can help you..."
-                />
-              </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700">
+                      Message <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      placeholder="Please describe your legal matter and how we can help you..."
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 resize-vertical"
+                    />
+                  </div>
 
-              <button
-                type="submit"
-                className="w-full btn-primary flex items-center justify-center space-x-2 transform hover:scale-105 shadow-lg"
-              >
-                <Send className="h-5 w-5" />
-                <span>Send Message</span>
-              </button>
-            </form>
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <Send className="h-5 w-5" />
+                    <span>Send Message</span>
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+// Declare global EngageBay variables for TypeScript
+declare global {
+  interface Window {
+    EhAPI: any;
+    EhForms: any;
+  }
+}
 
 export default Contact;
