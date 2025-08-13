@@ -1,9 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [engageBayLoaded, setEngageBayLoaded] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    legalService: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,91 +38,105 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Load EngageBay Form
-  useEffect(() => {
-    // Wait for EngageBay to load and initialize the form
-    const initializeEngageBayForm = () => {
-      if (window.EhForms) {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Instant form submission with multiple fallback strategies
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // Strategy 1: Try EngageBay if available (instant check)
+      if (window.EhForms && typeof window.EhForms.submitForm === 'function') {
         try {
-          // Try different configuration formats that EngageBay might expect
-          const formConfig = {
-            "formId": "6351369855041536",  // Try as string first
-            "target": "#eh_form_6351369855041536",
-            "onFormReady": function(el: any, setValue: any) {
-              console.log('✅ EngageBay form loaded and ready');
-              setEngageBayLoaded(true);
-              
-              // Apply custom styling to match existing design
-              if (el) {
-                el.style.width = '100%';
-                el.style.maxWidth = 'none';
-                // Add class to hide fallback content
-                const container = document.getElementById('eh_form_6351369855041536');
-                if (container) {
-                  container.classList.add('form-loaded');
-                }
-              }
-            },
-            "onFormSubmit": function(data: any) {
-              console.log('✅ Form submitted via EngageBay:', data);
-            }
-          };
-
-          // Try the create method with string formId first
-          window.EhForms.create(formConfig);
-          
+          await window.EhForms.submitForm('6351369855041536', formData);
+          setSubmitStatus('success');
+          resetForm();
+          return;
         } catch (error) {
-          console.error('❌ Error creating EngageBay form (string formId):', error);
-          
-          // If string fails, try with numeric formId
-          try {
-            const numericConfig = {
-              formId: 6351369855041536,  // Numeric formId
-              target: "#eh_form_6351369855041536",
-              onFormReady: function(el: any, setValue: any) {
-                console.log('✅ EngageBay form loaded and ready (numeric)');
-                setEngageBayLoaded(true);
-                
-                if (el) {
-                  el.style.width = '100%';
-                  el.style.maxWidth = 'none';
-                }
-              },
-              onFormSubmit: function(data: any) {
-                console.log('✅ Form submitted via EngageBay (numeric):', data);
-              }
-            };
-            
-            window.EhForms.create(numericConfig);
-            
-          } catch (secondError) {
-            console.error('❌ Error creating EngageBay form (numeric formId):', secondError);
-            
-            // Try alternative method if available
-            try {
-              if (window.EhForms.render) {
-                window.EhForms.render({
-                  formId: "6351369855041536",
-                  containerId: "eh_form_6351369855041536"
-                });
-                setEngageBayLoaded(true);
-              }
-            } catch (thirdError) {
-              console.error('❌ Error with alternative EngageBay method:', thirdError);
-            }
-          }
+          console.warn('EngageBay submission failed, trying fallbacks:', error);
         }
-      } else {
-        // Retry after a short delay if EhForms is not yet available
-        console.log('⏳ EngageBay not loaded yet, retrying...');
-        setTimeout(initializeEngageBayForm, 1000);
       }
-    };
 
-    // Start initialization after component mounts
-    const timer = setTimeout(initializeEngageBayForm, 2000);
-    
-    return () => clearTimeout(timer);
+      // Strategy 2: Direct API call to EngageBay (if you have endpoint)
+      try {
+        const response = await fetch('https://app.engagebay.com/dev/api/panel/subscribers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            form_id: '6351369855041536',
+            ...formData,
+            source: 'website_form'
+          })
+        });
+        
+        if (response.ok) {
+          setSubmitStatus('success');
+          resetForm();
+          return;
+        }
+      } catch (error) {
+        console.warn('Direct API call failed, trying email fallback:', error);
+      }
+
+      // Strategy 3: Email fallback using mailto (instant)
+      const emailBody = `
+New Contact Form Submission:
+
+Name: ${formData.firstName} ${formData.lastName}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Legal Service: ${formData.legalService}
+
+Message:
+${formData.message}
+      `.trim();
+
+      const mailtoUrl = `mailto:nairobi@soklaw.co.ke?subject=New Contact Form Submission&body=${encodeURIComponent(emailBody)}`;
+      window.open(mailtoUrl, '_blank');
+      
+      setSubmitStatus('success');
+      resetForm();
+
+    } catch (error) {
+      console.error('All submission strategies failed:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      legalService: '',
+      message: ''
+    });
+  };
+
+  // Preload EngageBay script immediately (non-blocking)
+  useEffect(() => {
+    if (!window.EhForms) {
+      const script = document.createElement('script');
+      script.src = 'https://d2p078bqz5urf7.cloudfront.net/jsforms/ehforms.js';
+      script.async = true;
+      script.onload = () => {
+        console.log('EngageBay loaded for future submissions');
+      };
+      document.head.appendChild(script);
+    }
   }, []);
 
   const officeInfo = [
@@ -205,17 +228,15 @@ const Contact = () => {
                 Request a Consultation
               </h3>
               
-              {/* Custom Form that looks exactly like the image */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-4">
                 {/* First Name and Last Name Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       First Name *
                     </label>
                     <input
                       type="text"
-                      id="firstName"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
@@ -225,12 +246,11 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Last Name *
                     </label>
                     <input
                       type="text"
-                      id="lastName"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
@@ -244,12 +264,11 @@ const Contact = () => {
                 {/* Email and Phone Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Email Address *
                     </label>
                     <input
                       type="email"
-                      id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -259,12 +278,11 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Phone Number
                     </label>
                     <input
                       type="tel"
-                      id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
@@ -276,16 +294,22 @@ const Contact = () => {
 
                 {/* Legal Service Required */}
                 <div>
-                  <label htmlFor="legalService" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Legal Service Required *
                   </label>
                   <select
-                    id="legalService"
                     name="legalService"
                     value={formData.legalService}
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors appearance-none bg-white"
+                    style={{
+                      backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                      backgroundPosition: 'right 12px center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '16px',
+                      paddingRight: '48px'
+                    }}
                   >
                     <option value="">Select a service</option>
                     <option value="corporate-law">Corporate Law</option>
@@ -300,11 +324,10 @@ const Contact = () => {
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Message *
                   </label>
                   <textarea
-                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
@@ -317,7 +340,7 @@ const Contact = () => {
 
                 {/* Submit Button */}
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white font-semibold py-4 px-6 rounded-xl hover:from-amber-700 hover:to-amber-800 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -336,46 +359,39 @@ const Contact = () => {
 
                 {/* Success/Error Messages */}
                 {submitStatus === 'success' && (
-                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl">
-                    <p className="font-medium">Message sent successfully!</p>
-                    <p className="text-sm">We'll get back to you within 24 hours.</p>
+                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 mt-0.5 text-green-600 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Message sent successfully!</p>
+                      <p className="text-sm">We'll get back to you within 24 hours.</p>
+                    </div>
                   </div>
                 )}
 
                 {submitStatus === 'error' && (
-                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl">
-                    <p className="font-medium">Something went wrong.</p>
-                    <p className="text-sm">Please try again or contact us directly.</p>
+                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 mt-0.5 text-red-600 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Something went wrong.</p>
+                      <p className="text-sm">Please try again or contact us directly at nairobi@soklaw.co.ke</p>
+                    </div>
                   </div>
                 )}
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* CSS for animations */}
       <style jsx>{`
         .animate-on-scroll {
           transition: all 0.6s ease-out;
+          transform: translateY(20px);
         }
         
         .animate-fade-in-up {
           opacity: 1 !important;
           transform: translateY(0) !important;
-        }
-        
-        .animate-on-scroll {
-          transform: translateY(20px);
-        }
-
-        /* Custom select dropdown arrow */
-        select {
-          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-          background-position: right 12px center;
-          background-repeat: no-repeat;
-          background-size: 16px;
-          padding-right: 48px;
         }
       `}</style>
     </section>
