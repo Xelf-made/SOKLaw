@@ -102,8 +102,8 @@ const Hero = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
           <div className="min-h-[140px] flex flex-col justify-center">
-            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold text-white mb-4 transition-all duration-500 drop-shadow-2xl tracking-wide" 
-                style={{ fontFamily: 'Georgia, serif', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold mb-4 transition-all duration-500 drop-shadow-2xl tracking-wide" 
+                style={{ fontFamily: 'Georgia, serif', color: '#FFFFFF', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
               {slides[currentSlide].title}
             </h3>
             <p className="text-base md:text-lg lg:text-xl text-yellow-200 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-semibold" 
