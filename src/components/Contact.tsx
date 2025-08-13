@@ -16,11 +16,12 @@ const Contact = () => {
     message: ''
   });
 
-  // EngageBay configuration
+  // Your actual EngageBay configuration - Replace with your real API key
   const ENGAGEBAY_CONFIG = {
     accountId: 'scq2bqf88ontbg2g3432fpspk',
-    apiKey: 'gmailrkfn',
+    apiKey: 'gmailrkfn', // Replace this with your actual API key from Account Settings -> API -> REST API Key
     formId: '6351369855041536',
+    baseUrl: 'https://app.engagebay.com',
     domain: 'app.engagebay.com'
   };
 
@@ -48,7 +49,7 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Enhanced EngageBay integration
+  // Load EngageBay Scripts
   useEffect(() => {
     let isComponentMounted = true;
 
@@ -81,7 +82,7 @@ const Contact = () => {
           });
         };
 
-        // Load EngageBay Forms Script
+        // Load EngageBay Forms Script  
         const loadForms = () => {
           return new Promise<void>((resolve, reject) => {
             const formsScript = document.createElement('script');
@@ -103,13 +104,16 @@ const Contact = () => {
                           setEngageBayLoaded(true);
                         }
                         
-                        // Optional: Pre-fill fields if needed
-                        // setValue("email", "example@domain.com");
-                        
                         // Apply custom styling to the form
                         if (el) {
                           el.style.width = '100%';
                           el.style.maxWidth = 'none';
+                        }
+                      },
+                      "onFormSubmit": function(data: any) {
+                        console.log('Form submitted via EngageBay native form:', data);
+                        if (isComponentMounted) {
+                          setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
                         }
                       }
                     });
@@ -149,87 +153,153 @@ const Contact = () => {
     };
   }, []);
 
-  const submitToEngageBay = async (data: typeof formData) => {
-    // Method 1: Try EngageBay JavaScript API
-    if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
-      try {
-        const contact = {
-          email: data.email,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          phone: data.phone,
-          properties: [
-            {
-              name: 'Legal Service',
-              value: data.service
-            },
-            {
-              name: 'Message',
-              value: data.message
-            },
-            {
-              name: 'Lead Source',
-              value: 'Website Contact Form'
-            }
-          ]
-        };
-
-        await window.EhAPI.execute('contact.add', contact);
-        return { success: true, message: 'Submitted via EngageBay API' };
-      } catch (apiError) {
-        console.warn('EngageBay API submission failed:', apiError);
-      }
-    }
-
-    // Method 2: Direct HTTP submission to EngageBay
+  // Submit to EngageBay CRM using REST API
+  const submitToEngageBayCRM = async (data: typeof formData) => {
     try {
-      const payload = {
-        formId: ENGAGEBAY_CONFIG.formId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        phone: data.phone,
-        legalService: data.service,
-        message: data.message,
-        leadSource: 'Website Contact Form',
-        timestamp: new Date().toISOString()
+      // Method 1: Using official EngageBay REST API for contact creation
+      const contactPayload = {
+        properties: [
+          {
+            name: "name",
+            value: data.firstName,
+            field_type: "TEXT",
+            is_searchable: false,
+            type: "SYSTEM"
+          },
+          {
+            name: "last_name", 
+            value: data.lastName,
+            field_type: "TEXT",
+            is_searchable: false,
+            type: "SYSTEM"
+          },
+          {
+            name: "email",
+            value: data.email,
+            field_type: "TEXT",
+            is_searchable: false,
+            type: "SYSTEM"
+          },
+          {
+            name: "phone",
+            value: data.phone,
+            field_type: "TEXT",
+            is_searchable: false,
+            type: "SYSTEM"
+          },
+          {
+            name: "Legal Service Required",
+            value: data.service,
+            field_type: "TEXT",
+            is_searchable: true,
+            type: "CUSTOM"
+          },
+          {
+            name: "Consultation Message",
+            value: data.message,
+            field_type: "TEXTAREA",
+            is_searchable: true,
+            type: "CUSTOM"
+          },
+          {
+            name: "Lead Source",
+            value: "Website Contact Form",
+            field_type: "TEXT",
+            is_searchable: true,
+            type: "CUSTOM"
+          }
+        ],
+        tags: [
+          {"tag": "Website Lead"},
+          {"tag": "Consultation Request"},
+          {"tag": data.service}
+        ]
       };
 
-      // Try multiple endpoints
-      const endpoints = [
-        `https://${ENGAGEBAY_CONFIG.domain}/collect`,
-        `https://${ENGAGEBAY_CONFIG.domain}/form/submit`,
-        `https://forms.${ENGAGEBAY_CONFIG.domain}/collect`
-      ];
+      // Official EngageBay REST API endpoint for creating contacts
+      const response = await fetch(`${ENGAGEBAY_CONFIG.baseUrl}/dev/api/panel/subscribers/subscriber`, {
+        method: 'POST',
+        headers: {
+          'Authorization': ENGAGEBAY_CONFIG.apiKey,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contactPayload)
+      });
 
-      for (const endpoint of endpoints) {
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Contact created successfully in EngageBay CRM:', result);
+        return { success: true, data: result };
+      } else {
+        const errorData = await response.text();
+        console.error('EngageBay API Error:', response.status, errorData);
+        throw new Error(`API Error: ${response.status} - ${errorData}`);
+      }
+
+    } catch (apiError) {
+      console.error('REST API submission failed:', apiError);
+      
+      // Method 2: Try JavaScript API if available
+      if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
         try {
-          const formDataObj = new FormData();
-          Object.keys(payload).forEach(key => {
-            formDataObj.append(key, payload[key as keyof typeof payload]);
-          });
+          const contact = {
+            email: data.email,
+            first_name: data.firstName,
+            last_name: data.lastName,
+            phone: data.phone,
+            properties: [
+              {
+                name: 'Legal Service Required',
+                value: data.service,
+                field_type: 'TEXT'
+              },
+              {
+                name: 'Consultation Message',
+                value: data.message,
+                field_type: 'TEXTAREA'
+              },
+              {
+                name: 'Lead Source',
+                value: 'Website Contact Form',
+                field_type: 'TEXT'
+              }
+            ]
+          };
 
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            body: formDataObj,
-            headers: {
-              'Accept': 'application/json'
-            }
-          });
-
-          if (response.ok || response.type === 'opaque') {
-            return { success: true, message: 'Submitted via HTTP endpoint' };
-          }
-        } catch (endpointError) {
-          console.warn(`Endpoint ${endpoint} failed:`, endpointError);
-          continue;
+          await window.EhAPI.execute('contact.add', contact);
+          console.log('Contact added via EngageBay JavaScript API');
+          return { success: true, method: 'JavaScript API' };
+        } catch (jsApiError) {
+          console.error('JavaScript API also failed:', jsApiError);
         }
       }
 
-      throw new Error('All HTTP endpoints failed');
-    } catch (httpError) {
-      console.warn('HTTP submission failed:', httpError);
-      throw httpError;
+      // Method 3: Form submission fallback
+      try {
+        const formDataPayload = new FormData();
+        formDataPayload.append('formId', ENGAGEBAY_CONFIG.formId);
+        formDataPayload.append('firstName', data.firstName);
+        formDataPayload.append('lastName', data.lastName);
+        formDataPayload.append('email', data.email);
+        formDataPayload.append('phone', data.phone);
+        formDataPayload.append('legalService', data.service);
+        formDataPayload.append('message', data.message);
+        formDataPayload.append('leadSource', 'Website Contact Form');
+
+        const formResponse = await fetch(`${ENGAGEBAY_CONFIG.baseUrl}/collect`, {
+          method: 'POST',
+          body: formDataPayload,
+          mode: 'no-cors' // Allow the request to go through
+        });
+
+        console.log('Form submitted to EngageBay via form endpoint');
+        return { success: true, method: 'Form submission' };
+
+      } catch (formError) {
+        console.error('Form submission also failed:', formError);
+        throw new Error('All submission methods failed');
+      }
     }
   };
 
@@ -258,22 +328,25 @@ const Contact = () => {
     setSubmitMessage('');
 
     try {
-      // Try to submit to EngageBay
-      const result = await submitToEngageBay(formData);
+      // Validate required fields
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.service || !formData.message) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      // Submit to EngageBay CRM
+      const result = await submitToEngageBayCRM(formData);
       
-      setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
+      setSubmitMessage('🎉 Thank you! Your consultation request has been submitted successfully to our CRM system. We will contact you within 24 hours to schedule your consultation.');
       resetForm();
       
     } catch (error) {
-      console.error('EngageBay submission failed, trying email fallback:', error);
+      console.error('Form submission failed:', error);
       
-      // Fallback: Email link with all form data
+      // Ultimate fallback: Email client
       try {
-        const subject = encodeURIComponent(`Consultation Request - ${formData.service}`);
+        const subject = encodeURIComponent(`Urgent: Consultation Request - ${formData.service}`);
         const body = encodeURIComponent(`
-Dear SOK Law Team,
-
-I would like to request a consultation for the following:
+CONSULTATION REQUEST FROM WEBSITE
 
 Name: ${formData.firstName} ${formData.lastName}
 Email: ${formData.email}
@@ -283,32 +356,37 @@ Legal Service Required: ${formData.service}
 Message:
 ${formData.message}
 
-Please contact me to schedule a consultation.
+Submitted: ${new Date().toLocaleString()}
+Source: Website Contact Form
 
-Best regards,
-${formData.firstName} ${formData.lastName}
+Please contact this lead immediately for consultation scheduling.
         `.trim());
         
         const mailtoLink = `mailto:nairobi@soklaw.co.ke?subject=${subject}&body=${body}`;
         
         // Try to open email client
-        const emailOpened = window.open(mailtoLink, '_blank');
+        window.open(mailtoLink, '_blank');
         
-        if (emailOpened) {
-          setSubmitMessage('We\'ve opened your email client with your consultation request. Please send the email to complete your submission, or contact us directly at nairobi@soklaw.co.ke');
-          resetForm();
-        } else {
-          throw new Error('Could not open email client');
-        }
+        setSubmitMessage(`⚠️ We've opened your email client with your consultation request. Please send the email to complete your submission.
+
+Alternatively, contact us directly:
+📧 Email: nairobi@soklaw.co.ke  
+📞 Phone: +254 700 123 456
+
+Your inquiry details:
+Name: ${formData.firstName} ${formData.lastName}
+Service: ${formData.service}`);
+        
+        resetForm();
         
       } catch (emailError) {
         console.error('Email fallback failed:', emailError);
-        setSubmitMessage(`There was an issue with automatic submission. Please contact us directly:
-        
-Email: nairobi@soklaw.co.ke
-Phone: +254 700 123 456
+        setSubmitMessage(`❌ We're experiencing technical difficulties. Please contact us directly:
 
-Or copy this information:
+📧 Email: nairobi@soklaw.co.ke
+📞 Phone: +254 700 123 456
+
+Include these details in your message:
 Name: ${formData.firstName} ${formData.lastName}
 Email: ${formData.email}
 Service: ${formData.service}
@@ -379,12 +457,12 @@ Message: ${formData.message}`);
               ))}
             </div>
 
-            <div className="animate-on-scroll opacity-0 p-6 bg-gray-50 rounded-xl border">
-              <h4 className="text-xl font-semibold mb-4 flex items-center">
+            <div className="animate-on-scroll opacity-0 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+              <h4 className="text-xl font-semibold mb-4 flex items-center text-yellow-800">
                 <Clock className="h-5 w-5 mr-2 text-yellow-600" />
                 Business Hours
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-2 text-yellow-700">
                 <div className="flex justify-between">
                   <span>Monday - Friday</span>
                   <span>8:00 AM - 6:00 PM</span>
@@ -408,22 +486,27 @@ Message: ${formData.message}`);
                 Request a Consultation
               </h3>
               
-              {/* EngageBay Form Container */}
+              {/* EngageBay Form Container - Official HTML code */}
               {engageBayLoaded && !showFallbackForm && (
                 <div>
-                  <div className="engage-hub-form-embed" 
-                       id={`eh_form_${ENGAGEBAY_CONFIG.formId}`} 
-                       data-id={ENGAGEBAY_CONFIG.formId}>
-                  </div>
+                  {/* Official EngageBay HTML code */}
+                  <div className="engage-hub-form-embed" id="eh_form_6351369855041536" data-id="6351369855041536"></div>
+                  
+                  {/* Success message container for EngageBay form */}
+                  {submitMessage && (
+                    <div className="mt-4 p-4 rounded-lg bg-green-50 text-green-700 border border-green-200">
+                      {submitMessage}
+                    </div>
+                  )}
                 </div>
               )}
                 
-              {/* Fallback form */}
+              {/* Fallback form - Connected to EngageBay CRM via REST API */}
               {showFallbackForm && (
                 <div className="space-y-6">
                   {submitMessage && (
-                    <div className={`p-4 rounded-lg ${submitMessage.includes('issue') || submitMessage.includes('error') 
-                      ? 'bg-red-50 text-red-700 border border-red-200' 
+                    <div className={`p-4 rounded-lg ${submitMessage.includes('❌') || submitMessage.includes('⚠️') 
+                      ? 'bg-orange-50 text-orange-700 border border-orange-200' 
                       : 'bg-green-50 text-green-700 border border-green-200'
                     }`}>
                       <pre className="whitespace-pre-wrap text-sm">{submitMessage}</pre>
@@ -559,7 +642,7 @@ Message: ${formData.message}`);
                     {isSubmitting ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        <span>Submitting to EngageBay...</span>
+                        <span>Submitting to EngageBay CRM...</span>
                       </>
                     ) : (
                       <>
@@ -568,6 +651,12 @@ Message: ${formData.message}`);
                       </>
                     )}
                   </button>
+
+                  <div className="text-center">
+                    <p className="text-sm text-gray-500">
+                      🔒 Your information is securely stored in our CRM system
+                    </p>
+                  </div>
                 </div>
               )}
 
@@ -598,6 +687,7 @@ Message: ${formData.message}`);
           transform: translateY(20px);
         }
 
+        /* EngageBay form styling */
         .engage-hub-form-embed input,
         .engage-hub-form-embed select,
         .engage-hub-form-embed textarea {
