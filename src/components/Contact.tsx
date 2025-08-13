@@ -36,9 +36,9 @@ const Contact = () => {
       if (window.EhForms) {
         try {
           window.EhForms.create({
-            "formId": 6351369855041536,
-            "target": "#eh_form_6351369855041536",
-            "onFormReady": function(el: any, setValue: any) {
+            formId: 6351369855041536,  // Changed from "formId" to formId
+            target: "#eh_form_6351369855041536",
+            onFormReady: function(el: any, setValue: any) {
               console.log('✅ EngageBay form loaded and ready');
               setEngageBayLoaded(true);
               
@@ -48,7 +48,7 @@ const Contact = () => {
                 el.style.maxWidth = 'none';
               }
             },
-            "onFormSubmit": function(data: any) {
+            onFormSubmit: function(data: any) {
               console.log('✅ Form submitted via EngageBay:', data);
             }
           });
