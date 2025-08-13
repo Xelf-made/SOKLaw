@@ -16,10 +16,10 @@ const Contact = () => {
     message: ''
   });
 
-  // Your actual EngageBay configuration - Replace with your real API key
+  // Your actual EngageBay configuration
   const ENGAGEBAY_CONFIG = {
     accountId: 'scq2bqf88ontbg2g3432fpspk',
-    apiKey: 'gmailrkfn', // Replace this with your actual API key from Account Settings -> API -> REST API Key
+    apiKey: 'gmailrkfn',
     formId: '6351369855041536',
     baseUrl: 'https://app.engagebay.com',
     domain: 'app.engagebay.com'
@@ -93,10 +93,9 @@ const Contact = () => {
               setTimeout(() => {
                 if (window.EhForms && isComponentMounted) {
                   try {
-                    // Use the exact EngageBay recommended implementation
                     window.EhForms.create({
-                      "formId": 6351369855041536, // Required: The unique ID of your form
-                      "target": "", // Optional: Use a CSS selector like ".your-class" or "#your-id"
+                      "formId": 6351369855041536,
+                      "target": "",
                       "onFormReady": function(el: any, setValue: any) { 
                         console.log('EngageBay form loaded successfully');
                         if (isComponentMounted) {
@@ -104,7 +103,6 @@ const Contact = () => {
                           setEngageBayLoaded(true);
                         }
                         
-                        // Apply custom styling to the form
                         if (el) {
                           el.style.width = '100%';
                           el.style.maxWidth = 'none';
@@ -133,7 +131,6 @@ const Contact = () => {
           });
         };
 
-        // Load both scripts
         await loadAPI();
         await loadForms();
 
@@ -153,94 +150,10 @@ const Contact = () => {
     };
   }, []);
 
-  // Submit to EngageBay CRM using REST API
-  const submitToEngageBayCRM = async (data: typeof formData) => {
+  // Submit to EngageBay - Fixed version with proper CORS handling
+  const submitToEngageBay = async (data: typeof formData) => {
     try {
-      // Method 1: Using official EngageBay REST API for contact creation
-      const contactPayload = {
-        properties: [
-          {
-            name: "name",
-            value: data.firstName,
-            field_type: "TEXT",
-            is_searchable: false,
-            type: "SYSTEM"
-          },
-          {
-            name: "last_name", 
-            value: data.lastName,
-            field_type: "TEXT",
-            is_searchable: false,
-            type: "SYSTEM"
-          },
-          {
-            name: "email",
-            value: data.email,
-            field_type: "TEXT",
-            is_searchable: false,
-            type: "SYSTEM"
-          },
-          {
-            name: "phone",
-            value: data.phone,
-            field_type: "TEXT",
-            is_searchable: false,
-            type: "SYSTEM"
-          },
-          {
-            name: "Legal Service Required",
-            value: data.service,
-            field_type: "TEXT",
-            is_searchable: true,
-            type: "CUSTOM"
-          },
-          {
-            name: "Consultation Message",
-            value: data.message,
-            field_type: "TEXTAREA",
-            is_searchable: true,
-            type: "CUSTOM"
-          },
-          {
-            name: "Lead Source",
-            value: "Website Contact Form",
-            field_type: "TEXT",
-            is_searchable: true,
-            type: "CUSTOM"
-          }
-        ],
-        tags: [
-          {"tag": "Website Lead"},
-          {"tag": "Consultation Request"},
-          {"tag": data.service}
-        ]
-      };
-
-      // Official EngageBay REST API endpoint for creating contacts
-      const response = await fetch(`${ENGAGEBAY_CONFIG.baseUrl}/dev/api/panel/subscribers/subscriber`, {
-        method: 'POST',
-        headers: {
-          'Authorization': ENGAGEBAY_CONFIG.apiKey,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(contactPayload)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Contact created successfully in EngageBay CRM:', result);
-        return { success: true, data: result };
-      } else {
-        const errorData = await response.text();
-        console.error('EngageBay API Error:', response.status, errorData);
-        throw new Error(`API Error: ${response.status} - ${errorData}`);
-      }
-
-    } catch (apiError) {
-      console.error('REST API submission failed:', apiError);
-      
-      // Method 2: Try JavaScript API if available
+      // Method 1: Try JavaScript API first (most reliable)
       if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
         try {
           const contact = {
@@ -271,11 +184,12 @@ const Contact = () => {
           console.log('Contact added via EngageBay JavaScript API');
           return { success: true, method: 'JavaScript API' };
         } catch (jsApiError) {
-          console.error('JavaScript API also failed:', jsApiError);
+          console.error('JavaScript API failed:', jsApiError);
+          throw jsApiError;
         }
       }
 
-      // Method 3: Form submission fallback
+      // Method 2: Form submission via EngageBay form endpoint (CORS-friendly)
       try {
         const formDataPayload = new FormData();
         formDataPayload.append('formId', ENGAGEBAY_CONFIG.formId);
@@ -287,19 +201,24 @@ const Contact = () => {
         formDataPayload.append('message', data.message);
         formDataPayload.append('leadSource', 'Website Contact Form');
 
+        // Use the public form submission endpoint which allows CORS
         const formResponse = await fetch(`${ENGAGEBAY_CONFIG.baseUrl}/collect`, {
           method: 'POST',
           body: formDataPayload,
-          mode: 'no-cors' // Allow the request to go through
+          mode: 'no-cors' // This prevents CORS errors
         });
 
         console.log('Form submitted to EngageBay via form endpoint');
         return { success: true, method: 'Form submission' };
 
       } catch (formError) {
-        console.error('Form submission also failed:', formError);
-        throw new Error('All submission methods failed');
+        console.error('Form submission failed:', formError);
+        throw formError;
       }
+
+    } catch (error) {
+      console.error('All EngageBay submission methods failed:', error);
+      throw new Error('Unable to submit to EngageBay CRM');
     }
   };
 
@@ -333,18 +252,19 @@ const Contact = () => {
         throw new Error('Please fill in all required fields');
       }
 
-      // Submit to EngageBay CRM
-      const result = await submitToEngageBayCRM(formData);
-      
-      setSubmitMessage('🎉 Thank you! Your consultation request has been submitted successfully to our CRM system. We will contact you within 24 hours to schedule your consultation.');
-      resetForm();
-      
-    } catch (error) {
-      console.error('Form submission failed:', error);
-      
-      // Ultimate fallback: Email client
+      // Try to submit to EngageBay
       try {
-        const subject = encodeURIComponent(`Urgent: Consultation Request - ${formData.service}`);
+        const result = await submitToEngageBay(formData);
+        
+        setSubmitMessage('🎉 Thank you! Your consultation request has been submitted successfully. We will contact you within 24 hours to schedule your consultation.');
+        resetForm();
+        return;
+        
+      } catch (engageBayError) {
+        console.log('EngageBay submission failed, using email fallback:', engageBayError);
+        
+        // Fallback to email method
+        const subject = encodeURIComponent(`Consultation Request - ${formData.service}`);
         const body = encodeURIComponent(`
 CONSULTATION REQUEST FROM WEBSITE
 
@@ -359,39 +279,39 @@ ${formData.message}
 Submitted: ${new Date().toLocaleString()}
 Source: Website Contact Form
 
-Please contact this lead immediately for consultation scheduling.
+Please contact this lead for consultation scheduling.
         `.trim());
         
         const mailtoLink = `mailto:nairobi@soklaw.co.ke?subject=${subject}&body=${body}`;
         
-        // Try to open email client
+        // Open email client
         window.open(mailtoLink, '_blank');
         
-        setSubmitMessage(`⚠️ We've opened your email client with your consultation request. Please send the email to complete your submission.
+        setSubmitMessage(`✉️ We've opened your email client with your consultation request. Please send the email to complete your submission.
 
-Alternatively, contact us directly:
 📧 Email: nairobi@soklaw.co.ke  
 📞 Phone: +254 700 123 456
 
-Your inquiry details:
-Name: ${formData.firstName} ${formData.lastName}
-Service: ${formData.service}`);
+Your request details:
+• Name: ${formData.firstName} ${formData.lastName}
+• Service: ${formData.service}
+• Email: ${formData.email}`);
         
         resetForm();
-        
-      } catch (emailError) {
-        console.error('Email fallback failed:', emailError);
-        setSubmitMessage(`❌ We're experiencing technical difficulties. Please contact us directly:
+      }
+      
+    } catch (error) {
+      console.error('Form submission failed:', error);
+      setSubmitMessage(`❌ Please contact us directly:
 
 📧 Email: nairobi@soklaw.co.ke
 📞 Phone: +254 700 123 456
 
-Include these details in your message:
-Name: ${formData.firstName} ${formData.lastName}
-Email: ${formData.email}
-Service: ${formData.service}
-Message: ${formData.message}`);
-      }
+Include these details:
+• Name: ${formData.firstName} ${formData.lastName}
+• Email: ${formData.email}
+• Service: ${formData.service}
+• Message: ${formData.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -486,13 +406,11 @@ Message: ${formData.message}`);
                 Request a Consultation
               </h3>
               
-              {/* EngageBay Form Container - Official HTML code */}
+              {/* EngageBay Form Container */}
               {engageBayLoaded && !showFallbackForm && (
                 <div>
-                  {/* Official EngageBay HTML code */}
                   <div className="engage-hub-form-embed" id="eh_form_6351369855041536" data-id="6351369855041536"></div>
                   
-                  {/* Success message container for EngageBay form */}
                   {submitMessage && (
                     <div className="mt-4 p-4 rounded-lg bg-green-50 text-green-700 border border-green-200">
                       {submitMessage}
@@ -501,160 +419,164 @@ Message: ${formData.message}`);
                 </div>
               )}
                 
-              {/* Fallback form - Connected to EngageBay CRM via REST API */}
+              {/* Fallback form */}
               {showFallbackForm && (
                 <div className="space-y-6">
                   {submitMessage && (
-                    <div className={`p-4 rounded-lg ${submitMessage.includes('❌') || submitMessage.includes('⚠️') 
-                      ? 'bg-orange-50 text-orange-700 border border-orange-200' 
+                    <div className={`p-4 rounded-lg ${submitMessage.includes('❌') 
+                      ? 'bg-red-50 text-red-700 border border-red-200' 
+                      : submitMessage.includes('✉️')
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
                       : 'bg-green-50 text-green-700 border border-green-200'
                     }`}>
-                      <pre className="whitespace-pre-wrap text-sm">{submitMessage}</pre>
+                      <pre className="whitespace-pre-wrap text-sm font-sans">{submitMessage}</pre>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium mb-2 text-gray-700">
-                        First Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        placeholder="Your first name"
-                        required
-                        disabled={isSubmitting}
-                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
+                  <form onSubmit={handleFormSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="firstName" className="block text-sm font-medium mb-2 text-gray-700">
+                          First Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          placeholder="Your first name"
+                          required
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="lastName" className="block text-sm font-medium mb-2 text-gray-700">
+                          Last Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          placeholder="Your last name"
+                          required
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium mb-2 text-gray-700">
-                        Last Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        placeholder="Your last name"
-                        required
-                        disabled={isSubmitting}
-                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700">
+                          Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="your.email@example.com"
+                          required
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-medium mb-2 text-gray-700">
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+254 700 000 000"
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+                    </div>
+
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700">
-                        Email Address <span className="text-red-500">*</span>
+                      <label htmlFor="service" className="block text-sm font-medium mb-2 text-gray-700">
+                        Legal Service Required <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
+                      <select
+                        id="service"
+                        name="service"
+                        value={formData.service}
                         onChange={handleInputChange}
-                        placeholder="your.email@example.com"
                         required
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 appearance-none bg-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666'%3E%3Cpath d='M8 10.5L4 6.5h8z'/%3E%3C/svg%3E")`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'right 12px center',
+                          paddingRight: '40px'
+                        }}
+                      >
+                        <option value="">Select a service</option>
+                        <option value="Corporate Law">Corporate Law</option>
+                        <option value="Family Law">Family Law</option>
+                        <option value="Criminal Defense">Criminal Defense</option>
+                        <option value="Real Estate Law">Real Estate Law</option>
+                        <option value="Employment Law">Employment Law</option>
+                        <option value="Personal Injury">Personal Injury</option>
+                        <option value="Immigration Law">Immigration Law</option>
+                        <option value="Estate Planning">Estate Planning</option>
+                        <option value="Commercial Litigation">Commercial Litigation</option>
+                        <option value="Contract Law">Contract Law</option>
+                        <option value="Constitutional Law">Constitutional Law</option>
+                        <option value="Other">Other</option>
+                      </select>
                     </div>
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium mb-2 text-gray-700">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="+254 700 000 000"
-                        disabled={isSubmitting}
-                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-medium mb-2 text-gray-700">
-                      Legal Service Required <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleInputChange}
-                      required
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700">
+                        Message <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Please describe your legal matter and how we can help you..."
+                        required
+                        rows={5}
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
                       disabled={isSubmitting}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 appearance-none bg-white disabled:opacity-50 disabled:cursor-not-allowed"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666'%3E%3Cpath d='M8 10.5L4 6.5h8z'/%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right 12px center',
-                        paddingRight: '40px'
-                      }}
+                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
-                      <option value="">Select a service</option>
-                      <option value="Corporate Law">Corporate Law</option>
-                      <option value="Family Law">Family Law</option>
-                      <option value="Criminal Defense">Criminal Defense</option>
-                      <option value="Real Estate Law">Real Estate Law</option>
-                      <option value="Employment Law">Employment Law</option>
-                      <option value="Personal Injury">Personal Injury</option>
-                      <option value="Immigration Law">Immigration Law</option>
-                      <option value="Estate Planning">Estate Planning</option>
-                      <option value="Commercial Litigation">Commercial Litigation</option>
-                      <option value="Contract Law">Contract Law</option>
-                      <option value="Constitutional Law">Constitutional Law</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700">
-                      Message <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Please describe your legal matter and how we can help you..."
-                      required
-                      rows={5}
-                      disabled={isSubmitting}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-                  </div>
-
-                  <button
-                    onClick={handleFormSubmit}
-                    disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        <span>Submitting to EngageBay CRM...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-5 w-5" />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </button>
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <span>Submitting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-5 w-5" />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </button>
+                  </form>
 
                   <div className="text-center">
                     <p className="text-sm text-gray-500">
-                      🔒 Your information is securely stored in our CRM system
+                      🔒 Your information is secure and confidential
                     </p>
                   </div>
                 </div>
