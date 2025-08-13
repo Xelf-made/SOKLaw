@@ -47,6 +47,11 @@ const Contact = () => {
               if (el) {
                 el.style.width = '100%';
                 el.style.maxWidth = 'none';
+                // Add class to hide fallback content
+                const container = document.getElementById('eh_form_6351369855041536');
+                if (container) {
+                  container.classList.add('form-loaded');
+                }
               }
             },
             "onFormSubmit": function(data: any) {
@@ -200,22 +205,156 @@ const Contact = () => {
                 Request a Consultation
               </h3>
               
-              {/* EngageBay Form Container */}
-              <div className="engage-hub-form-embed" id="eh_form_6351369855041536" data-id="6351369855041536"></div>
-              
-              {/* Loading state while EngageBay form loads */}
-              {!engageBayLoaded && (
-                <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
-                  <span className="ml-3 text-gray-600">Loading contact form...</span>
+              {/* Custom Form that looks exactly like the image */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* First Name and Last Name Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
+                      First Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="Your first name"
+                      required
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Your last name"
+                      required
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    />
+                  </div>
                 </div>
-              )}
+
+                {/* Email and Phone Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="your.email@example.com"
+                      required
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="+254 700 000 000"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Legal Service Required */}
+                <div>
+                  <label htmlFor="legalService" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Legal Service Required *
+                  </label>
+                  <select
+                    id="legalService"
+                    name="legalService"
+                    value={formData.legalService}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors appearance-none bg-white"
+                  >
+                    <option value="">Select a service</option>
+                    <option value="corporate-law">Corporate Law</option>
+                    <option value="litigation">Litigation</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="employment-law">Employment Law</option>
+                    <option value="intellectual-property">Intellectual Property</option>
+                    <option value="family-law">Family Law</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Please describe your legal matter and how we can help you..."
+                    required
+                    rows={5}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors resize-vertical"
+                  ></textarea>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white font-semibold py-4 px-6 rounded-xl hover:from-amber-700 hover:to-amber-800 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+
+                {/* Success/Error Messages */}
+                {submitStatus === 'success' && (
+                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl">
+                    <p className="font-medium">Message sent successfully!</p>
+                    <p className="text-sm">We'll get back to you within 24 hours.</p>
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl">
+                    <p className="font-medium">Something went wrong.</p>
+                    <p className="text-sm">Please try again or contact us directly.</p>
+                  </div>
+                )}
+              </form>
             </div>
           </div>
         </div>
       </div>
       
-      {/* CSS for animations and EngageBay form styling */}
+      {/* CSS for animations */}
       <style jsx>{`
         .animate-on-scroll {
           transition: all 0.6s ease-out;
@@ -230,42 +369,13 @@ const Contact = () => {
           transform: translateY(20px);
         }
 
-        /* EngageBay form styling */
-        .engage-hub-form-embed input,
-        .engage-hub-form-embed select,
-        .engage-hub-form-embed textarea {
-          width: 100% !important;
-          padding: 12px 16px !important;
-          border: 2px solid #e5e7eb !important;
-          border-radius: 8px !important;
-          font-size: 14px !important;
-          transition: all 0.3s ease !important;
-        }
-        
-        .engage-hub-form-embed input:focus,
-        .engage-hub-form-embed select:focus,
-        .engage-hub-form-embed textarea:focus {
-          outline: none !important;
-          border-color: #eab308 !important;
-          box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1) !important;
-        }
-        
-        .engage-hub-form-embed button[type="submit"] {
-          background: linear-gradient(to right, #eab308, #ca8a04) !important;
-          color: white !important;
-          padding: 16px 24px !important;
-          border-radius: 8px !important;
-          font-weight: 600 !important;
-          border: none !important;
-          width: 100% !important;
-          cursor: pointer !important;
-          transition: all 0.3s ease !important;
-        }
-        
-        .engage-hub-form-embed button[type="submit"]:hover {
-          background: linear-gradient(to right, #ca8a04, #a16207) !important;
-          transform: translateY(-1px) !important;
-          box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3) !important;
+        /* Custom select dropdown arrow */
+        select {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+          background-position: right 12px center;
+          background-repeat: no-repeat;
+          background-size: 16px;
+          padding-right: 48px;
         }
       `}</style>
     </section>
