@@ -10,28 +10,28 @@ const Hero = () => {
         'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
       title: 'YOUR TRUSTED LEGAL PARTNERS',
       description:
-        "Dedicated to providing exceptional legal services with integrity, expertise, and unwavering commitment to your success.",
+        "Providing exceptional legal services with integrity and expertise.",
     },
     {
       image:
         'https://i.postimg.cc/d09SPjyj/7-X2-A2913-1.jpg',
       title: 'STRENGTH THROUGH COLLABORATION',
       description:
-        "Our experienced team works together to deliver comprehensive legal solutions tailored to your unique needs.",
+        "Our experienced team delivers comprehensive legal solutions.",
     },
     {
       image:
         'https://i.postimg.cc/Wzd9ZRf5/7X2A2982.jpg',
       title: 'COMPASSIONATE ADVOCACY',
       description:
-        'We understand that legal matters affect real people. Our approach combines professional excellence with genuine care for our clients.',
+        'Professional excellence combined with genuine care for clients.',
     },
     {
       image:
         'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
       title: 'JUSTICE FOR EVERYONE',
       description:
-        'Committed to making quality legal representation accessible, ensuring every client receives the advocacy they deserve.',
+        'Making quality legal representation accessible to all.',
     },
   ];
 
@@ -101,13 +101,13 @@ const Hero = () => {
         {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <div className="min-h-[160px] flex flex-col justify-center">
-            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold text-white mb-6 transition-all duration-500 drop-shadow-2xl tracking-wide" 
-                style={{ fontFamily: 'Georgia, serif', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
+          <div className="min-h-[140px] flex flex-col justify-center">
+            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold text-amber-100 mb-4 transition-all duration-500 drop-shadow-2xl tracking-wide" 
+                style={{ fontFamily: 'Georgia, serif', textShadow: '3px 3px 0px #8B4513, 4px 4px 8px rgba(0,0,0,0.8)' }}>
               {slides[currentSlide].title}
             </h3>
-            <p className="text-lg md:text-xl lg:text-2xl text-yellow-100 mb-8 max-w-4xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-medium" 
-               style={{ fontFamily: 'system-ui, -apple-system, sans-serif', textShadow: '1px 1px 6px rgba(0,0,0,0.9)' }}>
+            <p className="text-base md:text-lg lg:text-xl text-yellow-200 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-semibold" 
+               style={{ fontFamily: 'system-ui, -apple-system, sans-serif', textShadow: '2px 2px 0px #654321, 3px 3px 6px rgba(0,0,0,0.9)' }}>
               {slides[currentSlide].description}
             </p>
           </div>
