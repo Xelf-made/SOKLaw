@@ -7,6 +7,22 @@ const Contact = () => {
   const [engageBayLoaded, setEngageBayLoaded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
+  });
+
+  // EngageBay configuration
+  const ENGAGEBAY_CONFIG = {
+    accountId: 'scq2bqf88ontbg2g3432fpspk',
+    apiKey: 'gmailrkfn',
+    formId: '6351369855041536',
+    domain: 'app.engagebay.com'
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,167 +48,271 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Load EngageBay scripts
+  // Enhanced EngageBay integration
   useEffect(() => {
-    // EngageBay Account Tracking Code (API Code)
-    const loadEngageBayAPI = () => {
-      if (window.EhAPI) return; // Already loaded
-      
-      window.EhAPI = window.EhAPI || {};
-      window.EhAPI.after_load = function() {
-        window.EhAPI.set_account('scq2bqf88ontbg2g3432fpspk', 'gmailrkfn');
-        window.EhAPI.execute('rules');
-      };
-      
-      const apiScript = document.createElement('script');
-      apiScript.type = 'text/javascript';
-      apiScript.async = true;
-      apiScript.src = '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v=' + new Date().getHours();
-      document.head.appendChild(apiScript);
-    };
+    let isComponentMounted = true;
 
-    // Load EngageBay Forms Script
-    const loadEngageBayForms = () => {
-      const formsScript = document.createElement('script');
-      formsScript.type = 'text/javascript';
-      formsScript.src = 'https://app.engagebay.com/load_forms.js';
-      formsScript.onload = () => {
-        // Initialize form after script loads
-        setTimeout(() => {
-          if (window.EhForms) {
-            window.EhForms.create({
-              formId: 6351369855041536, // Required: The unique ID of your form
-              target: "#eh_form_6351369855041536", // Target the specific div
-              onFormReady: function(el: any, setValue: any) { 
-                // Form is ready - hide fallback form
-                console.log('EngageBay form loaded successfully');
-                setShowFallbackForm(false);
-                setEngageBayLoaded(true);
-                
-                // Optional: You can pre-fill fields here if needed
-                // setValue("email", "example@domain.com");
+    const loadEngageBayScripts = async () => {
+      try {
+        // Load EngageBay API Script
+        const loadAPI = () => {
+          return new Promise<void>((resolve, reject) => {
+            if (window.EhAPI) {
+              resolve();
+              return;
+            }
+
+            window.EhAPI = window.EhAPI || {};
+            window.EhAPI.after_load = function() {
+              if (isComponentMounted) {
+                window.EhAPI.set_account(ENGAGEBAY_CONFIG.accountId, ENGAGEBAY_CONFIG.apiKey);
+                window.EhAPI.execute('rules');
+                resolve();
               }
-            });
-          }
-        }, 500); // Reduced timeout for faster loading
-      };
-      formsScript.onerror = () => {
-        // If EngageBay forms script fails to load
-        console.log('EngageBay forms script failed to load, using fallback form');
-        setShowFallbackForm(true);
-        setEngageBayLoaded(false);
-      };
-      document.head.appendChild(formsScript);
+            };
+            
+            const apiScript = document.createElement('script');
+            apiScript.type = 'text/javascript';
+            apiScript.async = true;
+            apiScript.src = '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v=' + Date.now();
+            apiScript.onload = () => resolve();
+            apiScript.onerror = () => reject(new Error('Failed to load EngageBay API'));
+            document.head.appendChild(apiScript);
+          });
+        };
+
+        // Load EngageBay Forms Script
+        const loadForms = () => {
+          return new Promise<void>((resolve, reject) => {
+            const formsScript = document.createElement('script');
+            formsScript.type = 'text/javascript';
+            formsScript.src = `https://${ENGAGEBAY_CONFIG.domain}/load_forms.js`;
+            
+            formsScript.onload = () => {
+              setTimeout(() => {
+                if (window.EhForms && isComponentMounted) {
+                  try {
+                    // Use the exact EngageBay recommended implementation
+                    window.EhForms.create({
+                      "formId": 6351369855041536, // Required: The unique ID of your form
+                      "target": "", // Optional: Use a CSS selector like ".your-class" or "#your-id"
+                      "onFormReady": function(el: any, setValue: any) { 
+                        console.log('EngageBay form loaded successfully');
+                        if (isComponentMounted) {
+                          setShowFallbackForm(false);
+                          setEngageBayLoaded(true);
+                        }
+                        
+                        // Optional: Pre-fill fields if needed
+                        // setValue("email", "example@domain.com");
+                        
+                        // Apply custom styling to the form
+                        if (el) {
+                          el.style.width = '100%';
+                          el.style.maxWidth = 'none';
+                        }
+                      }
+                    });
+                    resolve();
+                  } catch (error) {
+                    console.error('Error creating EngageBay form:', error);
+                    reject(error);
+                  }
+                } else {
+                  reject(new Error('EhForms not available'));
+                }
+              }, 1000);
+            };
+            
+            formsScript.onerror = () => reject(new Error('Failed to load EngageBay forms'));
+            document.head.appendChild(formsScript);
+          });
+        };
+
+        // Load both scripts
+        await loadAPI();
+        await loadForms();
+
+      } catch (error) {
+        console.log('EngageBay loading failed, using fallback form:', error);
+        if (isComponentMounted) {
+          setShowFallbackForm(true);
+          setEngageBayLoaded(false);
+        }
+      }
     };
 
-    // Load both API and Forms
-    loadEngageBayAPI();
-    loadEngageBayForms();
+    loadEngageBayScripts();
 
-    // Cleanup function
     return () => {
-      setShowFallbackForm(true);
-      setEngageBayLoaded(false);
+      isComponentMounted = false;
     };
   }, []);
+
+  const submitToEngageBay = async (data: typeof formData) => {
+    // Method 1: Try EngageBay JavaScript API
+    if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
+      try {
+        const contact = {
+          email: data.email,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          phone: data.phone,
+          properties: [
+            {
+              name: 'Legal Service',
+              value: data.service
+            },
+            {
+              name: 'Message',
+              value: data.message
+            },
+            {
+              name: 'Lead Source',
+              value: 'Website Contact Form'
+            }
+          ]
+        };
+
+        await window.EhAPI.execute('contact.add', contact);
+        return { success: true, message: 'Submitted via EngageBay API' };
+      } catch (apiError) {
+        console.warn('EngageBay API submission failed:', apiError);
+      }
+    }
+
+    // Method 2: Direct HTTP submission to EngageBay
+    try {
+      const payload = {
+        formId: ENGAGEBAY_CONFIG.formId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        legalService: data.service,
+        message: data.message,
+        leadSource: 'Website Contact Form',
+        timestamp: new Date().toISOString()
+      };
+
+      // Try multiple endpoints
+      const endpoints = [
+        `https://${ENGAGEBAY_CONFIG.domain}/collect`,
+        `https://${ENGAGEBAY_CONFIG.domain}/form/submit`,
+        `https://forms.${ENGAGEBAY_CONFIG.domain}/collect`
+      ];
+
+      for (const endpoint of endpoints) {
+        try {
+          const formDataObj = new FormData();
+          Object.keys(payload).forEach(key => {
+            formDataObj.append(key, payload[key as keyof typeof payload]);
+          });
+
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            body: formDataObj,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          if (response.ok || response.type === 'opaque') {
+            return { success: true, message: 'Submitted via HTTP endpoint' };
+          }
+        } catch (endpointError) {
+          console.warn(`Endpoint ${endpoint} failed:`, endpointError);
+          continue;
+        }
+      }
+
+      throw new Error('All HTTP endpoints failed');
+    } catch (httpError) {
+      console.warn('HTTP submission failed:', httpError);
+      throw httpError;
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      service: '',
+      message: ''
+    });
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage('');
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = {
-      firstName: formData.get('firstName') as string,
-      lastName: formData.get('lastName') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      service: formData.get('service') as string,
-      message: formData.get('message') as string,
-    };
-
     try {
-      // Method 1: Try using EngageBay's JavaScript API if available
-      if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
-        try {
-          // Use EngageBay's client-side API for lead capture
-          window.EhAPI.execute('rules', {
-            email: data.email,
-            first_name: data.firstName,
-            last_name: data.lastName,
-            phone: data.phone,
-            properties: {
-              'Legal Service': data.service,
-              'Message': data.message,
-              'Lead Source': 'Website Contact Form'
-            }
-          });
-          
-          setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
-          (e.target as HTMLFormElement).reset();
-          return;
-        } catch (apiError) {
-          console.log('EngageBay API method failed, trying alternative submission');
-        }
-      }
-
-      // Method 2: Submit using a simple fetch to a webhook or form handler
-      // This is a more reliable method that should work without CORS issues
-      const formSubmissionData = new FormData();
-      formSubmissionData.append('firstName', data.firstName);
-      formSubmissionData.append('lastName', data.lastName);
-      formSubmissionData.append('email', data.email);
-      formSubmissionData.append('phone', data.phone);
-      formSubmissionData.append('service', data.service);
-      formSubmissionData.append('message', data.message);
-      formSubmissionData.append('formId', '6351369855041536');
-
-      // Try submitting via EngageBay's form endpoint
-      const response = await fetch('https://forms.engagebay.com/collect', {
-        method: 'POST',
-        body: formSubmissionData,
-        mode: 'no-cors' // This allows the request to go through without CORS errors
-      });
-
-      // Since we're using no-cors mode, we can't check the response status
-      // So we'll assume success and show the success message
-      setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
-      (e.target as HTMLFormElement).reset();
-
-    } catch (error) {
-      console.error('Form submission error:', error);
+      // Try to submit to EngageBay
+      const result = await submitToEngageBay(formData);
       
-      // Final fallback: Email link
+      setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
+      resetForm();
+      
+    } catch (error) {
+      console.error('EngageBay submission failed, trying email fallback:', error);
+      
+      // Fallback: Email link with all form data
       try {
-        const subject = encodeURIComponent('Consultation Request - ' + data.service);
+        const subject = encodeURIComponent(`Consultation Request - ${formData.service}`);
         const body = encodeURIComponent(`
 Dear SOK Law Team,
 
 I would like to request a consultation for the following:
 
-Name: ${data.firstName} ${data.lastName}
-Email: ${data.email}
-Phone: ${data.phone}
-Legal Service Required: ${data.service}
+Name: ${formData.firstName} ${formData.lastName}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Legal Service Required: ${formData.service}
 
 Message:
-${data.message}
+${formData.message}
 
 Please contact me to schedule a consultation.
 
 Best regards,
-${data.firstName} ${data.lastName}
-        `);
+${formData.firstName} ${formData.lastName}
+        `.trim());
         
         const mailtoLink = `mailto:nairobi@soklaw.co.ke?subject=${subject}&body=${body}`;
-        window.open(mailtoLink, '_blank');
         
-        setSubmitMessage('We\'ve opened your email client with your consultation request. Please send the email to complete your submission, or contact us directly at nairobi@soklaw.co.ke');
-        (e.target as HTMLFormElement).reset();
+        // Try to open email client
+        const emailOpened = window.open(mailtoLink, '_blank');
+        
+        if (emailOpened) {
+          setSubmitMessage('We\'ve opened your email client with your consultation request. Please send the email to complete your submission, or contact us directly at nairobi@soklaw.co.ke');
+          resetForm();
+        } else {
+          throw new Error('Could not open email client');
+        }
         
       } catch (emailError) {
-        console.error('Email fallback error:', emailError);
-        setSubmitMessage('There was an error submitting your request. Please contact us directly at nairobi@soklaw.co.ke or call +254 700 123 456');
+        console.error('Email fallback failed:', emailError);
+        setSubmitMessage(`There was an issue with automatic submission. Please contact us directly:
+        
+Email: nairobi@soklaw.co.ke
+Phone: +254 700 123 456
+
+Or copy this information:
+Name: ${formData.firstName} ${formData.lastName}
+Email: ${formData.email}
+Service: ${formData.service}
+Message: ${formData.message}`);
       }
     } finally {
       setIsSubmitting(false);
@@ -231,7 +351,7 @@ ${data.firstName} ${data.lastName}
               </h3>
               
               {officeInfo.map((office, index) => (
-                <div key={index} className="mb-8 p-6 modern-card hover:shadow-lg transition-shadow duration-300">
+                <div key={index} className="mb-8 p-6 bg-gray-50 rounded-xl border hover:shadow-lg transition-shadow duration-300">
                   <h4 className="text-xl font-semibold mb-4">
                     {office.city}
                   </h4>
@@ -259,7 +379,7 @@ ${data.firstName} ${data.lastName}
               ))}
             </div>
 
-            <div className="animate-on-scroll opacity-0 p-6 modern-card">
+            <div className="animate-on-scroll opacity-0 p-6 bg-gray-50 rounded-xl border">
               <h4 className="text-xl font-semibold mb-4 flex items-center">
                 <Clock className="h-5 w-5 mr-2 text-yellow-600" />
                 Business Hours
@@ -283,28 +403,30 @@ ${data.firstName} ${data.lastName}
 
           {/* Contact Form */}
           <div className="animate-on-scroll opacity-0">
-            <div className="bg-white p-8 rounded-2xl shadow-xl">
+            <div className="bg-white p-8 rounded-2xl shadow-xl border">
               <h3 className="text-2xl font-bold mb-6 text-center text-gray-800">
                 Request a Consultation
               </h3>
               
-              {/* EngageBay Form Container - Only show when EngageBay is loaded */}
-              {engageBayLoaded && (
-                <div className="engage-hub-form-embed" 
-                     id="eh_form_6351369855041536" 
-                     data-id="6351369855041536">
+              {/* EngageBay Form Container */}
+              {engageBayLoaded && !showFallbackForm && (
+                <div>
+                  <div className="engage-hub-form-embed" 
+                       id={`eh_form_${ENGAGEBAY_CONFIG.formId}`} 
+                       data-id={ENGAGEBAY_CONFIG.formId}>
+                  </div>
                 </div>
               )}
                 
-              {/* Fallback form - Only show when EngageBay hasn't loaded */}
+              {/* Fallback form */}
               {showFallbackForm && (
-                <form onSubmit={handleFormSubmit} className="space-y-6">
+                <div className="space-y-6">
                   {submitMessage && (
-                    <div className={`p-4 rounded-lg ${submitMessage.includes('error') || submitMessage.includes('There was') 
+                    <div className={`p-4 rounded-lg ${submitMessage.includes('issue') || submitMessage.includes('error') 
                       ? 'bg-red-50 text-red-700 border border-red-200' 
                       : 'bg-green-50 text-green-700 border border-green-200'
                     }`}>
-                      {submitMessage}
+                      <pre className="whitespace-pre-wrap text-sm">{submitMessage}</pre>
                     </div>
                   )}
 
@@ -317,6 +439,8 @@ ${data.firstName} ${data.lastName}
                         type="text"
                         id="firstName"
                         name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
                         placeholder="Your first name"
                         required
                         disabled={isSubmitting}
@@ -331,6 +455,8 @@ ${data.firstName} ${data.lastName}
                         type="text"
                         id="lastName"
                         name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
                         placeholder="Your last name"
                         required
                         disabled={isSubmitting}
@@ -348,6 +474,8 @@ ${data.firstName} ${data.lastName}
                         type="email"
                         id="email"
                         name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         placeholder="your.email@example.com"
                         required
                         disabled={isSubmitting}
@@ -362,6 +490,8 @@ ${data.firstName} ${data.lastName}
                         type="tel"
                         id="phone"
                         name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
                         placeholder="+254 700 000 000"
                         disabled={isSubmitting}
                         className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -376,6 +506,8 @@ ${data.firstName} ${data.lastName}
                     <select
                       id="service"
                       name="service"
+                      value={formData.service}
+                      onChange={handleInputChange}
                       required
                       disabled={isSubmitting}
                       className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300 appearance-none bg-white disabled:opacity-50 disabled:cursor-not-allowed"
@@ -409,6 +541,8 @@ ${data.firstName} ${data.lastName}
                     <textarea
                       id="message"
                       name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                       placeholder="Please describe your legal matter and how we can help you..."
                       required
                       rows={5}
@@ -418,14 +552,14 @@ ${data.firstName} ${data.lastName}
                   </div>
 
                   <button
-                    type="submit"
+                    onClick={handleFormSubmit}
                     disabled={isSubmitting}
                     className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     {isSubmitting ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        <span>Submitting...</span>
+                        <span>Submitting to EngageBay...</span>
                       </>
                     ) : (
                       <>
@@ -434,20 +568,73 @@ ${data.firstName} ${data.lastName}
                       </>
                     )}
                   </button>
-                </form>
+                </div>
               )}
 
-              {/* Loading state (optional) */}
+              {/* Loading state */}
               {!showFallbackForm && !engageBayLoaded && (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
-                  <span className="ml-3 text-gray-600">Loading form...</span>
+                  <span className="ml-3 text-gray-600">Loading EngageBay form...</span>
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
+      
+      {/* CSS for animations and EngageBay form styling */}
+      <style jsx>{`
+        .animate-on-scroll {
+          transition: all 0.6s ease-out;
+        }
+        
+        .animate-fade-in-up {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+        
+        .animate-on-scroll {
+          transform: translateY(20px);
+        }
+
+        .engage-hub-form-embed input,
+        .engage-hub-form-embed select,
+        .engage-hub-form-embed textarea {
+          width: 100% !important;
+          padding: 12px 16px !important;
+          border: 2px solid #e5e7eb !important;
+          border-radius: 8px !important;
+          font-size: 14px !important;
+          transition: all 0.3s ease !important;
+        }
+        
+        .engage-hub-form-embed input:focus,
+        .engage-hub-form-embed select:focus,
+        .engage-hub-form-embed textarea:focus {
+          outline: none !important;
+          border-color: #eab308 !important;
+          box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1) !important;
+        }
+        
+        .engage-hub-form-embed button[type="submit"] {
+          background: linear-gradient(to right, #eab308, #ca8a04) !important;
+          color: white !important;
+          padding: 16px 24px !important;
+          border-radius: 8px !important;
+          font-weight: 600 !important;
+          border: none !important;
+          width: 100% !important;
+          cursor: pointer !important;
+          transition: all 0.3s ease !important;
+        }
+        
+        .engage-hub-form-embed button[type="submit"]:hover {
+          background: linear-gradient(to right, #ca8a04, #a16207) !important;
+          transform: translateY(-1px) !important;
+          box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3) !important;
+        }
+      `}</style>
     </section>
   );
 };
