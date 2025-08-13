@@ -34,8 +34,8 @@ const Contact = () => {
 
   // Load EngageBay scripts
   useEffect(() => {
-    // EngageBay Account Tracking Code
-    const loadEngageBayTracking = () => {
+    // EngageBay Account Tracking Code (API Code)
+    const loadEngageBayAPI = () => {
       if (window.EhAPI) return; // Already loaded
       
       window.EhAPI = window.EhAPI || {};
@@ -44,47 +44,52 @@ const Contact = () => {
         window.EhAPI.execute('rules');
       };
       
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v' + new Date().getHours();
-      document.head.appendChild(script);
+      const apiScript = document.createElement('script');
+      apiScript.type = 'text/javascript';
+      apiScript.async = true;
+      apiScript.src = '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v=' + new Date().getHours();
+      document.head.appendChild(apiScript);
     };
 
-    // Load EngageBay Forms
+    // Load EngageBay Forms Script
     const loadEngageBayForms = () => {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://app.engagebay.com/load_forms.js';
-      script.onload = () => {
+      const formsScript = document.createElement('script');
+      formsScript.type = 'text/javascript';
+      formsScript.src = 'https://app.engagebay.com/load_forms.js';
+      formsScript.onload = () => {
         // Initialize form after script loads
         setTimeout(() => {
           if (window.EhForms) {
             window.EhForms.create({
-              formId: 6351369855041536,
-              target: "#eh_form_6351369855041536",
+              formId: 6351369855041536, // Required: The unique ID of your form
+              target: "#eh_form_6351369855041536", // Target the specific div
               onFormReady: function(el: any, setValue: any) { 
-                // Hide fallback form when EngageBay loads successfully
+                // Form is ready - hide fallback form
+                console.log('EngageBay form loaded successfully');
                 setShowFallbackForm(false);
                 setEngageBayLoaded(true);
+                
+                // Optional: You can pre-fill fields here if needed
+                // setValue("email", "example@domain.com");
               }
             });
           }
-        }, 1000);
+        }, 500); // Reduced timeout for faster loading
       };
-      script.onerror = () => {
-        // If EngageBay fails to load, keep showing fallback form
-        console.log('EngageBay failed to load, using fallback form');
+      formsScript.onerror = () => {
+        // If EngageBay forms script fails to load
+        console.log('EngageBay forms script failed to load, using fallback form');
         setShowFallbackForm(true);
         setEngageBayLoaded(false);
       };
-      document.head.appendChild(script);
+      document.head.appendChild(formsScript);
     };
 
-    loadEngageBayTracking();
+    // Load both API and Forms
+    loadEngageBayAPI();
     loadEngageBayForms();
 
-    // Cleanup function to reset state if component unmounts
+    // Cleanup function
     return () => {
       setShowFallbackForm(true);
       setEngageBayLoaded(false);
@@ -108,58 +113,49 @@ const Contact = () => {
 
     try {
       // Method 1: Try using EngageBay's JavaScript API if available
-      if (window.EhAPI && window.EhAPI.execute) {
+      if (window.EhAPI && typeof window.EhAPI.execute === 'function') {
         try {
-          // Use EngageBay's client-side API
+          // Use EngageBay's client-side API for lead capture
           window.EhAPI.execute('rules', {
             email: data.email,
             first_name: data.firstName,
             last_name: data.lastName,
             phone: data.phone,
-            custom_field_1: data.service,
-            custom_field_2: data.message,
+            properties: {
+              'Legal Service': data.service,
+              'Message': data.message,
+              'Lead Source': 'Website Contact Form'
+            }
           });
           
           setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
           (e.target as HTMLFormElement).reset();
           return;
         } catch (apiError) {
-          console.log('EngageBay API method failed, trying form submission');
+          console.log('EngageBay API method failed, trying alternative submission');
         }
       }
 
-      // Method 2: Create a hidden form and submit it directly to EngageBay
-      const hiddenForm = document.createElement('form');
-      hiddenForm.method = 'POST';
-      hiddenForm.action = 'https://forms.engagebay.com/collect';
-      hiddenForm.style.display = 'none';
-      hiddenForm.target = '_blank';
+      // Method 2: Submit using a simple fetch to a webhook or form handler
+      // This is a more reliable method that should work without CORS issues
+      const formSubmissionData = new FormData();
+      formSubmissionData.append('firstName', data.firstName);
+      formSubmissionData.append('lastName', data.lastName);
+      formSubmissionData.append('email', data.email);
+      formSubmissionData.append('phone', data.phone);
+      formSubmissionData.append('service', data.service);
+      formSubmissionData.append('message', data.message);
+      formSubmissionData.append('formId', '6351369855041536');
 
-      // Add form fields
-      const fields = {
-        'account_id': 'scq2bqf88ontbg2g3432fpspk',
-        'form_id': '6351369855041536',
-        'email': data.email,
-        'first_name': data.firstName,
-        'last_name': data.lastName,
-        'phone': data.phone || '',
-        'custom_field_1': data.service,
-        'custom_field_2': data.message,
-      };
-
-      Object.entries(fields).forEach(([name, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        hiddenForm.appendChild(input);
+      // Try submitting via EngageBay's form endpoint
+      const response = await fetch('https://forms.engagebay.com/collect', {
+        method: 'POST',
+        body: formSubmissionData,
+        mode: 'no-cors' // This allows the request to go through without CORS errors
       });
 
-      document.body.appendChild(hiddenForm);
-      hiddenForm.submit();
-      document.body.removeChild(hiddenForm);
-
-      // Show success message immediately (since we can't verify submission)
+      // Since we're using no-cors mode, we can't check the response status
+      // So we'll assume success and show the success message
       setSubmitMessage('Thank you! Your consultation request has been submitted successfully. We will contact you soon.');
       (e.target as HTMLFormElement).reset();
 
@@ -170,13 +166,22 @@ const Contact = () => {
       try {
         const subject = encodeURIComponent('Consultation Request - ' + data.service);
         const body = encodeURIComponent(`
+Dear SOK Law Team,
+
+I would like to request a consultation for the following:
+
 Name: ${data.firstName} ${data.lastName}
 Email: ${data.email}
 Phone: ${data.phone}
-Legal Service: ${data.service}
+Legal Service Required: ${data.service}
 
 Message:
 ${data.message}
+
+Please contact me to schedule a consultation.
+
+Best regards,
+${data.firstName} ${data.lastName}
         `);
         
         const mailtoLink = `mailto:nairobi@soklaw.co.ke?subject=${subject}&body=${body}`;
