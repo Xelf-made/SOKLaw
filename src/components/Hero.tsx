@@ -99,35 +99,35 @@ const Hero = () => {
       />
 
         {/* Hero Content */}
-      <div className="relative z-10 text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <div className="min-h-[180px] flex flex-col justify-center items-center">
-            <h3 className="text-xl md:text-3xl lg:text-5xl font-bold text-white mb-6 transition-all duration-500 drop-shadow-2xl tracking-wide" 
+          <div className="min-h-[140px] flex flex-col justify-center">
+            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold text-white mb-4 transition-all duration-500 drop-shadow-2xl tracking-wide" 
                 style={{ fontFamily: 'Georgia, serif', textShadow: '3px 3px 0px #8B4513, 4px 4px 8px rgba(0,0,0,0.8)' }}>
               {slides[currentSlide].title}
             </h3>
-            <p className="text-lg md:text-xl lg:text-2xl text-yellow-200 mb-10 max-w-4xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-semibold" 
+            <p className="text-base md:text-lg lg:text-xl text-yellow-200 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-semibold" 
                style={{ fontFamily: 'system-ui, -apple-system, sans-serif', textShadow: '2px 2px 0px #654321, 3px 3px 6px rgba(0,0,0,0.9)' }}>
               {slides[currentSlide].description}
             </p>
           </div>
         </div>
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up-delay max-w-2xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up-delay">
           <button
             onClick={scrollToContact}
-            className="group btn-primary flex items-center justify-center space-x-3 transform hover:scale-105 shadow-lg w-full sm:w-auto px-8 py-4 text-lg font-semibold"
+            className="group btn-primary flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
-            <Phone className="h-6 w-6" />
+            <Phone className="h-5 w-5" />
             <span>Get Legal Consultation</span>
-            <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
           <button
             onClick={scrollToServices}
-            className="group btn-outline flex items-center justify-center space-x-3 transform hover:scale-105 shadow-lg w-full sm:w-auto px-8 py-4 text-lg font-semibold"
+            className="group btn-outline flex items-center space-x-2 transform hover:scale-105 shadow-lg"
           >
             <span>Our Services</span>
-            <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
