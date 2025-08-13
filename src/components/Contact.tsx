@@ -35,10 +35,11 @@ const Contact = () => {
     const initializeEngageBayForm = () => {
       if (window.EhForms) {
         try {
-          window.EhForms.create({
-            formId: 6351369855041536,  // Changed from "formId" to formId
-            target: "#eh_form_6351369855041536",
-            onFormReady: function(el: any, setValue: any) {
+          // Try different configuration formats that EngageBay might expect
+          const formConfig = {
+            "formId": "6351369855041536",  // Try as string first
+            "target": "#eh_form_6351369855041536",
+            "onFormReady": function(el: any, setValue: any) {
               console.log('✅ EngageBay form loaded and ready');
               setEngageBayLoaded(true);
               
@@ -48,15 +49,58 @@ const Contact = () => {
                 el.style.maxWidth = 'none';
               }
             },
-            onFormSubmit: function(data: any) {
+            "onFormSubmit": function(data: any) {
               console.log('✅ Form submitted via EngageBay:', data);
             }
-          });
+          };
+
+          // Try the create method with string formId first
+          window.EhForms.create(formConfig);
+          
         } catch (error) {
-          console.error('❌ Error creating EngageBay form:', error);
+          console.error('❌ Error creating EngageBay form (string formId):', error);
+          
+          // If string fails, try with numeric formId
+          try {
+            const numericConfig = {
+              formId: 6351369855041536,  // Numeric formId
+              target: "#eh_form_6351369855041536",
+              onFormReady: function(el: any, setValue: any) {
+                console.log('✅ EngageBay form loaded and ready (numeric)');
+                setEngageBayLoaded(true);
+                
+                if (el) {
+                  el.style.width = '100%';
+                  el.style.maxWidth = 'none';
+                }
+              },
+              onFormSubmit: function(data: any) {
+                console.log('✅ Form submitted via EngageBay (numeric):', data);
+              }
+            };
+            
+            window.EhForms.create(numericConfig);
+            
+          } catch (secondError) {
+            console.error('❌ Error creating EngageBay form (numeric formId):', secondError);
+            
+            // Try alternative method if available
+            try {
+              if (window.EhForms.render) {
+                window.EhForms.render({
+                  formId: "6351369855041536",
+                  containerId: "eh_form_6351369855041536"
+                });
+                setEngageBayLoaded(true);
+              }
+            } catch (thirdError) {
+              console.error('❌ Error with alternative EngageBay method:', thirdError);
+            }
+          }
         }
       } else {
         // Retry after a short delay if EhForms is not yet available
+        console.log('⏳ EngageBay not loaded yet, retrying...');
         setTimeout(initializeEngageBayForm, 1000);
       }
     };
@@ -163,7 +207,7 @@ const Contact = () => {
               {!engageBayLoaded && (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
-                  <span className="ml-3 text-gray-600">Loading EngageBay form...</span>
+                  <span className="ml-3 text-gray-600">Loading contact form...</span>
                 </div>
               )}
             </div>
