@@ -8,30 +8,30 @@ const Hero = () => {
     {
       image:
         'https://i.postimg.cc/Px2cZQf5/7-X2-A2923-1.jpg',
-      title: 'WELCOME',
+      title: 'YOUR TRUSTED LEGAL PARTNERS',
       description:
-        "WE ARE SOKLAW",
+        "Dedicated to providing exceptional legal services with integrity, expertise, and unwavering commitment to your success.",
     },
     {
       image:
         'https://i.postimg.cc/d09SPjyj/7-X2-A2913-1.jpg',
-      title: 'WE BELIEVE IN TEAM WORK',
+      title: 'STRENGTH THROUGH COLLABORATION',
       description:
-        "BLA BLA BLA",
+        "Our experienced team works together to deliver comprehensive legal solutions tailored to your unique needs.",
     },
     {
       image:
         'https://i.postimg.cc/Wzd9ZRf5/7X2A2982.jpg',
-      title: 'WE CARE',
+      title: 'COMPASSIONATE ADVOCACY',
       description:
-        'BLA BLA BLA',
+        'We understand that legal matters affect real people. Our approach combines professional excellence with genuine care for our clients.',
     },
     {
       image:
         'https://images.pexels.com/photos/5668882/pexels-photo-5668882.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
-      title: 'ACCESS TO JUSTICE',
+      title: 'JUSTICE FOR EVERYONE',
       description:
-        'BLA BLA BLA',
+        'Committed to making quality legal representation accessible, ensuring every client receives the advocacy they deserve.',
     },
   ];
 
@@ -82,7 +82,7 @@ const Hero = () => {
             alt={slide.title}
             className="w-full h-full object-cover object-center max-h-[70vh] sm:max-h-full"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60"></div>
         </div>
       ))}
 
@@ -101,11 +101,13 @@ const Hero = () => {
         {/* Hero Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <div className="min-h-[120px] flex flex-col justify-center">
-            <h3 className="text-lg md:text-xl lg:text-2xl font-medium text-white mb-4 transition-all duration-500">
+          <div className="min-h-[160px] flex flex-col justify-center">
+            <h3 className="text-xl md:text-2xl lg:text-4xl font-bold text-white mb-6 transition-all duration-500 drop-shadow-2xl tracking-wide" 
+                style={{ fontFamily: 'Georgia, serif', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
               {slides[currentSlide].title}
             </h3>
-            <p className="text-base md:text-lg text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-500">
+            <p className="text-lg md:text-xl lg:text-2xl text-yellow-100 mb-8 max-w-4xl mx-auto leading-relaxed transition-all duration-500 drop-shadow-xl font-medium" 
+               style={{ fontFamily: 'system-ui, -apple-system, sans-serif', textShadow: '1px 1px 6px rgba(0,0,0,0.9)' }}>
               {slides[currentSlide].description}
             </p>
           </div>
