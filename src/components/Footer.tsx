@@ -15,49 +15,6 @@ import {
 } from 'lucide-react';
 
 const Footer = () => {
-  const [showNewsPopup, setShowNewsPopup] = useState(false);
-  const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
-
-  // Sample news articles - replace with your actual news data
-  const newsArticles = [
-    {
-      id: 1,
-      title: "New Employment Law Regulations in Kenya 2025",
-      excerpt: "Understanding the latest changes in employment legislation and their impact on businesses.",
-      date: "2025-08-10",
-      category: "Employment Law",
-      readTime: "3 min read",
-      href: "#news-1"
-    },
-    {
-      id: 2,
-      title: "Supreme Court Ruling on Property Rights",
-      excerpt: "Recent landmark decision affects property ownership and inheritance laws in Kenya.",
-      date: "2025-08-08",
-      category: "Property Law",
-      readTime: "5 min read",
-      href: "#news-2"
-    },
-    {
-      id: 3,
-      title: "Corporate Compliance Updates for 2025",
-      excerpt: "Essential regulatory changes every business owner should know about this year.",
-      date: "2025-08-05",
-      category: "Corporate Law",
-      readTime: "4 min read",
-      href: "#news-3"
-    },
-    {
-      id: 4,
-      title: "Family Law Mediation: A Growing Trend",
-      excerpt: "Alternative dispute resolution methods gaining popularity in family law cases.",
-      date: "2025-08-02",
-      category: "Family Law",
-      readTime: "3 min read",
-      href: "#news-4"
-    }
-  ];
-
   const quickLinks = [
     { label: 'Home', href: '#home' },
     { label: 'About Us', href: '#about' },
@@ -83,26 +40,6 @@ const Footer = () => {
     { icon: Instagram, href: '#', label: 'Instagram' }
   ];
 
-  // Auto-cycle through news articles
-  useEffect(() => {
-    if (!showNewsPopup) return;
-    
-    const interval = setInterval(() => {
-      setCurrentNewsIndex((prev) => (prev + 1) % newsArticles.length);
-    }, 5000); // Change every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [showNewsPopup, newsArticles.length]);
-
-  // Auto-show popup after page load
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowNewsPopup(true);
-    }, 3000); // Show popup 3 seconds after component mounts
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const scrollToSection = (href) => {
     if (href.startsWith('#')) {
       const element = document.querySelector(href);
@@ -111,17 +48,6 @@ const Footer = () => {
       }
     }
   };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
-    });
-  };
-
-  const currentArticle = newsArticles[currentNewsIndex];
 
   return (
     <>
@@ -221,7 +147,7 @@ const Footer = () => {
             {/* News Button */}
             <div className="mt-6">
               <button
-                onClick={() => setShowNewsPopup(true)}
+                onClick={() => scrollToSection('#news')}
                 className="flex items-center gap-2 bg-[#bfa06f] hover:bg-[#a08a5f] text-white px-4 py-2 rounded-lg transition-colors duration-300"
               >
                 <Newspaper className="h-4 w-4" />
@@ -254,92 +180,6 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-
-      {/* News Popup */}
-      {showNewsPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden animate-in fade-in duration-300">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-[#bfa06f] to-[#a08a5f] text-white p-6 relative">
-              <button
-                onClick={() => setShowNewsPopup(false)}
-                className="absolute top-4 right-4 p-1 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-              <div className="flex items-center gap-3">
-                <Newspaper className="h-6 w-6" />
-                <div>
-                  <h3 className="text-xl font-bold">Latest Legal News</h3>
-                  <p className="text-white text-opacity-90 text-sm">Stay updated with legal developments</p>
-                </div>
-              </div>
-            </div>
-
-            {/* News Content */}
-            <div className="p-6">
-              <div className="mb-4">
-                <div className="flex items-center gap-2 text-sm text-[#666] mb-2">
-                  <span className="bg-[#bfa06f] bg-opacity-20 text-[#bfa06f] px-2 py-1 rounded-full text-xs font-medium">
-                    {currentArticle.category}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {currentArticle.readTime}
-                  </div>
-                </div>
-                <h4 className="text-lg font-bold text-[#1e1e1e] mb-2">
-                  {currentArticle.title}
-                </h4>
-                <p className="text-[#444] text-sm leading-relaxed mb-3">
-                  {currentArticle.excerpt}
-                </p>
-                <p className="text-xs text-[#888]">
-                  Published: {formatDate(currentArticle.date)}
-                </p>
-              </div>
-
-              {/* Navigation Dots */}
-              <div className="flex items-center justify-center gap-2 mb-4">
-                {newsArticles.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentNewsIndex(index)}
-                    className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                      index === currentNewsIndex 
-                        ? 'bg-[#bfa06f] w-8' 
-                        : 'bg-gray-300 hover:bg-gray-400'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    scrollToSection(currentArticle.href);
-                    setShowNewsPopup(false);
-                  }}
-                  className="flex-1 bg-[#bfa06f] hover:bg-[#a08a5f] text-white px-4 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2"
-                >
-                  Read More
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    scrollToSection('#news');
-                    setShowNewsPopup(false);
-                  }}
-                  className="px-4 py-3 border-2 border-[#bfa06f] text-[#bfa06f] hover:bg-[#bfa06f] hover:text-white rounded-lg font-medium transition-colors duration-300"
-                >
-                  All News
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
