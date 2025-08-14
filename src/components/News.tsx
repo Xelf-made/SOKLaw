@@ -91,9 +91,8 @@ const News = () => {
           e.preventDefault();
           e.stopPropagation();
           
-          // Navigate using React Router instead of following the link
-          // You can customize this navigation logic based on your needs
-          navigate(`/blog/post-${index}`);
+          // Open the original BlogHandy URL in a new tab/window
+          window.open(originalHref, '_blank', 'noopener,noreferrer');
         });
       });
 
@@ -104,6 +103,9 @@ const News = () => {
         
         // Make sure it's clickable
         postElement.style.cursor = 'pointer';
+        
+        // Find if there's a link inside this post
+        const linkInside = postElement.querySelector('a[href]') as HTMLAnchorElement;
         
         // Remove existing onclick handlers
         postElement.removeAttribute('onclick');
@@ -116,8 +118,20 @@ const News = () => {
           e.preventDefault();
           e.stopPropagation();
           
-          // Navigate using React Router
-          navigate(`/blog/post-${index}`);
+          // If there's a link inside, open that
+          if (linkInside && linkInside.href) {
+            window.open(linkInside.href, '_blank', 'noopener,noreferrer');
+          } else {
+            // Fallback: try to find any data attributes or onclick content that might contain a URL
+            const onclickContent = postElement.getAttribute('onclick');
+            if (onclickContent) {
+              // Extract URL from onclick if it contains one
+              const urlMatch = onclickContent.match(/https?:\/\/[^\s'"]+/);
+              if (urlMatch) {
+                window.open(urlMatch[0], '_blank', 'noopener,noreferrer');
+              }
+            }
+          }
         });
       });
     };
