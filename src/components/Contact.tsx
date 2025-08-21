@@ -149,8 +149,8 @@ ${formData.message}
   ];
 
   return (
-    <section ref={sectionRef} id="contact" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="contact" className="contact-section bg-white">
+      <div className="container">
         <div className="text-center mb-16">
           <h2 className="animate-on-scroll opacity-0 text-4xl md:text-5xl font-bold mb-6">
             Get In Touch
@@ -162,7 +162,7 @@ ${formData.message}
           <div className="animate-on-scroll opacity-0 w-24 h-1 bg-gradient-to-r from-yellow-600 to-yellow-500 mx-auto mt-6"></div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="animate-on-scroll opacity-0">
@@ -223,161 +223,203 @@ ${formData.message}
 
           {/* Contact Form */}
           <div className="animate-on-scroll opacity-0">
-            <div className="bg-white p-8 rounded-2xl shadow-xl border">
+            <div className="contact-form">
               <h3 className="text-2xl font-bold mb-6 text-center text-gray-800">
                 Request a Consultation
               </h3>
               
-              <div className="space-y-4">
-                {/* First Name and Last Name Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      First Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      placeholder="Your first name"
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Last Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder="Your last name"
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
-                    />
-                  </div>
+              {/* EngageBay Form Container */}
+              <div className="engage-hub-form-embed" 
+                   id="eh_form_6351369855041536" 
+                   data-id="6351369855041536"
+                   role="form"
+                   aria-label="Contact form">
+                
+                {/* Loading State */}
+                <div id="form-loading" className="flex items-center justify-center p-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
+                  <span className="ml-4 text-gray-600">Loading form...</span>
                 </div>
-
-                {/* Email and Phone Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="your.email@example.com"
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
-                    />
+                
+                {/* Fallback Form (Hidden by default, shown if EngageBay fails) */}
+                <form id="fallback-form" className="hidden space-y-6" role="form" aria-label="Fallback contact form">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
+                        First Name <span style={{color: '#e74c3c'}}>*</span>
+                      </label>
+                      <input 
+                        type="text" 
+                        id="firstName"
+                        name="firstName" 
+                        placeholder="Your first name" 
+                        required 
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors"
+                        aria-required="true"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Last Name <span style={{color: '#e74c3c'}}>*</span>
+                      </label>
+                      <input 
+                        type="text" 
+                        id="lastName"
+                        name="lastName" 
+                        placeholder="Your last name" 
+                        required 
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors"
+                        aria-required="true"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+254 700 000 000"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
-                    />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Email Address <span style={{color: '#e74c3c'}}>*</span>
+                      </label>
+                      <input 
+                        type="email" 
+                        id="email"
+                        name="email" 
+                        placeholder="your.email@example.com" 
+                        required 
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors"
+                        aria-required="true"
+                        aria-describedby="email-error"
+                      />
+                      <div id="email-error" className="validation-message" style={{display: 'none'}} aria-live="polite"></div>
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <input 
+                        type="tel" 
+                        id="phone"
+                        name="phone" 
+                        placeholder="+254 700 000 000" 
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors"
+                      />
+                    </div>
                   </div>
-                </div>
-
-                {/* Legal Service Required */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Legal Service Required *
-                  </label>
-                  <select
-                    name="legalService"
-                    value={formData.legalService}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors appearance-none bg-white"
-                    style={{
-                      backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                      backgroundPosition: 'right 12px center',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundSize: '16px',
-                      paddingRight: '48px'
-                    }}
+                  
+                  <div>
+                    <label htmlFor="service" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Legal Service Required <span style={{color: '#e74c3c'}}>*</span>
+                    </label>
+                    <select 
+                      id="service"
+                      name="service" 
+                      required 
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors appearance-none bg-white cursor-pointer"
+                      aria-required="true"
+                    >
+                      <option value="" disabled selected>Select a service</option>
+                      <option value="corporate-law">Corporate Law</option>
+                      <option value="litigation">Litigation</option>
+                      <option value="real-estate">Real Estate</option>
+                      <option value="employment-law">Employment Law</option>
+                      <option value="intellectual-property">Intellectual Property</option>
+                      <option value="family-law">Family Law</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Message <span style={{color: '#e74c3c'}}>*</span>
+                    </label>
+                    <textarea 
+                      id="message"
+                      name="message" 
+                      placeholder="Please describe your legal matter and how we can help you..." 
+                      required 
+                      rows={5}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-500 focus:outline-none transition-colors resize-vertical"
+                      aria-required="true"
+                    ></textarea>
+                  </div>
+                  
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary w-full"
+                    aria-label="Send consultation request"
                   >
-                    <option value="">Select a service</option>
-                    <option value="corporate-law">Corporate Law</option>
-                    <option value="litigation">Litigation</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="employment-law">Employment Law</option>
-                    <option value="intellectual-property">Intellectual Property</option>
-                    <option value="family-law">Family Law</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder="Please describe your legal matter and how we can help you..."
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors resize-vertical"
-                  ></textarea>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white font-semibold py-4 px-6 rounded-xl hover:from-amber-700 hover:to-amber-800 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-
-                {/* Success/Error Messages */}
-                {submitStatus === 'success' && (
-                  <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 mt-0.5 text-green-600 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Message sent successfully!</p>
-                      <p className="text-sm">We'll get back to you within 24 hours.</p>
-                    </div>
-                  </div>
-                )}
-
-                {submitStatus === 'error' && (
-                  <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 mt-0.5 text-red-600 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium">Something went wrong.</p>
-                      <p className="text-sm">Please try again or contact us directly at nairobi@soklaw.co.ke</p>
-                    </div>
-                  </div>
-                )}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+                    </svg>
+                    Send Message
+                  </button>
+                </form>
               </div>
+              
+              {/* Form Scripts */}
+              <script dangerouslySetInnerHTML={{__html: `
+                // Initialize EngageBay form
+                document.addEventListener('DOMContentLoaded', function() {
+                  // Show loading state
+                  const loadingDiv = document.getElementById('form-loading');
+                  const fallbackForm = document.getElementById('fallback-form');
+                  
+                  // Try to load EngageBay form
+                  setTimeout(function() {
+                    if (typeof EhForms !== 'undefined' && EhForms.init) {
+                      try {
+                        EhForms.init();
+                        // Hide loading, EngageBay form should appear
+                        if (loadingDiv) loadingDiv.style.display = 'none';
+                      } catch (error) {
+                        console.warn('EngageBay form failed to load, showing fallback:', error);
+                        showFallbackForm();
+                      }
+                    } else {
+                      console.warn('EngageBay not available, showing fallback form');
+                      showFallbackForm();
+                    }
+                  }, 2000); // Wait 2 seconds for EngageBay to load
+                  
+                  function showFallbackForm() {
+                    if (loadingDiv) loadingDiv.style.display = 'none';
+                    if (fallbackForm) {
+                      fallbackForm.style.display = 'block';
+                      fallbackForm.classList.remove('hidden');
+                    }
+                  }
+                  
+                  // Handle fallback form submission
+                  if (fallbackForm) {
+                    fallbackForm.addEventListener('submit', function(e) {
+                      e.preventDefault();
+                      
+                      const formData = new FormData(fallbackForm);
+                      const data = Object.fromEntries(formData);
+                      
+                      // Create email body
+                      const emailBody = \`New Contact Form Submission:
+
+Name: \${data.firstName} \${data.lastName}
+Email: \${data.email}
+Phone: \${data.phone || 'Not provided'}
+Legal Service: \${data.service}
+
+Message:
+\${data.message}\`;
+                      
+                      // Open email client
+                      const mailtoUrl = \`mailto:nairobi@soklaw.co.ke?subject=New Contact Form Submission&body=\${encodeURIComponent(emailBody)}\`;
+                      window.open(mailtoUrl, '_blank');
+                      
+                      // Show success message
+                      alert('Thank you for your message! Your email client should open with the form data. Please send the email to complete your submission.');
+                      
+                      // Reset form
+                      fallbackForm.reset();
+                    });
+                  }
+                });
+              `}} />
             </div>
           </div>
         </div>
@@ -392,6 +434,14 @@ ${formData.message}
         .animate-fade-in-up {
           opacity: 1 !important;
           transform: translateY(0) !important;
+        }
+        
+        /* Custom select arrow */
+        select {
+          background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666'%3E%3Cpath d='M8 10.5L4 6.5h8z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          padding-right: 40px;
         }
       `}</style>
     </section>
